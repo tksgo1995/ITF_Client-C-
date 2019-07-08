@@ -43,6 +43,7 @@
             this.listView_Window.Size = new System.Drawing.Size(578, 373);
             this.listView_Window.TabIndex = 0;
             this.listView_Window.UseCompatibleStateImageBehavior = false;
+            this.listView_Window.View = System.Windows.Forms.View.List;
             this.listView_Window.DragDrop += new System.Windows.Forms.DragEventHandler(this.listView_Window_DragDrop);
             this.listView_Window.DragEnter += new System.Windows.Forms.DragEventHandler(this.listView_Window_DragEnter);
             this.listView_Window.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listView_Window_KeyDown);
@@ -57,6 +58,9 @@
             this.treeView_Window.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView_Window_BeforeExpand);
             this.treeView_Window.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_Window_AfterSelect);
             this.treeView_Window.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_Window_NodeMouseClick);
+            this.treeView_Window.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TreeView_Window_NodeMouseDoubleClick);
+            this.treeView_Window.Click += new System.EventHandler(this.TreeView_Window_Click);
+            this.treeView_Window.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TreeView_Window_MouseDoubleClick);
             // 
             // button_Back
             // 
@@ -64,7 +68,7 @@
             this.button_Back.Name = "button_Back";
             this.button_Back.Size = new System.Drawing.Size(75, 23);
             this.button_Back.TabIndex = 2;
-            this.button_Back.Text = "button1";
+            this.button_Back.Text = "<<";
             this.button_Back.UseVisualStyleBackColor = true;
             this.button_Back.Click += new System.EventHandler(this.button_Back_Click);
             // 
@@ -74,7 +78,7 @@
             this.button_Front.Name = "button_Front";
             this.button_Front.Size = new System.Drawing.Size(75, 23);
             this.button_Front.TabIndex = 3;
-            this.button_Front.Text = "button2";
+            this.button_Front.Text = ">>";
             this.button_Front.UseVisualStyleBackColor = true;
             this.button_Front.Click += new System.EventHandler(this.button_Front_Click);
             // 
