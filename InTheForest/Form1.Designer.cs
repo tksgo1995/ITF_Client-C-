@@ -43,6 +43,7 @@
             this.listView_Window.Size = new System.Drawing.Size(578, 373);
             this.listView_Window.TabIndex = 0;
             this.listView_Window.UseCompatibleStateImageBehavior = false;
+            this.listView_Window.View = System.Windows.Forms.View.List;
             this.listView_Window.DragDrop += new System.Windows.Forms.DragEventHandler(this.listView_Window_DragDrop);
             this.listView_Window.DragEnter += new System.Windows.Forms.DragEventHandler(this.listView_Window_DragEnter);
             this.listView_Window.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listView_Window_KeyDown);

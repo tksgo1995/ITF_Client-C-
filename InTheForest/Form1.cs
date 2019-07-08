@@ -16,6 +16,7 @@ namespace InTheForest
 {
     public partial class Form1 : Form
     {
+        string key;
         AES k;
         private static EventWaitHandle waitforsinglesignal;
         private int mask;
@@ -81,24 +82,24 @@ namespace InTheForest
                     ListViewItem lsvitem = new ListViewItem();
                     lsvitem.ImageIndex = 4;
                     lsvitem.Text = fileinfo.Name;
-                    listView1.Items.Add(lsvitem);
+                    listView_Window.Items.Add(lsvitem);
 
                     if (fileinfo.LastWriteTime != null)
                     {
-                        listView1.Items[Count].SubItems.Add(fileinfo.LastWriteTime.ToString());
+                        listView_Window.Items[Count].SubItems.Add(fileinfo.LastWriteTime.ToString());
                     }
                     else
                     {
-                        listView1.Items[Count].SubItems.Add(fileinfo.CreationTime.ToString());
+                        listView_Window.Items[Count].SubItems.Add(fileinfo.CreationTime.ToString());
                     }
-                    listView1.Items[Count].SubItems.Add(fileinfo.Attributes.ToString());
-                    listView1.Items[Count].SubItems.Add(fileinfo.Length.ToString());
+                    listView_Window.Items[Count].SubItems.Add(fileinfo.Attributes.ToString());
+                    listView_Window.Items[Count].SubItems.Add(fileinfo.Length.ToString());
                     Count++;
                 }
             }
             catch (Exception ex)
             {
-                //MessageBox.Show("에러 발생 : " + ex.Message);
+                MessageBox.Show("에러 발생 : " + ex.Message);
             }
         }
 
@@ -157,6 +158,16 @@ namespace InTheForest
             if (GET_BIT(mask, 6)) value = 4;
             else value = 0;
             UpdateRegistry("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer", value, "NoViewOnDrive");
+        }
+
+        // 키값 생성 함수(그냥 랜덤)
+        public string GetRandomPassword(int _totLen)
+        {
+            Random rand = new Random();
+            string input = "abcdefghijklmnopqrstuvwxyz0123456789";
+            var chars = Enumerable.Range(0, _totLen)
+                .Select(x => input[rand.Next(0, input.Length)]);
+            return new string(chars.ToArray());
         }
 
         private void treeView_Window_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -237,7 +248,7 @@ namespace InTheForest
             }
             catch (Exception ex)
             {
-                //Console.WriteLine("treeView1_BeforeExpand : " + ex.Message);
+                MessageBox.Show("error: " + ex);
             }
         }
 
@@ -247,13 +258,13 @@ namespace InTheForest
             string path = current.FullPath;
             //MessageBox.Show(path);
 
-            label1.Text = path.Replace("\\\\", "\\");
+            label_Path.Text = path.Replace("\\\\", "\\");
             try
             {
-                if (label1.Text == "내 컴퓨터" || path == "Root")
+                if (label_Path.Text == "내 컴퓨터" || path == "Root")
                 {
                     //webBr.Url = new Uri("C:\\");
-                    label1.Text = "C:\\";
+                    label_Path.Text = "C:\\";
                 }
                 else
                 {
@@ -263,8 +274,7 @@ namespace InTheForest
             }
             catch (Exception ex)
             {
-                //MessageBox.Show("예외 발생 : " + ex);
-                //throw;
+                MessageBox.Show("error: " + ex);
             }
         }
 
@@ -279,8 +289,8 @@ namespace InTheForest
             {
                 filename = Path.GetFileName(file);
                 encbytes = k.AESEncrypto256(File.ReadAllBytes(file), key);
-                File.WriteAllBytes(label1.Text + "\\" + filename + ".enc", encbytes);
-                SettingListView(label1.Text);
+                File.WriteAllBytes(label_Path.Text + "\\" + filename + ".enc", encbytes);
+                SettingListView(label_Path.Text);
             }
         }
 
@@ -303,7 +313,7 @@ namespace InTheForest
             }
             catch (Exception e1)
             {
-
+                MessageBox.Show("error: " + e1);
             }
         }
 
@@ -324,6 +334,8 @@ namespace InTheForest
             File.Delete(filename); // 프로세스 종료시 파일삭제
             SettingListView(label_Path.Text);
         }
+
+        
     }
 }
 
