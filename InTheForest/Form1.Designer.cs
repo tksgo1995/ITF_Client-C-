@@ -64,7 +64,7 @@
             this.button_Back.Name = "button_Back";
             this.button_Back.Size = new System.Drawing.Size(75, 23);
             this.button_Back.TabIndex = 2;
-            this.button_Back.Text = "button1";
+            this.button_Back.Text = "<<";
             this.button_Back.UseVisualStyleBackColor = true;
             this.button_Back.Click += new System.EventHandler(this.button_Back_Click);
             // 
@@ -74,7 +74,7 @@
             this.button_Front.Name = "button_Front";
             this.button_Front.Size = new System.Drawing.Size(75, 23);
             this.button_Front.TabIndex = 3;
-            this.button_Front.Text = "button2";
+            this.button_Front.Text = ">>";
             this.button_Front.UseVisualStyleBackColor = true;
             this.button_Front.Click += new System.EventHandler(this.button_Front_Click);
             // 
