@@ -16,6 +16,7 @@ namespace InTheForest
 {
     public partial class Form1 : Form
     {
+        LinkedList<string> front_stack, back_stack;
         string key;
         AES k;
         private static EventWaitHandle waitforsinglesignal;
@@ -26,8 +27,19 @@ namespace InTheForest
             InitializeComponent();
         }
 
+        void SetButtonEnable()
+        {
+            if (back_stack.Count == 0) button_Back.Enabled = false;
+            else button_Back.Enabled = true;
+
+            if (front_stack.Count == 0)button_Front.Enabled = false;
+            else button_Front.Enabled = true;
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
+            front_stack = new LinkedList<string>();
+            back_stack = new LinkedList<string>();
+            SetButtonEnable(); // 앞으로 뒤로가기 버튼 초기화
             string[] drives = Directory.GetLogicalDrives();// 모든 논리적으로 구분되어 있는 드라이브들을 읽어들임
 
             foreach (string drive in drives)
@@ -99,7 +111,7 @@ namespace InTheForest
             }
             catch (Exception ex)
             {
-                MessageBox.Show("에러 발생 : " + ex.Message);
+                //MessageBox.Show("에러 발생 : " + ex.Message);
             }
         }
 
@@ -172,7 +184,7 @@ namespace InTheForest
 
         private void treeView_Window_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            SettingListView(e.Node.FullPath);
+            //SettingListView(e.Node.FullPath);
         }
 
         private void listView_Window_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -187,6 +199,8 @@ namespace InTheForest
                 FileAttributes attr = File.GetAttributes(file);
                 if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
                 {
+                    back_stack.AddLast(label_Path.Text);
+                    SetButtonEnable();
                     label_Path.Text = file;
                     SettingListView(file);
                 }
@@ -219,7 +233,7 @@ namespace InTheForest
             }
             catch (Exception e1)
             {
-                MessageBox.Show("에러 : " + e1.Message);
+                //MessageBox.Show("에러 : " + e1.Message);
             }
         }
 
@@ -248,7 +262,7 @@ namespace InTheForest
             }
             catch (Exception ex)
             {
-                MessageBox.Show("error: " + ex);
+                //MessageBox.Show("error: " + ex);
             }
         }
 
@@ -258,6 +272,11 @@ namespace InTheForest
             string path = current.FullPath;
             //MessageBox.Show(path);
 
+            if(!path.Equals(label_Path.Text)) // 트리에서 같은 노드를 클릭한 경우엔 뒤로가기 할필요없음
+            {
+                back_stack.AddLast(label_Path.Text); // 뒤로가기 버튼 스택에 넣는 과정
+            }
+            SetButtonEnable();
             label_Path.Text = path.Replace("\\\\", "\\");
             try
             {
@@ -274,8 +293,9 @@ namespace InTheForest
             }
             catch (Exception ex)
             {
-                MessageBox.Show("error: " + ex);
+                //MessageBox.Show("error: " + ex);
             }
+            
         }
 
         private void listView_Window_DragDrop(object sender, DragEventArgs e)
@@ -313,18 +333,41 @@ namespace InTheForest
             }
             catch (Exception e1)
             {
-                MessageBox.Show("error: " + e1);
+                //MessageBox.Show("error: " + e1);
             }
         }
 
         private void button_Back_Click(object sender, EventArgs e)
         {
-
+            front_stack.AddLast(label_Path.Text);
+            label_Path.Text = back_stack.Last.Value;
+            SettingListView(back_stack.Last.Value);
+            back_stack.RemoveLast();
+            SetButtonEnable();
         }
 
         private void button_Front_Click(object sender, EventArgs e)
         {
+            back_stack.AddLast(label_Path.Text);
+            label_Path.Text = front_stack.Last.Value;
+            SettingListView(front_stack.Last.Value);
+            front_stack.RemoveLast();
+            SetButtonEnable();
+        }
 
+        private void TreeView_Window_Click(object sender, EventArgs e)
+        {
+            //back_stack.AddLast(label_Path.Text);
+        }
+
+        private void TreeView_Window_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            //SettingListView(e.Node.FullPath);
+        }
+
+        private void TreeView_Window_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            SettingListView(e.Node.FullPath);
         }
 
         private void process_FileStart_Exited(object sender, EventArgs e)
@@ -334,8 +377,6 @@ namespace InTheForest
             File.Delete(filename); // 프로세스 종료시 파일삭제
             SettingListView(label_Path.Text);
         }
-
-        
     }
 }
 

@@ -58,6 +58,9 @@
             this.treeView_Window.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView_Window_BeforeExpand);
             this.treeView_Window.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_Window_AfterSelect);
             this.treeView_Window.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_Window_NodeMouseClick);
+            this.treeView_Window.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TreeView_Window_NodeMouseDoubleClick);
+            this.treeView_Window.Click += new System.EventHandler(this.TreeView_Window_Click);
+            this.treeView_Window.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TreeView_Window_MouseDoubleClick);
             // 
             // button_Back
             // 
