@@ -370,6 +370,46 @@ namespace InTheForest
             SettingListView(e.Node.FullPath);
         }
 
+        private void ListView_Window_MouseClick(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Equals(MouseButtons.Right))
+                {
+
+                    ListViewItem item = listView_Window.SelectedItems[0];
+                    string file = label_Path.Text + "\\" + item.Text;
+
+                    FileAttributes attr = File.GetAttributes(file);
+                    if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
+                    {
+                        // TODO: 마우스 오른쪽 버튼 클릭시 디렉토리일 때
+                    }
+                    else
+                    {
+                        // TODO: 마우스 오른쪽 버튼 클릭시 파일일 때
+                    }
+                }
+            }
+            catch (Exception e1)
+            {
+
+            }
+        }
+
+        private void ListView_Window_MouseUp(object sender, MouseEventArgs e)
+        {
+            ListViewHitTestInfo lvHit = listView_Window.HitTest(e.Location);
+
+            if (e.Button == MouseButtons.Right)
+            {
+                if (lvHit.Location == ListViewHitTestLocations.None)
+                {
+                    // TODO: 마우스 오른쪽 버튼 클릭시 빈 공간일 때
+                }
+            }
+        }
+
         private void process_FileStart_Exited(object sender, EventArgs e)
         {
             string filename = label_Path.Text + process_FileStart.StartInfo.FileName;
