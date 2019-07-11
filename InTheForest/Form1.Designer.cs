@@ -47,7 +47,9 @@
             this.listView_Window.DragDrop += new System.Windows.Forms.DragEventHandler(this.listView_Window_DragDrop);
             this.listView_Window.DragEnter += new System.Windows.Forms.DragEventHandler(this.listView_Window_DragEnter);
             this.listView_Window.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listView_Window_KeyDown);
+            this.listView_Window.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ListView_Window_MouseClick);
             this.listView_Window.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView_Window_MouseDoubleClick);
+            this.listView_Window.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ListView_Window_MouseUp);
             // 
             // treeView_Window
             // 
