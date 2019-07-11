@@ -278,6 +278,7 @@ namespace InTheForest
             }
             SetButtonEnable();
             label_Path.Text = path.Replace("\\\\", "\\");
+            SettingListView(label_Path.Text);
             try
             {
                 if (label_Path.Text == "내 컴퓨터" || path == "Root")
