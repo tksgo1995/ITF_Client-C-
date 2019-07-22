@@ -477,8 +477,6 @@ namespace InTheForest
                     ToolStripMenuItem Sort = new ToolStripMenuItem();
                     ToolStripMenuItem Create = new ToolStripMenuItem();
                     ToolStripMenuItem Property = new ToolStripMenuItem();
-<<<<<<< HEAD
-=======
 
                     ToolStripMenuItem Icon_Big = new ToolStripMenuItem();
                     ToolStripMenuItem Icon_Small = new ToolStripMenuItem();
@@ -500,27 +498,22 @@ namespace InTheForest
                     ToolStripMenuItem Create_Link = new ToolStripMenuItem();
                     Create_Text.Text = "텍스트 문서";
                     Create_Link.Text = "바로가기";
->>>>>>> 강산해
 
                     New.Text = "새 폴더";
                     See.Text = "보기";
                     Sort.Text = "정렬";
                     Create.Text = "새로 만들기";
                     Property.Text = "속성";
-<<<<<<< HEAD
-=======
+
                     See.DropDownItems.Add(Icon_Big);
                     See.DropDownItems.Add(Icon_Small);
                     See.DropDownItems.Add(Icon_Detail);
->>>>>>> 강산해
 
                     m.Items.Add(New);
                     m.Items.Add(See);
                     m.Items.Add(Sort);
                     m.Items.Add(Create);
                     m.Items.Add(Property);
-<<<<<<< HEAD
-=======
 
                     Sort.DropDownItems.Add(Sort_Name);
                     Sort.DropDownItems.Add(Sort_Date);
@@ -529,7 +522,6 @@ namespace InTheForest
 
                     Create.DropDownItems.Add(Create_Text);
                     Create.DropDownItems.Add(Create_Link);
->>>>>>> 강산해
 
                     m.Show(listView_Window, new Point(e.X, e.Y));
                 }
