@@ -396,6 +396,7 @@ namespace InTheForest
                         ToolStripMenuItem Rename = new ToolStripMenuItem();
                         ToolStripMenuItem Prop = new ToolStripMenuItem();
                         
+
                         Open.Text = "열기";
                         Com.Text = "압축하기";
                         Link.Text = "바로가기";
@@ -476,18 +477,59 @@ namespace InTheForest
                     ToolStripMenuItem Sort = new ToolStripMenuItem();
                     ToolStripMenuItem Create = new ToolStripMenuItem();
                     ToolStripMenuItem Property = new ToolStripMenuItem();
+<<<<<<< HEAD
+=======
+
+                    ToolStripMenuItem Icon_Big = new ToolStripMenuItem();
+                    ToolStripMenuItem Icon_Small = new ToolStripMenuItem();
+                    ToolStripMenuItem Icon_Detail = new ToolStripMenuItem();
+                    Icon_Big.Text = "큰 아이콘";
+                    Icon_Small.Text = "작은 아이콘";
+                    Icon_Detail.Text = "자세히";
+
+                    ToolStripMenuItem Sort_Name = new ToolStripMenuItem();
+                    ToolStripMenuItem Sort_Date = new ToolStripMenuItem();
+                    ToolStripMenuItem Sort_Type = new ToolStripMenuItem();
+                    ToolStripMenuItem Sort_Size = new ToolStripMenuItem();
+                    Sort_Name.Text = "이름";
+                    Sort_Date.Text = "수정한 날짜";
+                    Sort_Type.Text = "유형";
+                    Sort_Size.Text = "크기";
+
+                    ToolStripMenuItem Create_Text = new ToolStripMenuItem();
+                    ToolStripMenuItem Create_Link = new ToolStripMenuItem();
+                    Create_Text.Text = "텍스트 문서";
+                    Create_Link.Text = "바로가기";
+>>>>>>> 강산해
 
                     New.Text = "새 폴더";
                     See.Text = "보기";
                     Sort.Text = "정렬";
                     Create.Text = "새로 만들기";
                     Property.Text = "속성";
+<<<<<<< HEAD
+=======
+                    See.DropDownItems.Add(Icon_Big);
+                    See.DropDownItems.Add(Icon_Small);
+                    See.DropDownItems.Add(Icon_Detail);
+>>>>>>> 강산해
 
                     m.Items.Add(New);
                     m.Items.Add(See);
                     m.Items.Add(Sort);
                     m.Items.Add(Create);
                     m.Items.Add(Property);
+<<<<<<< HEAD
+=======
+
+                    Sort.DropDownItems.Add(Sort_Name);
+                    Sort.DropDownItems.Add(Sort_Date);
+                    Sort.DropDownItems.Add(Sort_Type);
+                    Sort.DropDownItems.Add(Sort_Size);
+
+                    Create.DropDownItems.Add(Create_Text);
+                    Create.DropDownItems.Add(Create_Link);
+>>>>>>> 강산해
 
                     m.Show(listView_Window, new Point(e.X, e.Y));
                 }
