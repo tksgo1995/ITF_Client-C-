@@ -386,16 +386,16 @@ namespace InTheForest
                     {
                         // TODO: 마우스 오른쪽 버튼 클릭시 디렉토리일 때
                         string selected = listView_Window.GetItemAt(e.X, e.Y).Text;
-                        ContextMenu m = new ContextMenu();
-                        MenuItem Open = new MenuItem();
-                        MenuItem Com = new MenuItem();
-                        MenuItem Link = new MenuItem();
-                        MenuItem Cut = new MenuItem();
-                        MenuItem Copy = new MenuItem();
-                        MenuItem Del = new MenuItem();
-                        MenuItem Rename = new MenuItem();
-                        MenuItem Prop = new MenuItem();
-
+                        ContextMenuStrip m = new ContextMenuStrip();
+                        ToolStripMenuItem Open = new ToolStripMenuItem();
+                        ToolStripMenuItem Com = new ToolStripMenuItem();
+                        ToolStripMenuItem Link = new ToolStripMenuItem();
+                        ToolStripMenuItem Cut = new ToolStripMenuItem();
+                        ToolStripMenuItem Copy = new ToolStripMenuItem();
+                        ToolStripMenuItem Del = new ToolStripMenuItem();
+                        ToolStripMenuItem Rename = new ToolStripMenuItem();
+                        ToolStripMenuItem Prop = new ToolStripMenuItem();
+                        
                         Open.Text = "열기";
                         Com.Text = "압축하기";
                         Link.Text = "바로가기";
@@ -405,14 +405,14 @@ namespace InTheForest
                         Rename.Text = "이름바꾸기";
                         Prop.Text = "속성";
 
-                        m.MenuItems.Add(Open);
-                        m.MenuItems.Add(Com);
-                        m.MenuItems.Add(Link);
-                        m.MenuItems.Add(Cut);
-                        m.MenuItems.Add(Copy);
-                        m.MenuItems.Add(Del);
-                        m.MenuItems.Add(Rename);
-                        m.MenuItems.Add(Prop);
+                        m.Items.Add(Open);
+                        m.Items.Add(Com);
+                        m.Items.Add(Link);
+                        m.Items.Add(Cut);
+                        m.Items.Add(Copy);
+                        m.Items.Add(Del);
+                        m.Items.Add(Rename);
+                        m.Items.Add(Prop);
 
                         m.Show(listView_Window, new Point(e.X, e.Y));
                     }
@@ -420,16 +420,16 @@ namespace InTheForest
                     {
                         // TODO: 마우스 오른쪽 버튼 클릭시 파일일 때
                         string selected = listView_Window.GetItemAt(e.X, e.Y).Text;
-                        ContextMenu m = new ContextMenu();
-                        MenuItem Open = new MenuItem();
-                        MenuItem Edit = new MenuItem();
-                        MenuItem Link = new MenuItem();
-                        MenuItem Conn = new MenuItem();
-                        MenuItem Cut = new MenuItem();
-                        MenuItem Copy = new MenuItem();
-                        MenuItem Del = new MenuItem();
-                        MenuItem Rename = new MenuItem();
-                        MenuItem Prop = new MenuItem();
+                        ContextMenuStrip m = new ContextMenuStrip();
+                        ToolStripMenuItem Open = new ToolStripMenuItem();
+                        ToolStripMenuItem Edit = new ToolStripMenuItem();
+                        ToolStripMenuItem Link = new ToolStripMenuItem();
+                        ToolStripMenuItem Conn = new ToolStripMenuItem();
+                        ToolStripMenuItem Cut = new ToolStripMenuItem();
+                        ToolStripMenuItem Copy = new ToolStripMenuItem();
+                        ToolStripMenuItem Del = new ToolStripMenuItem();
+                        ToolStripMenuItem Rename = new ToolStripMenuItem();
+                        ToolStripMenuItem Prop = new ToolStripMenuItem();
 
                         Open.Text = "열기";
                         Edit.Text = "편집";
@@ -441,15 +441,15 @@ namespace InTheForest
                         Rename.Text = "이름바꾸기";
                         Prop.Text = "속성";
 
-                        m.MenuItems.Add(Open);
-                        m.MenuItems.Add(Edit);
-                        m.MenuItems.Add(Conn);
-                        m.MenuItems.Add(Link);
-                        m.MenuItems.Add(Cut);
-                        m.MenuItems.Add(Copy);
-                        m.MenuItems.Add(Del);
-                        m.MenuItems.Add(Rename);
-                        m.MenuItems.Add(Prop);
+                        m.Items.Add(Open);
+                        m.Items.Add(Edit);
+                        m.Items.Add(Conn);
+                        m.Items.Add(Link);
+                        m.Items.Add(Cut);
+                        m.Items.Add(Copy);
+                        m.Items.Add(Del);
+                        m.Items.Add(Rename);
+                        m.Items.Add(Prop);
 
                         m.Show(listView_Window, new Point(e.X, e.Y));
                     }
@@ -470,12 +470,12 @@ namespace InTheForest
                 if (lvHit.Location == ListViewHitTestLocations.None)
                 {
                     // TODO: 마우스 오른쪽 버튼 클릭시 빈 공간일 때
-                    ContextMenu m = new ContextMenu();
-                    MenuItem New = new MenuItem();
-                    MenuItem See = new MenuItem();
-                    MenuItem Sort = new MenuItem();
-                    MenuItem Create = new MenuItem();
-                    MenuItem Property = new MenuItem();
+                    ContextMenuStrip m = new ContextMenuStrip();
+                    ToolStripMenuItem New = new ToolStripMenuItem();
+                    ToolStripMenuItem See = new ToolStripMenuItem();
+                    ToolStripMenuItem Sort = new ToolStripMenuItem();
+                    ToolStripMenuItem Create = new ToolStripMenuItem();
+                    ToolStripMenuItem Property = new ToolStripMenuItem();
 
                     New.Text = "새 폴더";
                     See.Text = "보기";
@@ -483,11 +483,11 @@ namespace InTheForest
                     Create.Text = "새로 만들기";
                     Property.Text = "속성";
 
-                    m.MenuItems.Add(New);
-                    m.MenuItems.Add(See);
-                    m.MenuItems.Add(Sort);
-                    m.MenuItems.Add(Create);
-                    m.MenuItems.Add(Property);
+                    m.Items.Add(New);
+                    m.Items.Add(See);
+                    m.Items.Add(Sort);
+                    m.Items.Add(Create);
+                    m.Items.Add(Property);
 
                     m.Show(listView_Window, new Point(e.X, e.Y));
                 }
