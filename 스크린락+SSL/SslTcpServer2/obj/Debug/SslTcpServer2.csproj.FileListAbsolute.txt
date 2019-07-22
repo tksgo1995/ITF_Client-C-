@@ -1,0 +1,14 @@
+C:\Users\kkh\Desktop\학교\C프로젝트\[3학년프로젝트]\SslTcpServer2\obj\Debug\SslTcpServer2.csprojAssemblyReference.cache
+C:\Users\kkh\Desktop\학교\C프로젝트\[3학년프로젝트]\SslTcpServer2\obj\Debug\SslTcpServer2.csproj.CoreCompileInputs.cache
+C:\Users\kkh\Desktop\학교\C프로젝트\[3학년프로젝트]\SslTcpServer2\bin\Debug\SslTcpServer2.exe.config
+C:\Users\kkh\Desktop\학교\C프로젝트\[3학년프로젝트]\SslTcpServer2\bin\Debug\SslTcpServer2.exe
+C:\Users\kkh\Desktop\학교\C프로젝트\[3학년프로젝트]\SslTcpServer2\bin\Debug\SslTcpServer2.pdb
+C:\Users\kkh\Desktop\학교\C프로젝트\[3학년프로젝트]\SslTcpServer2\obj\Debug\SslTcpServer2.exe
+C:\Users\kkh\Desktop\학교\C프로젝트\[3학년프로젝트]\SslTcpServer2\obj\Debug\SslTcpServer2.pdb
+C:\Users\kkh\Desktop\학교\C프로젝트\[3학년프로젝트]\실험용 코드들\SslTcpServer2\bin\Debug\SslTcpServer2.exe.config
+C:\Users\kkh\Desktop\학교\C프로젝트\[3학년프로젝트]\실험용 코드들\SslTcpServer2\bin\Debug\SslTcpServer2.exe
+C:\Users\kkh\Desktop\학교\C프로젝트\[3학년프로젝트]\실험용 코드들\SslTcpServer2\bin\Debug\SslTcpServer2.pdb
+C:\Users\kkh\Desktop\학교\C프로젝트\[3학년프로젝트]\실험용 코드들\SslTcpServer2\obj\Debug\SslTcpServer2.csprojAssemblyReference.cache
+C:\Users\kkh\Desktop\학교\C프로젝트\[3학년프로젝트]\실험용 코드들\SslTcpServer2\obj\Debug\SslTcpServer2.csproj.CoreCompileInputs.cache
+C:\Users\kkh\Desktop\학교\C프로젝트\[3학년프로젝트]\실험용 코드들\SslTcpServer2\obj\Debug\SslTcpServer2.exe
+C:\Users\kkh\Desktop\학교\C프로젝트\[3학년프로젝트]\실험용 코드들\SslTcpServer2\obj\Debug\SslTcpServer2.pdb
