@@ -385,10 +385,73 @@ namespace InTheForest
                     if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
                     {
                         // TODO: 마우스 오른쪽 버튼 클릭시 디렉토리일 때
+                        string selected = listView_Window.GetItemAt(e.X, e.Y).Text;
+                        ContextMenu m = new ContextMenu();
+                        MenuItem Open = new MenuItem();
+                        MenuItem Com = new MenuItem();
+                        MenuItem Link = new MenuItem();
+                        MenuItem Cut = new MenuItem();
+                        MenuItem Copy = new MenuItem();
+                        MenuItem Del = new MenuItem();
+                        MenuItem Rename = new MenuItem();
+                        MenuItem Prop = new MenuItem();
+
+                        Open.Text = "열기";
+                        Com.Text = "압축하기";
+                        Link.Text = "바로가기";
+                        Cut.Text = "잘라내기";
+                        Copy.Text = "복사";
+                        Del.Text = "삭제";
+                        Rename.Text = "이름바꾸기";
+                        Prop.Text = "속성";
+
+                        m.MenuItems.Add(Open);
+                        m.MenuItems.Add(Com);
+                        m.MenuItems.Add(Link);
+                        m.MenuItems.Add(Cut);
+                        m.MenuItems.Add(Copy);
+                        m.MenuItems.Add(Del);
+                        m.MenuItems.Add(Rename);
+                        m.MenuItems.Add(Prop);
+
+                        m.Show(listView_Window, new Point(e.X, e.Y));
                     }
                     else
                     {
                         // TODO: 마우스 오른쪽 버튼 클릭시 파일일 때
+                        string selected = listView_Window.GetItemAt(e.X, e.Y).Text;
+                        ContextMenu m = new ContextMenu();
+                        MenuItem Open = new MenuItem();
+                        MenuItem Edit = new MenuItem();
+                        MenuItem Link = new MenuItem();
+                        MenuItem Conn = new MenuItem();
+                        MenuItem Cut = new MenuItem();
+                        MenuItem Copy = new MenuItem();
+                        MenuItem Del = new MenuItem();
+                        MenuItem Rename = new MenuItem();
+                        MenuItem Prop = new MenuItem();
+
+                        Open.Text = "열기";
+                        Edit.Text = "편집";
+                        Conn.Text = "연결 프로그램";
+                        Link.Text = "바로가기";
+                        Cut.Text = "잘라내기";
+                        Copy.Text = "복사";
+                        Del.Text = "삭제";
+                        Rename.Text = "이름바꾸기";
+                        Prop.Text = "속성";
+
+                        m.MenuItems.Add(Open);
+                        m.MenuItems.Add(Edit);
+                        m.MenuItems.Add(Conn);
+                        m.MenuItems.Add(Link);
+                        m.MenuItems.Add(Cut);
+                        m.MenuItems.Add(Copy);
+                        m.MenuItems.Add(Del);
+                        m.MenuItems.Add(Rename);
+                        m.MenuItems.Add(Prop);
+
+                        m.Show(listView_Window, new Point(e.X, e.Y));
                     }
                 }
             }
@@ -407,6 +470,26 @@ namespace InTheForest
                 if (lvHit.Location == ListViewHitTestLocations.None)
                 {
                     // TODO: 마우스 오른쪽 버튼 클릭시 빈 공간일 때
+                    ContextMenu m = new ContextMenu();
+                    MenuItem New = new MenuItem();
+                    MenuItem See = new MenuItem();
+                    MenuItem Sort = new MenuItem();
+                    MenuItem Create = new MenuItem();
+                    MenuItem Property = new MenuItem();
+
+                    New.Text = "새 폴더";
+                    See.Text = "보기";
+                    Sort.Text = "정렬";
+                    Create.Text = "새로 만들기";
+                    Property.Text = "속성";
+
+                    m.MenuItems.Add(New);
+                    m.MenuItems.Add(See);
+                    m.MenuItems.Add(Sort);
+                    m.MenuItems.Add(Create);
+                    m.MenuItems.Add(Property);
+
+                    m.Show(listView_Window, new Point(e.X, e.Y));
                 }
             }
         }
@@ -423,3 +506,4 @@ namespace InTheForest
 
 
 // Hello World
+// 진짜코드
