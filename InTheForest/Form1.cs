@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace InTheForest
         AES k;
         private static EventWaitHandle waitforsinglesignal;
         private int mask;
+
         public Form1()
         {
             InitializeComponent();
@@ -33,7 +35,6 @@ namespace InTheForest
             cboListViewMode.Items.Add("타일");
             cboListViewMode.SelectedIndex = 0;
         }
-
         //버튼 활성화
         void SetButtonEnable()
         {
@@ -43,13 +44,24 @@ namespace InTheForest
             if (front_stack.Count == 0) button_Front.Enabled = false;
             else button_Front.Enabled = true;
         }
-
+        private bool IsAdministrator()
+        {
+            WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            if(identity != null)
+            {
+                WindowsPrincipal principal = new WindowsPrincipal(identity);
+                return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            }
+            return false;
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
             Back_init = 1; // 시작할 때 Back 버튼 비활성화를 위한 마스크값
             front_stack = new LinkedList<string>();
             back_stack = new LinkedList<string>();
             SetButtonEnable();
+
+            //드라이브 잡아서 트리뷰에 올리기
             string[] drives = Directory.GetLogicalDrives();
 
             foreach(string drive in drives)
@@ -63,7 +75,7 @@ namespace InTheForest
                      node.Nodes.Add("\\");
                 }
             }
-
+            
             listView1.BeginUpdate();
             //ListView 속성을 위한 헤더추가
             listView1.Columns.Add("이름", listView1.Width / 4, HorizontalAlignment.Left);
@@ -74,10 +86,13 @@ namespace InTheForest
             listView1.FullRowSelect = true;
             listView1.EndUpdate();
 
+            // 파일 암복호화 키 초기화
             k = new AES();
             waitforsinglesignal = new EventWaitHandle(false, EventResetMode.AutoReset);
-        }
 
+            //관리자 권한으로 실행되었을 경우 제목 - 관리자 로 바꾸기
+            if(IsAdministrator()) this.Text = "InTheForest - 관리자";
+        }
         private void SettingListView(string sFullPath)
         {
             try
@@ -144,7 +159,6 @@ namespace InTheForest
                     listView1.Items[Count].SubItems.Add(size.ToString() + " KB");
                     Count++;
                     
-                label1.Text = Count + "개";
                 }
             }
             catch (Exception ex)
@@ -160,7 +174,6 @@ namespace InTheForest
             if ((((x) >> (y)) & 0x01) == 1) return true;
             return false;
         }
-
         public void UpdateRegistry(string root, int value, string name) // 정책에 맞게 레지스트리 업데이트
         {
             RegistryKey reg = Registry.CurrentUser.OpenSubKey(root, true);
@@ -172,7 +185,6 @@ namespace InTheForest
             reg.SetValue(name, value);
             reg.Close();
         }
-
         public void UpdatePolicy() // 마스크값에 따라 시스템 정책변경
         {
             int value;
@@ -211,7 +223,6 @@ namespace InTheForest
             else value = 0;
             UpdateRegistry("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer", value, "NoViewOnDrive");
         }
-
         // 키값 생성 함수(그냥 랜덤)
         public string GetRandomPassword(int _totLen)
         {
@@ -225,7 +236,6 @@ namespace InTheForest
         {
             //SettingListView(e.Node.FullPath);
         }
-
         private void ListView1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             try
@@ -346,12 +356,10 @@ namespace InTheForest
                 SettingListView(label_Path.Text);
             }
         }
-
         private void ListView1_DragEnter(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.Copy;
         }
-
         private void ListView1_KeyDown(object sender, KeyEventArgs e)
         {
             try
@@ -369,7 +377,6 @@ namespace InTheForest
                 //MessageBox.Show("error: " + e1);
             }
         }
-
         private void ListView1_MouseClick(object sender, MouseEventArgs e)
         {
             try
@@ -385,24 +392,14 @@ namespace InTheForest
                     {
                         string selected = listView1.GetItemAt(e.X, e.Y).Text;
                         ContextMenuStrip m = new ContextMenuStrip();
-                        ToolStripMenuItem Open = new ToolStripMenuItem();
-                        ToolStripMenuItem Com = new ToolStripMenuItem();
-                        ToolStripMenuItem Link = new ToolStripMenuItem();
-                        ToolStripMenuItem Cut = new ToolStripMenuItem();
-                        ToolStripMenuItem Copy = new ToolStripMenuItem();
-                        ToolStripMenuItem Del = new ToolStripMenuItem();
-                        ToolStripMenuItem Rename = new ToolStripMenuItem();
-                        ToolStripMenuItem Prop = new ToolStripMenuItem();
-
-
-                        Open.Text = "열기";
-                        Com.Text = "압축하기";
-                        Link.Text = "바로가기";
-                        Cut.Text = "잘라내기";
-                        Copy.Text = "복사";
-                        Del.Text = "삭제";
-                        Rename.Text = "이름바꾸기";
-                        Prop.Text = "속성";
+                        ToolStripMenuItem Open = new ToolStripMenuItem("열기", null, new EventHandler(Open_Click));
+                        ToolStripMenuItem Com = new ToolStripMenuItem("압축하기", null);
+                        ToolStripMenuItem Link = new ToolStripMenuItem("바로가기", null);
+                        ToolStripMenuItem Cut = new ToolStripMenuItem("잘라내기", null);
+                        ToolStripMenuItem Copy = new ToolStripMenuItem("복사", null);
+                        ToolStripMenuItem Del = new ToolStripMenuItem("삭제", null);
+                        ToolStripMenuItem Rename = new ToolStripMenuItem("이름바꾸기", null);
+                        ToolStripMenuItem Prop = new ToolStripMenuItem("속성", null);
 
                         m.Items.Add(Open);
                         m.Items.Add(Com);
@@ -419,25 +416,15 @@ namespace InTheForest
                     {
                         string selected = listView1.GetItemAt(e.X, e.Y).Text;
                         ContextMenuStrip m = new ContextMenuStrip();
-                        ToolStripMenuItem Open = new ToolStripMenuItem();
-                        ToolStripMenuItem Edit = new ToolStripMenuItem();
-                        ToolStripMenuItem Link = new ToolStripMenuItem();
-                        ToolStripMenuItem Conn = new ToolStripMenuItem();
-                        ToolStripMenuItem Cut = new ToolStripMenuItem();
-                        ToolStripMenuItem Copy = new ToolStripMenuItem();
-                        ToolStripMenuItem Del = new ToolStripMenuItem();
-                        ToolStripMenuItem Rename = new ToolStripMenuItem();
-                        ToolStripMenuItem Prop = new ToolStripMenuItem();
-
-                        Open.Text = "열기";
-                        Edit.Text = "편집";
-                        Conn.Text = "연결 프로그램";
-                        Link.Text = "바로가기";
-                        Cut.Text = "잘라내기";
-                        Copy.Text = "복사";
-                        Del.Text = "삭제";
-                        Rename.Text = "이름바꾸기";
-                        Prop.Text = "속성";
+                        ToolStripMenuItem Open = new ToolStripMenuItem("열기", null, new EventHandler(Open_Click));
+                        ToolStripMenuItem Edit = new ToolStripMenuItem("편집", null);
+                        ToolStripMenuItem Link = new ToolStripMenuItem("연결 프로그램", null);
+                        ToolStripMenuItem Conn = new ToolStripMenuItem("바로가기", null);
+                        ToolStripMenuItem Cut = new ToolStripMenuItem("잘라내기", null);
+                        ToolStripMenuItem Copy = new ToolStripMenuItem("복사", null);
+                        ToolStripMenuItem Del = new ToolStripMenuItem("삭제", null);
+                        ToolStripMenuItem Rename = new ToolStripMenuItem("이름바꾸기", null);
+                        ToolStripMenuItem Prop = new ToolStripMenuItem("속성", null);
 
                         m.Items.Add(Open);
                         m.Items.Add(Edit);
@@ -458,7 +445,55 @@ namespace InTheForest
 
             }
         }
+        private void Open_Click(object sender, EventArgs e) // 열기 버튼 눌렀을 때 기능
+        {
+            try
+            {
+                //back = label1.Text;
+                byte[] decbytes;
+                ListViewItem item = listView1.SelectedItems[0];
+                string file = label_Path.Text + "\\" + item.Text;
 
+                FileAttributes attr = File.GetAttributes(file);
+                if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
+                {
+                    back_stack.AddLast(label_Path.Text);
+                    SetButtonEnable();
+                    label_Path.Text = file;
+                    SettingListView(file);
+                }
+                else
+                {
+                    if (file.Contains(".enc"))
+                    {
+                        Thread t1 = new Thread(new ThreadStart(Run));
+                        t1.Start();
+                        waitforsinglesignal.WaitOne();
+                        void Run()
+                        {
+                            decbytes = k.AESDecrypto256(File.ReadAllBytes(file), key);
+                            file = file.Replace(".enc", "");
+                            MessageBox.Show(file);
+                            File.WriteAllBytes(file, decbytes);
+                            waitforsinglesignal.Set();
+                        }
+
+                        //Thread.Sleep(1000);
+                    }
+                    string filename = Path.GetFileName(file);
+                    process_FileStart.StartInfo.FileName = filename;
+                    process_FileStart.StartInfo.WorkingDirectory = label_Path.Text;
+                    process_FileStart.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
+                    process_FileStart.Start();
+
+                    SettingListView(label_Path.Text);
+                }
+            }
+            catch (Exception e1)
+            {
+                //MessageBox.Show("에러 : " + e1.Message);
+            }
+        }
         private void ListView1_MouseUp(object sender, MouseEventArgs e)
         {
             ListViewHitTestInfo lvHit = listView1.HitTest(e.Location);
@@ -468,45 +503,20 @@ namespace InTheForest
                 if (lvHit.Location == ListViewHitTestLocations.None)
                 {
                     ContextMenuStrip m = new ContextMenuStrip();
-                    ToolStripMenuItem New = new ToolStripMenuItem();
-                    ToolStripMenuItem See = new ToolStripMenuItem();
-                    ToolStripMenuItem Sort = new ToolStripMenuItem();
-                    ToolStripMenuItem Create = new ToolStripMenuItem();
-                    ToolStripMenuItem Property = new ToolStripMenuItem();
+                    ToolStripMenuItem New = new ToolStripMenuItem("새 폴더", null);
+                    ToolStripMenuItem Sort = new ToolStripMenuItem("정렬", null);
+                    ToolStripMenuItem Create = new ToolStripMenuItem("새로 만들기", null);
+                    ToolStripMenuItem Property = new ToolStripMenuItem("속성", null);
 
-                    ToolStripMenuItem Icon_Big = new ToolStripMenuItem();
-                    ToolStripMenuItem Icon_Small = new ToolStripMenuItem();
-                    ToolStripMenuItem Icon_Detail = new ToolStripMenuItem();
-                    Icon_Big.Text = "큰 아이콘";
-                    Icon_Small.Text = "작은 아이콘";
-                    Icon_Detail.Text = "자세히";
+                    ToolStripMenuItem Sort_Name = new ToolStripMenuItem("이름", null);
+                    ToolStripMenuItem Sort_Date = new ToolStripMenuItem("수정한 날짜", null);
+                    ToolStripMenuItem Sort_Type = new ToolStripMenuItem("유형", null);
+                    ToolStripMenuItem Sort_Size = new ToolStripMenuItem("크기", null);
 
-                    ToolStripMenuItem Sort_Name = new ToolStripMenuItem();
-                    ToolStripMenuItem Sort_Date = new ToolStripMenuItem();
-                    ToolStripMenuItem Sort_Type = new ToolStripMenuItem();
-                    ToolStripMenuItem Sort_Size = new ToolStripMenuItem();
-                    Sort_Name.Text = "이름";
-                    Sort_Date.Text = "수정한 날짜";
-                    Sort_Type.Text = "유형";
-                    Sort_Size.Text = "크기";
-
-                    ToolStripMenuItem Create_Text = new ToolStripMenuItem();
-                    ToolStripMenuItem Create_Link = new ToolStripMenuItem();
-                    Create_Text.Text = "텍스트 문서";
-                    Create_Link.Text = "바로가기";
-
-                    New.Text = "새 폴더";
-                    See.Text = "보기";
-                    Sort.Text = "정렬";
-                    Create.Text = "새로 만들기";
-                    Property.Text = "속성";
-
-                    See.DropDownItems.Add(Icon_Big);
-                    See.DropDownItems.Add(Icon_Small);
-                    See.DropDownItems.Add(Icon_Detail);
+                    ToolStripMenuItem Create_Text = new ToolStripMenuItem("텍스트 문서", null);
+                    ToolStripMenuItem Create_Link = new ToolStripMenuItem("바로가기", null);
 
                     m.Items.Add(New);
-                    m.Items.Add(See);
                     m.Items.Add(Sort);
                     m.Items.Add(Create);
                     m.Items.Add(Property);
@@ -523,14 +533,12 @@ namespace InTheForest
                 }
             }
         }
-
         private void process_FileStart_Exited(object sender, EventArgs e)
         {
             string filename = label_Path.Text + process_FileStart.StartInfo.FileName;
             File.Delete(filename); // 프로세스 종료시 파일삭제
             SettingListView(label_Path.Text);
         }
-
         private void Button_Back_Click(object sender, EventArgs e)
         {
             front_stack.AddLast(label_Path.Text);
@@ -539,7 +547,6 @@ namespace InTheForest
             back_stack.RemoveLast();
             SetButtonEnable();
         }
-
         private void Button_Front_Click(object sender, EventArgs e)
         {
             back_stack.AddLast(label_Path.Text);
@@ -548,12 +555,14 @@ namespace InTheForest
             front_stack.RemoveLast();
             SetButtonEnable();
         }
-
         private void SplitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
         {
 
         }
+        private void SplitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
+        {
 
+        }
         private void CboListViewMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (cboListViewMode.Text)
@@ -572,7 +581,5 @@ namespace InTheForest
                     break;
             }
         }
-
-        
     }
 }

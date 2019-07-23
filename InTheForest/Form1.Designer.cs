@@ -1,4 +1,4 @@
-﻿namespace again
+﻿namespace InTheForest
 {
     partial class Form1
     {
@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.label1 = new System.Windows.Forms.Label();
             this.button_Front = new System.Windows.Forms.Button();
             this.button_Back = new System.Windows.Forms.Button();
             this.treeView1 = new System.Windows.Forms.TreeView();
@@ -56,7 +55,6 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.label1);
             this.splitContainer1.Panel1.Controls.Add(this.button_Front);
             this.splitContainer1.Panel1.Controls.Add(this.button_Back);
             this.splitContainer1.Panel1.Controls.Add(this.treeView1);
@@ -70,15 +68,7 @@
             this.splitContainer1.Size = new System.Drawing.Size(811, 490);
             this.splitContainer1.SplitterDistance = 270;
             this.splitContainer1.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(16, 14);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 12);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "label1";
+            this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.SplitContainer1_SplitterMoved);
             // 
             // button_Front
             // 
@@ -216,10 +206,9 @@
             this.Controls.Add(this.splitContainer1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "InTheForest";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -240,7 +229,6 @@
         private System.Windows.Forms.ComboBox cboListViewMode;
         private System.Diagnostics.Process process_FileStart;
         private System.Windows.Forms.TextBox label_Path;
-        private System.Windows.Forms.Label label1;
     }
 }
 
