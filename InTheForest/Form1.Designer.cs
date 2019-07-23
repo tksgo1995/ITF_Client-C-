@@ -1,4 +1,4 @@
-﻿namespace InTheForest
+﻿namespace again
 {
     partial class Form1
     {
@@ -28,69 +28,174 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.listView_Window = new System.Windows.Forms.ListView();
-            this.treeView_Window = new System.Windows.Forms.TreeView();
-            this.button_Back = new System.Windows.Forms.Button();
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.label1 = new System.Windows.Forms.Label();
             this.button_Front = new System.Windows.Forms.Button();
-            this.label_Path = new System.Windows.Forms.Label();
+            this.button_Back = new System.Windows.Forms.Button();
+            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.label_Path = new System.Windows.Forms.TextBox();
+            this.cboListViewMode = new System.Windows.Forms.ComboBox();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.imageList2 = new System.Windows.Forms.ImageList(this.components);
             this.process_FileStart = new System.Diagnostics.Process();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // listView_Window
+            // splitContainer1
             // 
-            this.listView_Window.Location = new System.Drawing.Point(210, 65);
-            this.listView_Window.Name = "listView_Window";
-            this.listView_Window.Size = new System.Drawing.Size(578, 373);
-            this.listView_Window.TabIndex = 0;
-            this.listView_Window.UseCompatibleStateImageBehavior = false;
-            this.listView_Window.View = System.Windows.Forms.View.List;
-            this.listView_Window.DragDrop += new System.Windows.Forms.DragEventHandler(this.listView_Window_DragDrop);
-            this.listView_Window.DragEnter += new System.Windows.Forms.DragEventHandler(this.listView_Window_DragEnter);
-            this.listView_Window.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listView_Window_KeyDown);
-            this.listView_Window.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ListView_Window_MouseClick);
-            this.listView_Window.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView_Window_MouseDoubleClick);
-            this.listView_Window.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ListView_Window_MouseUp);
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.splitContainer1.Name = "splitContainer1";
             // 
-            // treeView_Window
+            // splitContainer1.Panel1
             // 
-            this.treeView_Window.Location = new System.Drawing.Point(12, 65);
-            this.treeView_Window.Name = "treeView_Window";
-            this.treeView_Window.Size = new System.Drawing.Size(192, 373);
-            this.treeView_Window.TabIndex = 1;
-            this.treeView_Window.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView_Window_BeforeExpand);
-            this.treeView_Window.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_Window_AfterSelect);
-            this.treeView_Window.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_Window_NodeMouseClick);
-            this.treeView_Window.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TreeView_Window_NodeMouseDoubleClick);
-            this.treeView_Window.Click += new System.EventHandler(this.TreeView_Window_Click);
-            this.treeView_Window.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TreeView_Window_MouseDoubleClick);
+            this.splitContainer1.Panel1.Controls.Add(this.label1);
+            this.splitContainer1.Panel1.Controls.Add(this.button_Front);
+            this.splitContainer1.Panel1.Controls.Add(this.button_Back);
+            this.splitContainer1.Panel1.Controls.Add(this.treeView1);
             // 
-            // button_Back
+            // splitContainer1.Panel2
             // 
-            this.button_Back.Location = new System.Drawing.Point(12, 36);
-            this.button_Back.Name = "button_Back";
-            this.button_Back.Size = new System.Drawing.Size(75, 23);
-            this.button_Back.TabIndex = 2;
-            this.button_Back.Text = "<<";
-            this.button_Back.UseVisualStyleBackColor = true;
-            this.button_Back.Click += new System.EventHandler(this.button_Back_Click);
+            this.splitContainer1.Panel2.Controls.Add(this.label_Path);
+            this.splitContainer1.Panel2.Controls.Add(this.cboListViewMode);
+            this.splitContainer1.Panel2.Controls.Add(this.listView1);
+            this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.SplitContainer1_Panel2_Paint);
+            this.splitContainer1.Size = new System.Drawing.Size(811, 490);
+            this.splitContainer1.SplitterDistance = 270;
+            this.splitContainer1.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(16, 14);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(38, 12);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "label1";
             // 
             // button_Front
             // 
-            this.button_Front.Location = new System.Drawing.Point(93, 36);
+            this.button_Front.BackColor = System.Drawing.SystemColors.Menu;
+            this.button_Front.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.button_Front.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button_Front.Location = new System.Drawing.Point(66, 37);
+            this.button_Front.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button_Front.Name = "button_Front";
-            this.button_Front.Size = new System.Drawing.Size(75, 23);
-            this.button_Front.TabIndex = 3;
+            this.button_Front.Size = new System.Drawing.Size(42, 28);
+            this.button_Front.TabIndex = 2;
             this.button_Front.Text = ">>";
-            this.button_Front.UseVisualStyleBackColor = true;
-            this.button_Front.Click += new System.EventHandler(this.button_Front_Click);
+            this.button_Front.UseVisualStyleBackColor = false;
+            this.button_Front.Click += new System.EventHandler(this.Button_Front_Click);
+            // 
+            // button_Back
+            // 
+            this.button_Back.BackColor = System.Drawing.SystemColors.Menu;
+            this.button_Back.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.button_Back.FlatAppearance.BorderColor = System.Drawing.SystemColors.Menu;
+            this.button_Back.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Menu;
+            this.button_Back.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.Menu;
+            this.button_Back.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button_Back.Location = new System.Drawing.Point(18, 37);
+            this.button_Back.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button_Back.Name = "button_Back";
+            this.button_Back.Size = new System.Drawing.Size(42, 28);
+            this.button_Back.TabIndex = 1;
+            this.button_Back.Text = "<<";
+            this.button_Back.UseVisualStyleBackColor = false;
+            this.button_Back.Click += new System.EventHandler(this.Button_Back_Click);
+            // 
+            // treeView1
+            // 
+            this.treeView1.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.treeView1.ImageIndex = 0;
+            this.treeView1.ImageList = this.imageList1;
+            this.treeView1.Location = new System.Drawing.Point(10, 79);
+            this.treeView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.SelectedImageIndex = 0;
+            this.treeView1.Size = new System.Drawing.Size(249, 402);
+            this.treeView1.TabIndex = 0;
+            this.treeView1.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.TreeView1_BeforeExpand);
+            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeView1_AfterSelect);
+            this.treeView1.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TreeView1_NodeMouseDoubleClick);
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "notepad.png");
+            this.imageList1.Images.SetKeyName(1, "microsoft_office_word-512.png");
+            this.imageList1.Images.SetKeyName(2, "833px-PDF_file_icon.svg.png");
+            this.imageList1.Images.SetKeyName(3, "1200px-Adobe_Photoshop_CC_icon.svg.png");
+            this.imageList1.Images.SetKeyName(4, "64.ico");
+            this.imageList1.Images.SetKeyName(5, "320.ico");
+            this.imageList1.Images.SetKeyName(6, "10.ico");
+            this.imageList1.Images.SetKeyName(7, "103.ico");
+            this.imageList1.Images.SetKeyName(8, "2.ico");
+            this.imageList1.Images.SetKeyName(9, "1532.ico");
+            this.imageList1.Images.SetKeyName(10, "1431.ico");
             // 
             // label_Path
             // 
-            this.label_Path.AutoSize = true;
-            this.label_Path.Location = new System.Drawing.Point(210, 47);
+            this.label_Path.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label_Path.Location = new System.Drawing.Point(13, 42);
+            this.label_Path.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.label_Path.Name = "label_Path";
-            this.label_Path.Size = new System.Drawing.Size(0, 12);
-            this.label_Path.TabIndex = 4;
+            this.label_Path.Size = new System.Drawing.Size(354, 23);
+            this.label_Path.TabIndex = 3;
+            // 
+            // cboListViewMode
+            // 
+            this.cboListViewMode.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cboListViewMode.FormattingEnabled = true;
+            this.cboListViewMode.Location = new System.Drawing.Point(372, 42);
+            this.cboListViewMode.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.cboListViewMode.Name = "cboListViewMode";
+            this.cboListViewMode.Size = new System.Drawing.Size(155, 23);
+            this.cboListViewMode.TabIndex = 2;
+            this.cboListViewMode.SelectedIndexChanged += new System.EventHandler(this.CboListViewMode_SelectedIndexChanged);
+            // 
+            // listView1
+            // 
+            this.listView1.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.listView1.LargeImageList = this.imageList2;
+            this.listView1.Location = new System.Drawing.Point(13, 79);
+            this.listView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(514, 402);
+            this.listView1.SmallImageList = this.imageList1;
+            this.listView1.TabIndex = 0;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.ListView1_DragDrop);
+            this.listView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.ListView1_DragEnter);
+            this.listView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListView1_KeyDown);
+            this.listView1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ListView1_MouseClick);
+            this.listView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListView1_MouseDoubleClick);
+            this.listView1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ListView1_MouseUp);
+            // 
+            // imageList2
+            // 
+            this.imageList2.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList2.ImageStream")));
+            this.imageList2.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList2.Images.SetKeyName(0, "notepad.png");
+            this.imageList2.Images.SetKeyName(1, "microsoft_office_word-512.png");
+            this.imageList2.Images.SetKeyName(2, "833px-PDF_file_icon.svg.png");
+            this.imageList2.Images.SetKeyName(3, "1200px-Adobe_Photoshop_CC_icon.svg.png");
+            this.imageList2.Images.SetKeyName(4, "64.ico");
+            this.imageList2.Images.SetKeyName(5, "320.ico");
+            this.imageList2.Images.SetKeyName(6, "10.ico");
+            this.imageList2.Images.SetKeyName(7, "103.ico");
+            this.imageList2.Images.SetKeyName(8, "2.ico");
+            this.imageList2.Images.SetKeyName(9, "1532.ico");
+            this.imageList2.Images.SetKeyName(10, "1431.ico");
             // 
             // process_FileStart
             // 
@@ -107,28 +212,35 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.label_Path);
-            this.Controls.Add(this.button_Front);
-            this.Controls.Add(this.button_Back);
-            this.Controls.Add(this.treeView_Window);
-            this.Controls.Add(this.listView_Window);
+            this.ClientSize = new System.Drawing.Size(811, 490);
+            this.Controls.Add(this.splitContainer1);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ListView listView_Window;
-        private System.Windows.Forms.TreeView treeView_Window;
-        private System.Windows.Forms.Button button_Back;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ImageList imageList2;
         private System.Windows.Forms.Button button_Front;
-        private System.Windows.Forms.Label label_Path;
+        private System.Windows.Forms.Button button_Back;
+        private System.Windows.Forms.ComboBox cboListViewMode;
         private System.Diagnostics.Process process_FileStart;
+        private System.Windows.Forms.TextBox label_Path;
+        private System.Windows.Forms.Label label1;
     }
 }
 
