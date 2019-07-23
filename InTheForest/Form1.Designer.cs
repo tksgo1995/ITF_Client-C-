@@ -35,10 +35,10 @@
             this.button_Back = new System.Windows.Forms.Button();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.label_Path = new System.Windows.Forms.TextBox();
-            this.cboListViewMode = new System.Windows.Forms.ComboBox();
             this.listView1 = new System.Windows.Forms.ListView();
             this.imageList2 = new System.Windows.Forms.ImageList(this.components);
+            this.label_Path = new System.Windows.Forms.TextBox();
+            this.cboListViewMode = new System.Windows.Forms.ComboBox();
             this.process_FileStart = new System.Diagnostics.Process();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -61,9 +61,9 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.listView1);
             this.splitContainer1.Panel2.Controls.Add(this.label_Path);
             this.splitContainer1.Panel2.Controls.Add(this.cboListViewMode);
-            this.splitContainer1.Panel2.Controls.Add(this.listView1);
             this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.SplitContainer1_Panel2_Paint);
             this.splitContainer1.Size = new System.Drawing.Size(811, 490);
             this.splitContainer1.SplitterDistance = 270;
@@ -132,29 +132,12 @@
             this.imageList1.Images.SetKeyName(9, "1532.ico");
             this.imageList1.Images.SetKeyName(10, "1431.ico");
             // 
-            // label_Path
-            // 
-            this.label_Path.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label_Path.Location = new System.Drawing.Point(13, 42);
-            this.label_Path.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.label_Path.Name = "label_Path";
-            this.label_Path.Size = new System.Drawing.Size(354, 23);
-            this.label_Path.TabIndex = 3;
-            // 
-            // cboListViewMode
-            // 
-            this.cboListViewMode.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.cboListViewMode.FormattingEnabled = true;
-            this.cboListViewMode.Location = new System.Drawing.Point(372, 42);
-            this.cboListViewMode.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.cboListViewMode.Name = "cboListViewMode";
-            this.cboListViewMode.Size = new System.Drawing.Size(155, 23);
-            this.cboListViewMode.TabIndex = 2;
-            this.cboListViewMode.SelectedIndexChanged += new System.EventHandler(this.CboListViewMode_SelectedIndexChanged);
-            // 
             // listView1
             // 
+            this.listView1.Activation = System.Windows.Forms.ItemActivation.OneClick;
+            this.listView1.AllowDrop = true;
             this.listView1.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.listView1.HoverSelection = true;
             this.listView1.LargeImageList = this.imageList2;
             this.listView1.Location = new System.Drawing.Point(13, 79);
             this.listView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -187,6 +170,26 @@
             this.imageList2.Images.SetKeyName(9, "1532.ico");
             this.imageList2.Images.SetKeyName(10, "1431.ico");
             // 
+            // label_Path
+            // 
+            this.label_Path.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label_Path.Location = new System.Drawing.Point(13, 42);
+            this.label_Path.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.label_Path.Name = "label_Path";
+            this.label_Path.Size = new System.Drawing.Size(354, 23);
+            this.label_Path.TabIndex = 3;
+            // 
+            // cboListViewMode
+            // 
+            this.cboListViewMode.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cboListViewMode.FormattingEnabled = true;
+            this.cboListViewMode.Location = new System.Drawing.Point(372, 42);
+            this.cboListViewMode.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.cboListViewMode.Name = "cboListViewMode";
+            this.cboListViewMode.Size = new System.Drawing.Size(155, 23);
+            this.cboListViewMode.TabIndex = 2;
+            this.cboListViewMode.SelectedIndexChanged += new System.EventHandler(this.CboListViewMode_SelectedIndexChanged);
+            // 
             // process_FileStart
             // 
             this.process_FileStart.StartInfo.Domain = "";
@@ -207,6 +210,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.Text = "InTheForest";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);

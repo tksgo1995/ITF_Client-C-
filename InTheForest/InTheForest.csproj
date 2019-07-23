@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AES.cs" />
+    <Compile Include="csNetDrive.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

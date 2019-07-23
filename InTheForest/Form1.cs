@@ -23,6 +23,7 @@ namespace InTheForest
         AES k;
         private static EventWaitHandle waitforsinglesignal;
         private int mask;
+        csNetDrive netDrive;
 
         public Form1()
         {
@@ -61,13 +62,22 @@ namespace InTheForest
             back_stack = new LinkedList<string>();
             SetButtonEnable();
 
+            // 네트워크 드라이브 잡기  \\13.125.149.179\smbuser  smbuser  kit2019
+            netDrive = new csNetDrive();
+            int result = netDrive.setRemoteConnection(@"\\13.125.149.179\smbuser", "smbuser", "kit2019", "Z:");
+            if (result != 0)
+            {
+                MessageBox.Show("네트워크 드라이드 연결 실패");
+                this.Close();
+            }
+
             //드라이브 잡아서 트리뷰에 올리기
             string[] drives = Directory.GetLogicalDrives();
 
             foreach(string drive in drives)
             {
                 DriveInfo di = new DriveInfo(drive);
-                if (di.IsReady)
+                if (di.IsReady && di.DriveType == DriveType.Network)
                 {
                      TreeNode node = treeView1.Nodes.Add(drive);
                      node.ImageIndex = 5;
@@ -92,6 +102,12 @@ namespace InTheForest
 
             //관리자 권한으로 실행되었을 경우 제목 - 관리자 로 바꾸기
             if(IsAdministrator()) this.Text = "InTheForest - 관리자";
+
+            // 네트워크 드라이브를 잡기위한 레지스트리 수정
+            UpdateRegistry("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", 1, "EnableLinkedConnections", Registry.LocalMachine);
+
+            this.AllowDrop = true;
+            listView1.AllowDrop = true;
         }
         private void SettingListView(string sFullPath)
         {
@@ -174,9 +190,9 @@ namespace InTheForest
             if ((((x) >> (y)) & 0x01) == 1) return true;
             return false;
         }
-        public void UpdateRegistry(string root, int value, string name) // 정책에 맞게 레지스트리 업데이트
+        public void UpdateRegistry(string root, int value, string name, RegistryKey regKey) // 정책에 맞게 레지스트리 업데이트
         {
-            RegistryKey reg = Registry.CurrentUser.OpenSubKey(root, true);
+            RegistryKey reg = regKey.OpenSubKey(root, true);
             if (reg == null)
             {
                 // 해당이름으로 서브키 생성
@@ -191,37 +207,37 @@ namespace InTheForest
             // 1. TaskMgr enable(0), disable(11)
             if (GET_BIT(mask, 0)) value = 1;
             else value = 0;
-            UpdateRegistry("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", value, "DisableTaskMgr");
+            UpdateRegistry("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", value, "DisableTaskMgr", Registry.CurrentUser);
 
             // 2. regedit enable(0), disable(1)
             if (GET_BIT(mask, 1)) value = 1;
             else value = 0;
-            UpdateRegistry("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", value, "DisableRegistryTools");
+            UpdateRegistry("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", value, "DisableRegistryTools", Registry.CurrentUser);
 
             // 3. cmd enable(0), disable(2)
             if (GET_BIT(mask, 2)) value = 2;
             else value = 0;
-            UpdateRegistry("Software\\Policies\\Microsoft\\Windows\\System", value, "DisableCMD");
+            UpdateRegistry("Software\\Policies\\Microsoft\\Windows\\System", value, "DisableCMD", Registry.CurrentUser);
 
             // 4. snipping tools disable(1), enable(0)
             if (GET_BIT(mask, 3)) value = 1;
             else value = 0;
-            UpdateRegistry("SOFTWARE\\Policies\\Microsoft\\TabletPC", value, "DisableSnippingTool");
+            UpdateRegistry("SOFTWARE\\Policies\\Microsoft\\TabletPC", value, "DisableSnippingTool", Registry.LocalMachine);
 
             // 5. usb쓰기 disable(1), enable(0)
             if (GET_BIT(mask, 4)) value = 1;
             else value = 0;
-            UpdateRegistry("SYSTEM\\CurrentControlSet\\Control\\StorageDevicepolicies", value, "WriteProtect");
+            UpdateRegistry("SYSTEM\\CurrentControlSet\\Control\\StorageDevicepolicies", value, "WriteProtect", Registry.LocalMachine);
 
             // 6. usb차단 disable(4) enable(3)
             if (GET_BIT(mask, 5)) value = 4;
             else value = 3;
-            UpdateRegistry("SYSTEM\\CurrentControlSet\\Services\\USBSTOR", value, "Start");
+            UpdateRegistry("SYSTEM\\CurrentControlSet\\Services\\USBSTOR", value, "Start", Registry.LocalMachine);
 
             // 7. 디스크차단(C드라이브) disable(4) enable(0)
             if (GET_BIT(mask, 6)) value = 4;
             else value = 0;
-            UpdateRegistry("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer", value, "NoViewOnDrive");
+            UpdateRegistry("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer", value, "NoViewOnDrive", Registry.LocalMachine);
         }
         // 키값 생성 함수(그냥 랜덤)
         public string GetRandomPassword(int _totLen)
@@ -264,7 +280,6 @@ namespace InTheForest
                         {
                             decbytes = k.AESDecrypto256(File.ReadAllBytes(file), key);
                             file = file.Replace(".enc", "");
-                            MessageBox.Show(file);
                             File.WriteAllBytes(file, decbytes);
                             waitforsinglesignal.Set();
                         }
@@ -356,9 +371,14 @@ namespace InTheForest
                 SettingListView(label_Path.Text);
             }
         }
+
         private void ListView1_DragEnter(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.Copy;
+            // 매니페스트 파일에 권한을 RequireAdministrator 을 하면 MIC 권한(?)이 달라서 드래그 앤 드록을 못함
+            // 기본 값으로 하면 레지스트리 변경을 못함
+            // 이 프로그램은 기본 설정으로하고 백엔드 프로그램을 관리자 권한으로 만들어서 따로둬야될듯
+            // https://social.msdn.microsoft.com/Forums/ko-KR/02e2637b-0a8b-4dd9-80cc-d96b69597c9a/win10-5064049436-winform-440604815649884-drag-and-drop-505044610445716?forum=visualcsharpko
         }
         private void ListView1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -563,6 +583,13 @@ namespace InTheForest
         {
 
         }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // 네트워크 드라이브 해제
+            int getReturn = netDrive.CencelRemoteServer("Z:");
+        }
+
         private void CboListViewMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (cboListViewMode.Text)
