@@ -1,5 +1,71 @@
 #include"setting.h"
 
+// 후킹 키보드, 마우스
+HHOOK _khook;
+HHOOK _mhook;
+
+KBDLLHOOKSTRUCT kbdStruct;
+
+int time;
+
+LRESULT CALLBACK mouseProc(int nCode, WPARAM wParam, LPARAM lParam)
+{
+	MOUSEHOOKSTRUCT* pMouseStruct = (MOUSEHOOKSTRUCT*)lParam;
+	if (pMouseStruct != NULL)
+	{
+		if (wParam == WM_LBUTTONDOWN)
+		{
+			//MessageBox(NULL, _T("lbutton"), _T("lbutton"), MB_OK);
+			time_init();
+
+		}
+		if (wParam == WM_RBUTTONDOWN)
+		{
+			//MessageBox(NULL, _T("rbutton"), _T("rbutton"), MB_OK);
+			time_init();
+		}
+	}
+	return CallNextHookEx(_mhook, nCode, wParam, lParam);
+}
+
+LRESULT CALLBACK keyProc(int nCode, WPARAM wParam, LPARAM lParam)
+{
+	if (nCode >= 0)
+	{
+		if (wParam == WM_KEYDOWN)
+		{
+			kbdStruct = *((KBDLLHOOKSTRUCT*)lParam);
+			time_init();
+		}
+	}
+
+	return CallNextHookEx(_khook, nCode, wParam, lParam);
+}
+
+void SetHook()
+{
+	if (!(_khook = SetWindowsHookEx(WH_KEYBOARD_LL, keyProc, NULL, 0)))
+	{
+		MessageBox(NULL, _T("Failed to install hook!"), _T("Error"), MB_OK);
+	}
+
+	if (!(_mhook = SetWindowsHookEx(WH_MOUSE_LL, mouseProc, NULL, 0)))
+	{
+		MessageBox(NULL, _T("Failed to install hook!"), _T("Error"), MB_OK);
+	}
+}
+
+void ReleaseHook()
+{
+	UnhookWindowsHookEx(_khook);
+	UnhookWindowsHookEx(_mhook);
+}
+
+void time_init()
+{
+	time = 0;
+}
+
 // 기능은 여기다가 구현
 void InitProcess(int* mask)
 {

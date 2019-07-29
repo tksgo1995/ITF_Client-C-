@@ -10,6 +10,7 @@
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
+extern int time;								// 스크린 세이버용 타이머
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -129,6 +130,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     switch (message)
     {
+	case WM_TIMER:
+		time++;
+		if (time == 300) // 5분 = 300
+		{
+			// TODO: 여기다가 스크린 세이버 올리면 됨
+
+			time_init();
+		}
+		break;
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
@@ -175,6 +185,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		// ClipBoard disable
 		hwndNextViewer = SetClipboardViewer(hWnd);
 		InitProcess(&mask);
+
+		// 키보드 마우스 후킹
+		time_init();
+		SetTimer(hWnd, 1, 1000, NULL);
+		SetHook();
 		break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
