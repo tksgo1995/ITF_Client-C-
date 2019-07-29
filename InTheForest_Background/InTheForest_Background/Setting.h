@@ -14,3 +14,4 @@ void InitProcess(int* mask);
 int ConnectSocket(const char* ip, int port);
 void UpdatePolicy(int mask);
 void RegSet(HKEY hk, const TCHAR* path, int value, const TCHAR* setValue);
+void EndProcess(void);

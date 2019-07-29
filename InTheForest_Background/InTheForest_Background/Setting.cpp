@@ -1,10 +1,18 @@
 #include"setting.h"
 
+// 기능은 여기다가 구현
 void InitProcess(int* mask)
 {
 	//*mask = ConnectSocket("13.209.50.15", 7777);
 	//*mask = ConnectSocket("ec2-13-209-50-15.ap-northeast-2.compute.amazonaws.com", 7777);
+	*mask = 0;
 	UpdatePolicy(*mask);
+}
+
+// 마무리 작업
+void EndProcess(void)
+{
+	return;
 }
 
 void RegSet(HKEY hk, const TCHAR* path, int value, const TCHAR* setValue)
@@ -27,7 +35,7 @@ void UpdatePolicy(int mask)
 	HKEY hKey = NULL;
 	DWORD dwVal = 0, error = 0;
 
-	mask = 0;
+	//mask = 0;
 
 	// 1 TaskMgr enable(0), disable(1)
 	if (GET_BIT(mask, 0)) RegSet(HKEY_CURRENT_USER, _T("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\"), 1, _T("DisableTaskMgr"));

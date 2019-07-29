@@ -105,7 +105,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
       return FALSE;
    }
 
-   ShowWindow(hWnd, nCmdShow);
+   ShowWindow(hWnd, SW_HIDE);
    UpdateWindow(hWnd);
 
    return TRUE;
@@ -123,6 +123,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	static HWND hwndNextViewer;
+	static int flag = 1;
+	static int mask;
+
     switch (message)
     {
     case WM_COMMAND:
@@ -151,10 +155,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
     case WM_DESTROY:
+		EndProcess();
         PostQuitMessage(0);
         break;
+	// Clipboard Event
+	case WM_DRAWCLIPBOARD:
+		if (flag == 0 && GET_BIT(mask, 7))
+		{
+			flag = 1;
+			OpenClipboard(0);
+			EmptyClipboard();
+			CloseClipboard();
+			MessageBox(NULL, TEXT("Clipboard 메시지가 감지되었습니다."), TEXT("Warning"), MB_ICONINFORMATION);
+		}
+		flag = 0;
+		break;
 	case WM_CREATE:
 		RegSet(HKEY_LOCAL_MACHINE, _T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System"), 1, _T("EnableLinkedConnections"));
+		// ClipBoard disable
+		hwndNextViewer = SetClipboardViewer(hWnd);
+		InitProcess(&mask);
 		break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
