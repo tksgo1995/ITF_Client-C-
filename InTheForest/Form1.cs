@@ -101,10 +101,11 @@ namespace InTheForest
             waitforsinglesignal = new EventWaitHandle(false, EventResetMode.AutoReset);
 
             //관리자 권한으로 실행되었을 경우 제목 - 관리자 로 바꾸기
-            if(IsAdministrator()) this.Text = "InTheForest - 관리자";
-
-            // 네트워크 드라이브를 잡기위한 레지스트리 수정
-            UpdateRegistry("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", 1, "EnableLinkedConnections", Registry.LocalMachine);
+            if(IsAdministrator())
+            {
+                MessageBox.Show("관리자 권한으로 실행 시키면 안됩니다.");
+                Close();
+            }
 
             this.AllowDrop = true;
             listView1.AllowDrop = true;
