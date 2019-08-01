@@ -40,6 +40,7 @@
             this.label_Path = new System.Windows.Forms.TextBox();
             this.cboListViewMode = new System.Windows.Forms.ComboBox();
             this.process_FileStart = new System.Diagnostics.Process();
+            this.button_Parent = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -55,6 +56,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.button_Parent);
             this.splitContainer1.Panel1.Controls.Add(this.button_Front);
             this.splitContainer1.Panel1.Controls.Add(this.button_Back);
             this.splitContainer1.Panel1.Controls.Add(this.treeView1);
@@ -80,7 +82,7 @@
             this.button_Front.Name = "button_Front";
             this.button_Front.Size = new System.Drawing.Size(42, 28);
             this.button_Front.TabIndex = 2;
-            this.button_Front.Text = ">>";
+            this.button_Front.Text = "▶▶";
             this.button_Front.UseVisualStyleBackColor = false;
             this.button_Front.Click += new System.EventHandler(this.Button_Front_Click);
             // 
@@ -97,7 +99,7 @@
             this.button_Back.Name = "button_Back";
             this.button_Back.Size = new System.Drawing.Size(42, 28);
             this.button_Back.TabIndex = 1;
-            this.button_Back.Text = "<<";
+            this.button_Back.Text = "◀◀";
             this.button_Back.UseVisualStyleBackColor = false;
             this.button_Back.Click += new System.EventHandler(this.Button_Back_Click);
             // 
@@ -134,10 +136,8 @@
             // 
             // listView1
             // 
-            this.listView1.Activation = System.Windows.Forms.ItemActivation.OneClick;
             this.listView1.AllowDrop = true;
             this.listView1.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.listView1.HoverSelection = true;
             this.listView1.LargeImageList = this.imageList2;
             this.listView1.Location = new System.Drawing.Point(13, 79);
             this.listView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -192,6 +192,7 @@
             // 
             // process_FileStart
             // 
+            this.process_FileStart.EnableRaisingEvents = true;
             this.process_FileStart.StartInfo.Domain = "";
             this.process_FileStart.StartInfo.LoadUserProfile = false;
             this.process_FileStart.StartInfo.Password = null;
@@ -200,6 +201,20 @@
             this.process_FileStart.StartInfo.UserName = "";
             this.process_FileStart.SynchronizingObject = this;
             this.process_FileStart.Exited += new System.EventHandler(this.process_FileStart_Exited);
+            // 
+            // button_Parent
+            // 
+            this.button_Parent.BackColor = System.Drawing.SystemColors.Menu;
+            this.button_Parent.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.button_Parent.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button_Parent.Location = new System.Drawing.Point(114, 37);
+            this.button_Parent.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button_Parent.Name = "button_Parent";
+            this.button_Parent.Size = new System.Drawing.Size(42, 28);
+            this.button_Parent.TabIndex = 3;
+            this.button_Parent.Text = "▲";
+            this.button_Parent.UseVisualStyleBackColor = false;
+            this.button_Parent.Click += new System.EventHandler(this.Button_Parent_Click);
             // 
             // Form1
             // 
@@ -233,6 +248,7 @@
         private System.Windows.Forms.ComboBox cboListViewMode;
         private System.Diagnostics.Process process_FileStart;
         private System.Windows.Forms.TextBox label_Path;
+        private System.Windows.Forms.Button button_Parent;
     }
 }
 

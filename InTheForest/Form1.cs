@@ -6,12 +6,14 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 
 namespace InTheForest
 {
@@ -292,7 +294,7 @@ namespace InTheForest
                     process_FileStart.StartInfo.WorkingDirectory = label_Path.Text;
                     process_FileStart.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
                     process_FileStart.Start();
-
+                    
                     SettingListView(label_Path.Text);
                 }
             }
@@ -372,7 +374,6 @@ namespace InTheForest
                 SettingListView(label_Path.Text);
             }
         }
-
         private void ListView1_DragEnter(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.Copy;
@@ -389,13 +390,24 @@ namespace InTheForest
                 {
                     ListViewItem item = listView1.SelectedItems[0];
                     string file = label_Path.Text + "\\" + item.Text;
+                    FileAttributes attr = File.GetAttributes(file);
+                    // 디렉토리는 하위폴더까지 다지워줘야함
+                    if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
+                    {
+                        DirectoryInfo di = new DirectoryInfo(file);
+                        di.Delete(true);
+                    }
                     File.Delete(file);
+                    SettingListView(label_Path.Text);
+                }
+                else if(e.KeyCode.Equals(Keys.F5))
+                {
                     SettingListView(label_Path.Text);
                 }
             }
             catch (Exception e1)
             {
-                //MessageBox.Show("error: " + e1);
+                MessageBox.Show("error: " + e1);
             }
         }
         private void ListView1_MouseClick(object sender, MouseEventArgs e)
@@ -411,16 +423,17 @@ namespace InTheForest
                     FileAttributes attr = File.GetAttributes(file);
                     if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
                     {
+                        // TODO: 디렉토리 마우스 오른쪽 버튼
                         string selected = listView1.GetItemAt(e.X, e.Y).Text;
                         ContextMenuStrip m = new ContextMenuStrip();
                         ToolStripMenuItem Open = new ToolStripMenuItem("열기", null, new EventHandler(Open_Click));
-                        ToolStripMenuItem Com = new ToolStripMenuItem("압축하기", null);
-                        ToolStripMenuItem Link = new ToolStripMenuItem("바로가기", null);
-                        ToolStripMenuItem Cut = new ToolStripMenuItem("잘라내기", null);
-                        ToolStripMenuItem Copy = new ToolStripMenuItem("복사", null);
-                        ToolStripMenuItem Del = new ToolStripMenuItem("삭제", null);
-                        ToolStripMenuItem Rename = new ToolStripMenuItem("이름바꾸기", null);
-                        ToolStripMenuItem Prop = new ToolStripMenuItem("속성", null);
+                        ToolStripMenuItem Com = new ToolStripMenuItem("압축하기", null, new EventHandler(Com_Click_Directory));
+                        ToolStripMenuItem Link = new ToolStripMenuItem("바로가기", null, new EventHandler(Link_Click));
+                        ToolStripMenuItem Cut = new ToolStripMenuItem("잘라내기", null, new EventHandler(Cut_Click));
+                        ToolStripMenuItem Copy = new ToolStripMenuItem("복사", null, new EventHandler(Copy_Click));
+                        ToolStripMenuItem Del = new ToolStripMenuItem("삭제", null, new EventHandler(Del_Click));
+                        ToolStripMenuItem Rename = new ToolStripMenuItem("이름바꾸기", null, new EventHandler(Rename_Click));
+                        ToolStripMenuItem Prop = new ToolStripMenuItem("속성", null, new EventHandler(Prop_Click));
 
                         m.Items.Add(Open);
                         m.Items.Add(Com);
@@ -435,10 +448,12 @@ namespace InTheForest
                     }
                     else
                     {
+                        // TODO: 파일 마우스 오른쪽 버튼
                         string selected = listView1.GetItemAt(e.X, e.Y).Text;
                         ContextMenuStrip m = new ContextMenuStrip();
                         ToolStripMenuItem Open = new ToolStripMenuItem("열기", null, new EventHandler(Open_Click));
                         ToolStripMenuItem Edit = new ToolStripMenuItem("편집", null);
+                        ToolStripMenuItem Com = new ToolStripMenuItem("압축하기", null, new EventHandler(Com_Click_Directory));
                         ToolStripMenuItem Link = new ToolStripMenuItem("연결 프로그램", null);
                         ToolStripMenuItem Conn = new ToolStripMenuItem("바로가기", null);
                         ToolStripMenuItem Cut = new ToolStripMenuItem("잘라내기", null);
@@ -449,6 +464,7 @@ namespace InTheForest
 
                         m.Items.Add(Open);
                         m.Items.Add(Edit);
+                        m.Items.Add(Com);
                         m.Items.Add(Conn);
                         m.Items.Add(Link);
                         m.Items.Add(Cut);
@@ -465,6 +481,40 @@ namespace InTheForest
             {
 
             }
+        }
+        private void Prop_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+        private void Rename_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+        private void Del_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+        private void Copy_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+        private void Cut_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+        private void Link_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+        private void Com_Click_Directory(object sender, EventArgs e)
+        {
+            string sourcePath, zipPath;
+            ListViewItem item = listView1.SelectedItems[0];
+            sourcePath = label_Path.Text + "\\" + item.Text;
+            zipPath = item.Text + ".zip";
+            MessageBox.Show("sourcePath: " + sourcePath + "\nzipPath: " + zipPath);
+            CompressZipByIO(sourcePath, zipPath);
+            SettingListView(label_Path.Text);
         }
         private void Open_Click(object sender, EventArgs e) // 열기 버튼 눌렀을 때 기능
         {
@@ -494,7 +544,6 @@ namespace InTheForest
                         {
                             decbytes = k.AESDecrypto256(File.ReadAllBytes(file), key);
                             file = file.Replace(".enc", "");
-                            MessageBox.Show(file);
                             File.WriteAllBytes(file, decbytes);
                             waitforsinglesignal.Set();
                         }
@@ -523,6 +572,7 @@ namespace InTheForest
             {
                 if (lvHit.Location == ListViewHitTestLocations.None)
                 {
+                    // TODO: 빈공간 마우스 오른쪽 버튼
                     ContextMenuStrip m = new ContextMenuStrip();
                     ToolStripMenuItem New = new ToolStripMenuItem("새 폴더", null);
                     ToolStripMenuItem Sort = new ToolStripMenuItem("정렬", null);
@@ -584,13 +634,11 @@ namespace InTheForest
         {
 
         }
-
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             // 네트워크 드라이브 해제
             int getReturn = netDrive.CencelRemoteServer("Z:");
         }
-
         private void CboListViewMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (cboListViewMode.Text)
@@ -607,6 +655,73 @@ namespace InTheForest
                 case "타일":
                     listView1.View = View.Tile;
                     break;
+            }
+        }
+        /// <summary>
+        /// 디렉토리내 파일 검색
+        /// </summary>
+        /// <param name="rootPath"></param>
+        /// <param name="fileList"></param>
+        /// <returns></returns>
+        public static List<String> GetFileList(String rootPath, List<String> fileList)
+        {
+            if (fileList == null)
+            {
+                return null;
+            }
+            var attr = File.GetAttributes(rootPath);
+            // 해당 path가 디렉토리이면
+            if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
+            {
+                var dirInfo = new DirectoryInfo(rootPath);
+                // 하위 모든 디렉토리는
+                foreach (var dir in dirInfo.GetDirectories())
+                {
+                    // 재귀로 통하여 list를 취득한다.
+                    GetFileList(dir.FullName, fileList);
+                }
+                // 하위 모든 파일은
+                foreach (var file in dirInfo.GetFiles())
+                {
+                    // 재귀를 통하여 list를 취득한다.
+                    GetFileList(file.FullName, fileList);
+                }
+            }
+            // 해당 path가 파일이면 (재귀를 통해 들어온 경로)
+            else
+            {
+                var fileInfo = new FileInfo(rootPath);
+                // 리스트에 full path를 저장한다.
+                fileList.Add(fileInfo.FullName);
+            }
+            return fileList;
+        }
+
+        // 상위폴더로 이동하는 버튼
+        private void Button_Parent_Click(object sender, EventArgs e)
+        {
+            label_Path.Text = label_Path.Text.Substring(0, label_Path.Text.LastIndexOf('\\'));
+            SettingListView(label_Path.Text);
+        }
+
+        /// <summary>
+        /// 내부 라이브러리로 압축하기
+        /// </summary>
+        /// <param name="sourcePath"></param>
+        /// <param name="zipPath"></param>
+        public static void CompressZipByIO(string sourcePath, string zipPath)
+        {
+            var filelist = GetFileList(sourcePath, new List<String>());
+            using (FileStream fileStream = new FileStream(zipPath, FileMode.Create, FileAccess.ReadWrite))
+            {
+                using (ZipArchive zipArchive = new ZipArchive(fileStream, ZipArchiveMode.Create))
+                {
+                    foreach (string file in filelist)
+                    {
+                        string path = file.Substring(sourcePath.Length + 1);
+                        zipArchive.CreateEntryFromFile(file, path);
+                    }
+                }
             }
         }
     }
