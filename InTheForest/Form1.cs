@@ -67,11 +67,11 @@ namespace InTheForest
             // 네트워크 드라이브 잡기  \\13.125.149.179\smbuser  smbuser  kit2019
             netDrive = new csNetDrive();
             int result = netDrive.setRemoteConnection(@"\\13.125.149.179\smbuser", "smbuser", "kit2019", "Z:");
-            if (result != 0)
+            /*if (result != 0)
             {
-                MessageBox.Show("네트워크 드라이드 연결 실패");
-                this.Close();
-            }
+                //MessageBox.Show("네트워크 드라이드 연결 실패");
+                //this.Close();
+            }*/
 
             //드라이브 잡아서 트리뷰에 올리기
             string[] drives = Directory.GetLogicalDrives();
@@ -262,8 +262,16 @@ namespace InTheForest
                 //back = label1.Text;
                 byte[] decbytes;
                 ListViewItem item = listView1.SelectedItems[0];
-                string file = label_Path.Text + "\\" + item.Text;
-
+                string file;
+                if (label_Path.Text == "Z:\\")
+                {
+                    file = label_Path.Text + item.Text;
+                }
+                else
+                {
+                    file = label_Path.Text + "\\" + item.Text;
+                }
+                
                 FileAttributes attr = File.GetAttributes(file);
                 if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
                 {
@@ -286,13 +294,12 @@ namespace InTheForest
                             File.WriteAllBytes(file, decbytes);
                             waitforsinglesignal.Set();
                         }
-
-                        //Thread.Sleep(1000);
                     }
                     string filename = Path.GetFileName(file);
                     process_FileStart.StartInfo.FileName = filename;
                     process_FileStart.StartInfo.WorkingDirectory = label_Path.Text;
                     process_FileStart.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
+                    FileInfo fi = new FileInfo(process_FileStart.StartInfo.WorkingDirectory + "\\" + process_FileStart.StartInfo.FileName);
                     process_FileStart.Start();
                     
                     SettingListView(label_Path.Text);
@@ -349,14 +356,39 @@ namespace InTheForest
                 {
                     label_Path.Text = "C:\\";
                 }
-                else
-                {
-
-                }
             }
             catch (Exception ex)
             {
                 //MessageBox.Show("error : " + ex);
+            }
+        }
+        void Encrypt_Directory(string filename, string path, string copyfilepath)// filename: 디렉토리 이름, path: 파일경로, copyfilepath: 원본파일경로
+        {
+            // 1. 디렉토리 생성
+            string directory = path + "\\" + filename;
+            DirectoryInfo di = new DirectoryInfo(directory);
+            di.Create();
+
+            // 2. 파일을 모두 암호화함
+            DirectoryInfo dir = new DirectoryInfo(copyfilepath);
+            FileInfo[] files = dir.GetFiles();
+            byte[] encbytes;
+
+            foreach (FileInfo fileinfo in files)
+            {
+                //MessageBox.Show("name: " + fileinfo.Name);
+                encbytes = k.AESEncrypto256(File.ReadAllBytes(fileinfo.FullName), key);
+                File.WriteAllBytes(directory + "\\" + fileinfo.Name + ".enc", encbytes);
+            }
+
+            // 3. 디렉토리를 모두 찾아서 재귀함수돌림
+            foreach (DirectoryInfo dirItem in dir.GetDirectories())
+            {
+                Encrypt_Directory(dirItem.Name, directory, dirItem.FullName);
+                /*MessageBox.Show(
+                    "filename: " + dirItem.Name + 
+                    "\npath: " + directory + 
+                    "\ncopyfilepath: " + dirItem.FullName);*/
             }
         }
         private void ListView1_DragDrop(object sender, DragEventArgs e)
@@ -368,11 +400,20 @@ namespace InTheForest
 
             foreach (string file in files)
             {
-                filename = Path.GetFileName(file);
-                encbytes = k.AESEncrypto256(File.ReadAllBytes(file), key);
-                File.WriteAllBytes(label_Path.Text + "\\" + filename + ".enc", encbytes);
-                SettingListView(label_Path.Text);
+                FileAttributes attr = File.GetAttributes(file);
+                if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
+                {
+                    filename = file.Substring(file.LastIndexOf('\\') + 1);
+                    Encrypt_Directory(filename, label_Path.Text, file);
+                }
+                else
+                {
+                    filename = Path.GetFileName(file);
+                    encbytes = k.AESEncrypto256(File.ReadAllBytes(file), key);
+                    File.WriteAllBytes(label_Path.Text + "\\" + filename + ".enc", encbytes);
+                }
             }
+            SettingListView(label_Path.Text);
         }
         private void ListView1_DragEnter(object sender, DragEventArgs e)
         {
@@ -407,7 +448,7 @@ namespace InTheForest
             }
             catch (Exception e1)
             {
-                MessageBox.Show("error: " + e1);
+                //MessageBox.Show("error: " + e1);
             }
         }
         private void ListView1_MouseClick(object sender, MouseEventArgs e)
@@ -606,8 +647,15 @@ namespace InTheForest
         }
         private void process_FileStart_Exited(object sender, EventArgs e)
         {
-            string filename = label_Path.Text + process_FileStart.StartInfo.FileName;
-            File.Delete(filename); // 프로세스 종료시 파일삭제
+            string filename = label_Path.Text.Replace("\\", "\\\\") + "\\\\" + process_FileStart.StartInfo.FileName;
+            try
+            {
+                File.Delete(filename); // 프로세스 종료시 파일삭제
+            }
+            catch(Exception e2)
+            {
+                //MessageBox.Show(e2 + "");
+            }
             SettingListView(label_Path.Text);
         }
         private void Button_Back_Click(object sender, EventArgs e)
