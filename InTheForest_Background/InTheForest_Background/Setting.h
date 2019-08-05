@@ -3,6 +3,8 @@
 #include <WinSock2.h>
 #include<tchar.h>
 #include <iostream>
+#include "resource.h"
+
 #pragma comment (lib , "ws2_32.lib")
 using namespace std;
 

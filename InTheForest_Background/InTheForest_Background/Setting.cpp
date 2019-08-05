@@ -16,6 +16,7 @@ LRESULT CALLBACK mouseProc(int nCode, WPARAM wParam, LPARAM lParam)
 		if (wParam == WM_LBUTTONDOWN)
 		{
 			//MessageBox(NULL, _T("lbutton"), _T("lbutton"), MB_OK);
+			
 			time_init();
 
 		}
