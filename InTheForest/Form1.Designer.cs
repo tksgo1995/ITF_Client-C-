@@ -41,6 +41,7 @@
             this.label_Path = new System.Windows.Forms.TextBox();
             this.cboListViewMode = new System.Windows.Forms.ComboBox();
             this.process_FileStart = new System.Diagnostics.Process();
+
             this.cmsTrayMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.Expand = new System.Windows.Forms.ToolStripMenuItem();
             this.Open = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,6 +50,7 @@
             this.Folder = new System.Windows.Forms.ToolStripMenuItem();
             this.Delete = new System.Windows.Forms.ToolStripMenuItem();
             this.Prop = new System.Windows.Forms.ToolStripMenuItem();
+
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -171,6 +173,7 @@
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.listView1_AfterLabelEdit);
             this.listView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.ListView1_DragDrop);
             this.listView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.ListView1_DragEnter);
             this.listView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListView1_KeyDown);
@@ -291,6 +294,7 @@
             this.Prop.Text = "속성";
             this.Prop.Click += new System.EventHandler(this.Prop_Click_1);
             // 
+
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);

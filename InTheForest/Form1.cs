@@ -14,7 +14,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
 namespace InTheForest
 {
     public partial class Form1 : Form
@@ -535,6 +534,21 @@ namespace InTheForest
         }
         private void Del_Click(object sender, EventArgs e)
         {
+            ListViewItem item = listView1.SelectedItems[0];
+            string file = label_Path.Text + "\\" + item.Text;
+
+            FileAttributes attr = File.GetAttributes(file);
+            if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
+            {
+                DirectoryInfo di = new DirectoryInfo(file);
+                di.Delete(true);
+                SettingListView(label_Path.Text);
+            }
+            else
+            {
+                File.Delete(file);
+                SettingListView(label_Path.Text);
+            }
             throw new NotImplementedException();
         }
         private void Copy_Click(object sender, EventArgs e)
@@ -754,6 +768,7 @@ namespace InTheForest
             SettingListView(label_Path.Text);
         }
 
+
         private void TreeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -856,6 +871,39 @@ namespace InTheForest
         {
 
         }
+
+        private void listView1_AfterLabelEdit(object sender, LabelEditEventArgs e)
+        {
+            try
+            {
+                if (e.Label == null)
+                    return;
+                else
+                {
+                    ListViewItem item = listView1.SelectedItems[0];
+                    string Name = label_Path.Text + "\\" + item.Text;
+                    string newName = label_Path.Text + "\\" + e.Label;
+                    Rename_(Name, newName);
+                }
+            }
+            catch (Exception exc)
+            {
+
+            }
+        }
+        private void Rename_(string oldName, string newName)
+        {
+            FileAttributes attr = File.GetAttributes(oldName);
+            if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
+            {
+                System.IO.Directory.Move(oldName, newName);
+            }
+            else
+            {
+                System.IO.File.Move(oldName, newName);
+            }
+        } 
+
         /// <summary>
         /// 내부 라이브러리로 압축하기
         /// </summary>
