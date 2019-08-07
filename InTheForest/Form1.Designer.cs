@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.button_Parent = new System.Windows.Forms.Button();
             this.button_Front = new System.Windows.Forms.Button();
             this.button_Back = new System.Windows.Forms.Button();
             this.treeView1 = new System.Windows.Forms.TreeView();
@@ -40,11 +41,19 @@
             this.label_Path = new System.Windows.Forms.TextBox();
             this.cboListViewMode = new System.Windows.Forms.ComboBox();
             this.process_FileStart = new System.Diagnostics.Process();
-            this.button_Parent = new System.Windows.Forms.Button();
+            this.cmsTrayMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.Expand = new System.Windows.Forms.ToolStripMenuItem();
+            this.Open = new System.Windows.Forms.ToolStripMenuItem();
+            this.Rename = new System.Windows.Forms.ToolStripMenuItem();
+            this.New = new System.Windows.Forms.ToolStripMenuItem();
+            this.Folder = new System.Windows.Forms.ToolStripMenuItem();
+            this.Delete = new System.Windows.Forms.ToolStripMenuItem();
+            this.Prop = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.cmsTrayMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -71,6 +80,20 @@
             this.splitContainer1.SplitterDistance = 270;
             this.splitContainer1.TabIndex = 0;
             this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.SplitContainer1_SplitterMoved);
+            // 
+            // button_Parent
+            // 
+            this.button_Parent.BackColor = System.Drawing.SystemColors.Menu;
+            this.button_Parent.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.button_Parent.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button_Parent.Location = new System.Drawing.Point(114, 37);
+            this.button_Parent.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button_Parent.Name = "button_Parent";
+            this.button_Parent.Size = new System.Drawing.Size(42, 28);
+            this.button_Parent.TabIndex = 3;
+            this.button_Parent.Text = "▲";
+            this.button_Parent.UseVisualStyleBackColor = false;
+            this.button_Parent.Click += new System.EventHandler(this.Button_Parent_Click);
             // 
             // button_Front
             // 
@@ -116,6 +139,7 @@
             this.treeView1.TabIndex = 0;
             this.treeView1.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.TreeView1_BeforeExpand);
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeView1_AfterSelect);
+            this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TreeView1_NodeMouseClick);
             this.treeView1.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TreeView1_NodeMouseDoubleClick);
             // 
             // imageList1
@@ -202,19 +226,70 @@
             this.process_FileStart.SynchronizingObject = this;
             this.process_FileStart.Exited += new System.EventHandler(this.process_FileStart_Exited);
             // 
-            // button_Parent
+            // cmsTrayMenu
             // 
-            this.button_Parent.BackColor = System.Drawing.SystemColors.Menu;
-            this.button_Parent.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.button_Parent.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button_Parent.Location = new System.Drawing.Point(114, 37);
-            this.button_Parent.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button_Parent.Name = "button_Parent";
-            this.button_Parent.Size = new System.Drawing.Size(42, 28);
-            this.button_Parent.TabIndex = 3;
-            this.button_Parent.Text = "▲";
-            this.button_Parent.UseVisualStyleBackColor = false;
-            this.button_Parent.Click += new System.EventHandler(this.Button_Parent_Click);
+            this.cmsTrayMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.cmsTrayMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Expand,
+            this.Open,
+            this.Rename,
+            this.New,
+            this.Delete,
+            this.Prop});
+            this.cmsTrayMenu.Name = "cmsTrayMenu";
+            this.cmsTrayMenu.Size = new System.Drawing.Size(181, 158);
+            // 
+            // Expand
+            // 
+            this.Expand.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.Expand.Name = "Expand";
+            this.Expand.Size = new System.Drawing.Size(180, 22);
+            this.Expand.Text = "확장";
+            this.Expand.Click += new System.EventHandler(this.Expand_Click);
+            // 
+            // Open
+            // 
+            this.Open.Name = "Open";
+            this.Open.Size = new System.Drawing.Size(180, 22);
+            this.Open.Text = "열기";
+            this.Open.Click += new System.EventHandler(this.Open_Click_1);
+            // 
+            // Rename
+            // 
+            this.Rename.Name = "Rename";
+            this.Rename.Size = new System.Drawing.Size(180, 22);
+            this.Rename.Text = "이름바꾸기";
+            this.Rename.Click += new System.EventHandler(this.Rename_Click_1);
+            // 
+            // New
+            // 
+            this.New.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Folder});
+            this.New.Name = "New";
+            this.New.Size = new System.Drawing.Size(180, 22);
+            this.New.Text = "새로만들기";
+            this.New.Click += new System.EventHandler(this.New_Click);
+            // 
+            // Folder
+            // 
+            this.Folder.Name = "Folder";
+            this.Folder.Size = new System.Drawing.Size(180, 22);
+            this.Folder.Text = "폴더";
+            this.Folder.Click += new System.EventHandler(this.Folder_Click);
+            // 
+            // Delete
+            // 
+            this.Delete.Name = "Delete";
+            this.Delete.Size = new System.Drawing.Size(180, 22);
+            this.Delete.Text = "삭제";
+            this.Delete.Click += new System.EventHandler(this.Delete_Click);
+            // 
+            // Prop
+            // 
+            this.Prop.Name = "Prop";
+            this.Prop.Size = new System.Drawing.Size(180, 22);
+            this.Prop.Text = "속성";
+            this.Prop.Click += new System.EventHandler(this.Prop_Click_1);
             // 
             // Form1
             // 
@@ -232,6 +307,7 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.cmsTrayMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -249,6 +325,14 @@
         private System.Diagnostics.Process process_FileStart;
         private System.Windows.Forms.TextBox label_Path;
         private System.Windows.Forms.Button button_Parent;
+        private System.Windows.Forms.ContextMenuStrip cmsTrayMenu;
+        private System.Windows.Forms.ToolStripMenuItem Expand;
+        private System.Windows.Forms.ToolStripMenuItem Open;
+        private System.Windows.Forms.ToolStripMenuItem Rename;
+        private System.Windows.Forms.ToolStripMenuItem New;
+        private System.Windows.Forms.ToolStripMenuItem Folder;
+        private System.Windows.Forms.ToolStripMenuItem Delete;
+        private System.Windows.Forms.ToolStripMenuItem Prop;
     }
 }
 

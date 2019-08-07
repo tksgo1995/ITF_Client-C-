@@ -26,6 +26,8 @@ namespace InTheForest
         private static EventWaitHandle waitforsinglesignal;
         private int mask;
         csNetDrive netDrive;
+        public string select;
+        TreeNode fol;
 
         public Form1()
         {
@@ -66,7 +68,7 @@ namespace InTheForest
 
             // 네트워크 드라이브 잡기  \\13.125.149.179\smbuser  smbuser  kit2019
             netDrive = new csNetDrive();
-            int result = netDrive.setRemoteConnection(@"\\13.125.149.179\smbuser", "smbuser", "kit2019", "Z:");
+            int result = netDrive.setRemoteConnection(@"\\13.125.149.179\samba", "Sangmin", "kit2018", "Z:");
             /*if (result != 0)
             {
                 //MessageBox.Show("네트워크 드라이드 연결 실패");
@@ -525,11 +527,11 @@ namespace InTheForest
         }
         private void Prop_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+
         }
         private void Rename_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+
         }
         private void Del_Click(object sender, EventArgs e)
         {
@@ -752,6 +754,108 @@ namespace InTheForest
             SettingListView(label_Path.Text);
         }
 
+        private void TreeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                select = e.Node.FullPath;
+                cmsTrayMenu.Show(MousePosition.X, MousePosition.Y);
+                fol = treeView1.GetNodeAt(e.X, e.Y);
+            }
+        }
+
+        private void Expand_Click(object sender, EventArgs e)
+        {
+            fol.Expand();
+        }
+
+        private void Open_Click_1(object sender, EventArgs e)
+        {
+            SettingListView(select);
+        }
+
+        private void Rename_Click_1(object sender, EventArgs e)
+        {
+            // 이름바꾸기
+        }
+
+        private void New_Click(object sender, EventArgs e)
+        {
+            // 새로만들기
+        }
+
+        private void Delete_Click(object sender, EventArgs e)
+        {
+            select = select.Replace("\\\\", "\\");
+            DirectoryInfo di = new DirectoryInfo(select);
+            MessageBox.Show(select);
+            if (di.Exists == true)
+            {
+                if (select == @"Z:\") MessageBox.Show("삭제가 불가능한 디렉토리 입니다.");
+                else
+                {
+                    di.Delete();
+                }  
+            }
+        }
+
+        /*private void Show_Property()
+        {
+            //속성창 띄우기
+            property_dialog pd = new property_dialog();
+            DirectoryInfo dri = new DirectoryInfo(label_Path.Text);
+            string name = "";
+            string[] nm = select.Split('\\');
+            for (int i = 0; i < nm.Length; i++)
+            {
+                if (select.Equals(@"C:\"))
+                    name = @"C:\";
+                else if (select.Equals(@"D:\"))
+                    name = @"D:\";
+                else if (select.Equals(@"Z:\"))
+                    name = @"Z:\";
+                else
+                    name = nm[i];
+            }
+            string exten = "파일 폴더";
+            long size = GetDirectorySize(label_Path.Text);
+            string crea = dri.CreationTime.ToString();
+            string write = dri.LastWriteTime.ToString();
+            string type = dri.Attributes.ToString();
+            string loca = select;
+            pd.properties(name, exten, loca, size, crea, write, type);
+        }*/
+
+        private void Prop_Click_1(object sender, EventArgs e)
+        {
+            //Show_Property();
+            // 속성
+        }
+        private void Folder_Click(object sender, EventArgs e)
+        {
+            NewFolder nf = new NewFolder();
+            nf.ShowDialog();
+            select = select.Replace("\\\\", "\\");
+            DirectoryInfo di = new DirectoryInfo(select + "\\" + nf.folderName);
+            if(di.Exists)
+            {
+                MessageBox.Show("이미 존재하는 폴더입니다!");
+            }
+            else
+            {
+                di.Create();
+                //treeView1.Nodes.Clear();
+                TreeNode newnode = fol.Nodes.Add(nf.folderName);
+                newnode.ImageIndex = 6;
+                newnode.SelectedImageIndex = 6;
+
+                SettingListView(label_Path.Text);
+            }
+        }
+        void RefreshTreeview()
+        {
+
+        }
         /// <summary>
         /// 내부 라이브러리로 압축하기
         /// </summary>
