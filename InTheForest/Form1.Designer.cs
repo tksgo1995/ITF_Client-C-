@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.button_Parent = new System.Windows.Forms.Button();
             this.button_Front = new System.Windows.Forms.Button();
             this.button_Back = new System.Windows.Forms.Button();
             this.treeView1 = new System.Windows.Forms.TreeView();
@@ -40,7 +41,6 @@
             this.label_Path = new System.Windows.Forms.TextBox();
             this.cboListViewMode = new System.Windows.Forms.ComboBox();
             this.process_FileStart = new System.Diagnostics.Process();
-            this.button_Parent = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -71,6 +71,20 @@
             this.splitContainer1.SplitterDistance = 270;
             this.splitContainer1.TabIndex = 0;
             this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.SplitContainer1_SplitterMoved);
+            // 
+            // button_Parent
+            // 
+            this.button_Parent.BackColor = System.Drawing.SystemColors.Menu;
+            this.button_Parent.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.button_Parent.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button_Parent.Location = new System.Drawing.Point(114, 37);
+            this.button_Parent.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button_Parent.Name = "button_Parent";
+            this.button_Parent.Size = new System.Drawing.Size(42, 28);
+            this.button_Parent.TabIndex = 3;
+            this.button_Parent.Text = "▲";
+            this.button_Parent.UseVisualStyleBackColor = false;
+            this.button_Parent.Click += new System.EventHandler(this.Button_Parent_Click);
             // 
             // button_Front
             // 
@@ -147,6 +161,7 @@
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.listView1_AfterLabelEdit);
             this.listView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.ListView1_DragDrop);
             this.listView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.ListView1_DragEnter);
             this.listView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListView1_KeyDown);
@@ -201,20 +216,6 @@
             this.process_FileStart.StartInfo.UserName = "";
             this.process_FileStart.SynchronizingObject = this;
             this.process_FileStart.Exited += new System.EventHandler(this.process_FileStart_Exited);
-            // 
-            // button_Parent
-            // 
-            this.button_Parent.BackColor = System.Drawing.SystemColors.Menu;
-            this.button_Parent.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.button_Parent.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button_Parent.Location = new System.Drawing.Point(114, 37);
-            this.button_Parent.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button_Parent.Name = "button_Parent";
-            this.button_Parent.Size = new System.Drawing.Size(42, 28);
-            this.button_Parent.TabIndex = 3;
-            this.button_Parent.Text = "▲";
-            this.button_Parent.UseVisualStyleBackColor = false;
-            this.button_Parent.Click += new System.EventHandler(this.Button_Parent_Click);
             // 
             // Form1
             // 
