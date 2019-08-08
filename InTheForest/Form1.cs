@@ -443,9 +443,13 @@ namespace InTheForest
                     File.Delete(file);
                     SettingListView(label_Path.Text);
                 }
-                else if(e.KeyCode.Equals(Keys.F5))
+                else if (e.KeyCode.Equals(Keys.F5))
                 {
                     SettingListView(label_Path.Text);
+                }
+                else if(e.KeyData == Keys.F2)
+                {
+                    listView1.SelectedItems[0].BeginEdit();
                 }
             }
             catch (Exception e1)
@@ -484,6 +488,17 @@ namespace InTheForest
                         m.Items.Add(Cut);
                         m.Items.Add(Copy);
                         m.Items.Add(Del);
+
+                        Del.Click += (senders, es) =>
+                        {
+                            DirectoryInfo di = new DirectoryInfo(file);
+                            di.Delete(true);
+                            SettingListView(label_Path.Text);
+                        };
+
+                        Rename.Text = "이름바꾸기";
+                        Prop.Text = "속성";
+
                         m.Items.Add(Rename);
                         m.Items.Add(Prop);
 
@@ -513,6 +528,12 @@ namespace InTheForest
                         m.Items.Add(Cut);
                         m.Items.Add(Copy);
                         m.Items.Add(Del);
+                        Del.Click += (senders, es) =>
+                        {
+                            File.Delete(file);
+                            SettingListView(label_Path.Text);
+                        };
+
                         m.Items.Add(Rename);
                         m.Items.Add(Prop);
 
@@ -855,6 +876,37 @@ namespace InTheForest
         void RefreshTreeview()
         {
 
+        }
+
+        private void listView1_AfterLabelEdit(object sender, LabelEditEventArgs e)
+        {
+            try
+            {
+                if (e.Label == null)
+                    return;
+                else
+                {
+                    ListViewItem item = listView1.SelectedItems[0];
+                    string Name = label_Path.Text + "\\" + item.Text;
+                    string newName = label_Path.Text + "\\" + e.Label;
+                    Rename_(Name, newName);
+                }
+            }
+            catch (Exception exc)
+            {
+            }
+        }
+        private void Rename_(string oldName, string newName)
+        {
+            FileAttributes attr = File.GetAttributes(oldName);
+            if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
+            {
+                System.IO.Directory.Move(oldName, newName);
+            }
+            else
+            {
+                System.IO.File.Move(oldName, newName);
+            }
         }
         /// <summary>
         /// 내부 라이브러리로 압축하기

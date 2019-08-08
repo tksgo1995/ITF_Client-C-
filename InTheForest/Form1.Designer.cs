@@ -162,6 +162,7 @@
             // 
             this.listView1.AllowDrop = true;
             this.listView1.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.listView1.LabelEdit = true;
             this.listView1.LargeImageList = this.imageList2;
             this.listView1.Location = new System.Drawing.Point(13, 79);
             this.listView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -171,6 +172,7 @@
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.listView1_AfterLabelEdit);
             this.listView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.ListView1_DragDrop);
             this.listView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.ListView1_DragEnter);
             this.listView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListView1_KeyDown);
@@ -237,27 +239,27 @@
             this.Delete,
             this.Prop});
             this.cmsTrayMenu.Name = "cmsTrayMenu";
-            this.cmsTrayMenu.Size = new System.Drawing.Size(181, 158);
+            this.cmsTrayMenu.Size = new System.Drawing.Size(135, 136);
             // 
             // Expand
             // 
             this.Expand.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Expand.Name = "Expand";
-            this.Expand.Size = new System.Drawing.Size(180, 22);
+            this.Expand.Size = new System.Drawing.Size(134, 22);
             this.Expand.Text = "확장";
             this.Expand.Click += new System.EventHandler(this.Expand_Click);
             // 
             // Open
             // 
             this.Open.Name = "Open";
-            this.Open.Size = new System.Drawing.Size(180, 22);
+            this.Open.Size = new System.Drawing.Size(134, 22);
             this.Open.Text = "열기";
             this.Open.Click += new System.EventHandler(this.Open_Click_1);
             // 
             // Rename
             // 
             this.Rename.Name = "Rename";
-            this.Rename.Size = new System.Drawing.Size(180, 22);
+            this.Rename.Size = new System.Drawing.Size(134, 22);
             this.Rename.Text = "이름바꾸기";
             this.Rename.Click += new System.EventHandler(this.Rename_Click_1);
             // 
@@ -266,28 +268,28 @@
             this.New.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.Folder});
             this.New.Name = "New";
-            this.New.Size = new System.Drawing.Size(180, 22);
+            this.New.Size = new System.Drawing.Size(134, 22);
             this.New.Text = "새로만들기";
             this.New.Click += new System.EventHandler(this.New_Click);
             // 
             // Folder
             // 
             this.Folder.Name = "Folder";
-            this.Folder.Size = new System.Drawing.Size(180, 22);
+            this.Folder.Size = new System.Drawing.Size(98, 22);
             this.Folder.Text = "폴더";
             this.Folder.Click += new System.EventHandler(this.Folder_Click);
             // 
             // Delete
             // 
             this.Delete.Name = "Delete";
-            this.Delete.Size = new System.Drawing.Size(180, 22);
+            this.Delete.Size = new System.Drawing.Size(134, 22);
             this.Delete.Text = "삭제";
             this.Delete.Click += new System.EventHandler(this.Delete_Click);
             // 
             // Prop
             // 
             this.Prop.Name = "Prop";
-            this.Prop.Size = new System.Drawing.Size(180, 22);
+            this.Prop.Size = new System.Drawing.Size(134, 22);
             this.Prop.Text = "속성";
             this.Prop.Click += new System.EventHandler(this.Prop_Click_1);
             // 

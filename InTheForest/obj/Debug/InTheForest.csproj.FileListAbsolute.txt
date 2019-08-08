@@ -1,0 +1,5 @@
+C:\Users\kimyt\Desktop\ITF_Client-C-\InTheForest\bin\Debug\InTheForest.exe.config
+C:\Users\kimyt\Desktop\ITF_Client-C-\InTheForest\obj\Debug\InTheForest.csprojResolveAssemblyReference.cache
+C:\Users\kimyt\Desktop\ITF_Client-C-\InTheForest\obj\Debug\InTheForest.Form1.resources
+C:\Users\kimyt\Desktop\ITF_Client-C-\InTheForest\obj\Debug\InTheForest.NewFolder.resources
+C:\Users\kimyt\Desktop\ITF_Client-C-\InTheForest\obj\Debug\InTheForest.csproj.GenerateResource.Cache
