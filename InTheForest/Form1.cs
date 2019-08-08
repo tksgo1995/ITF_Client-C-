@@ -13,10 +13,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MetroFramework.Forms;
 
 namespace InTheForest
 {
-    public partial class Form1 : Form
+    public partial class Form1 : MetroForm
     {
         int Back_init;
         LinkedList<string> front_stack, back_stack;
@@ -534,7 +535,6 @@ namespace InTheForest
                         m.Items.Add(Rename);
                         m.Items.Add(Prop);
 
-
                         Del.Click += (senders, es) =>
                         {
                             File.Delete(file);
@@ -542,9 +542,9 @@ namespace InTheForest
                         };
 
                         Rename.Click += (senders, es) =>
-                         {
-                             listView1.SelectedItems[0].BeginEdit();
-                         };     
+                        {
+                            listView1.SelectedItems[0].BeginEdit();
+                        };     
                     
                         m.Show(listView1, new Point(e.X, e.Y));
                     }
@@ -865,7 +865,7 @@ namespace InTheForest
                     name = nm[i];
             }
             string exten = "파일 폴더";
-            long size = GetDirectorySize(label_Path.Text);
+            long size = GetDirectorySize(select);
             string crea = dri.CreationTime.ToString();
             string write = dri.LastWriteTime.ToString();
             string type = dri.Attributes.ToString();
@@ -881,6 +881,8 @@ namespace InTheForest
         {
             NewFolder nf = new NewFolder();
             nf.ShowDialog();
+            if (nf.folderName == null || nf.folderName == "") return;
+
             select = select.Replace("\\\\", "\\");
             DirectoryInfo di = new DirectoryInfo(select + "\\" + nf.folderName);
             if(di.Exists)

@@ -269,6 +269,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BorderStyle = MetroFramework.Drawing.MetroBorderStyle.FixedSingle;
             this.ClientSize = new System.Drawing.Size(444, 440);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.btn_confirm);
@@ -277,6 +278,7 @@
             this.Name = "property_dialog";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Text = ".....";
+            this.Load += new System.EventHandler(this.Property_dialog_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

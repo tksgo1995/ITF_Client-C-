@@ -37,22 +37,23 @@
             // label_Text
             // 
             this.label_Text.AutoSize = true;
-            this.label_Text.Location = new System.Drawing.Point(10, 5);
+            this.label_Text.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label_Text.Location = new System.Drawing.Point(81, 26);
             this.label_Text.Name = "label_Text";
-            this.label_Text.Size = new System.Drawing.Size(85, 12);
+            this.label_Text.Size = new System.Drawing.Size(87, 15);
             this.label_Text.TabIndex = 0;
             this.label_Text.Text = "폴더 이름 입력";
             // 
             // textBox_FolderName
             // 
-            this.textBox_FolderName.Location = new System.Drawing.Point(12, 20);
+            this.textBox_FolderName.Location = new System.Drawing.Point(23, 51);
             this.textBox_FolderName.Name = "textBox_FolderName";
             this.textBox_FolderName.Size = new System.Drawing.Size(200, 21);
             this.textBox_FolderName.TabIndex = 1;
             // 
             // button_Confirm
             // 
-            this.button_Confirm.Location = new System.Drawing.Point(12, 47);
+            this.button_Confirm.Location = new System.Drawing.Point(31, 89);
             this.button_Confirm.Name = "button_Confirm";
             this.button_Confirm.Size = new System.Drawing.Size(96, 23);
             this.button_Confirm.TabIndex = 2;
@@ -62,7 +63,7 @@
             // 
             // button_Cancel
             // 
-            this.button_Cancel.Location = new System.Drawing.Point(116, 47);
+            this.button_Cancel.Location = new System.Drawing.Point(133, 89);
             this.button_Cancel.Name = "button_Cancel";
             this.button_Cancel.Size = new System.Drawing.Size(96, 23);
             this.button_Cancel.TabIndex = 3;
@@ -74,13 +75,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(224, 82);
+            this.BorderStyle = MetroFramework.Drawing.MetroBorderStyle.FixedSingle;
+            this.ClientSize = new System.Drawing.Size(252, 119);
             this.Controls.Add(this.button_Cancel);
             this.Controls.Add(this.button_Confirm);
             this.Controls.Add(this.textBox_FolderName);
             this.Controls.Add(this.label_Text);
             this.Name = "NewFolder";
-            this.Text = "새로 만들기";
             this.ResumeLayout(false);
             this.PerformLayout();
 

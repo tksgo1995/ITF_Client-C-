@@ -59,7 +59,7 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Location = new System.Drawing.Point(20, 60);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.splitContainer1.Name = "splitContainer1";
             // 
@@ -76,7 +76,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.label_Path);
             this.splitContainer1.Panel2.Controls.Add(this.cboListViewMode);
             this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.SplitContainer1_Panel2_Paint);
-            this.splitContainer1.Size = new System.Drawing.Size(811, 490);
+            this.splitContainer1.Size = new System.Drawing.Size(813, 490);
             this.splitContainer1.SplitterDistance = 270;
             this.splitContainer1.TabIndex = 0;
             this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.SplitContainer1_SplitterMoved);
@@ -298,7 +298,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(811, 490);
+            this.ClientSize = new System.Drawing.Size(853, 570);
             this.Controls.Add(this.splitContainer1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";

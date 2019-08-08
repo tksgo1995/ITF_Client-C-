@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MetroFramework.Forms;
 
 namespace InTheForest
 {
-    public partial class NewFolder : Form
+    public partial class NewFolder : MetroForm
     {
         public string folderName;
 
@@ -33,5 +34,6 @@ namespace InTheForest
             }
             else Close();
         }
+
     }
 }

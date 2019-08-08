@@ -7,12 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MetroFramework.Forms;
 
 namespace InTheForest
 {
-    public partial class property_dialog : Form
+    public partial class property_dialog : MetroForm
     {
         string name, exten, loca, create, write, type;
+
+        private void Property_dialog_Load(object sender, EventArgs e)
+        {
+
+        }
 
         private void Btn_cancel_Click(object sender, EventArgs e)
         {
