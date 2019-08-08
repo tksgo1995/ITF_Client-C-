@@ -119,14 +119,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	static HWND hwndNextViewer;
 	static int flag = 1;
 	static int mask;
+	TCHAR buf[1024] = { 0, };
 
     switch (message)
     {
 	case WM_TIMER:
-		if(!screen_flag)
+		if(!screen_flag) time++; 
+		
+		/*if (time >= 15)
 		{
-			time++;
-		}
+			_stprintf(buf, _T("time: %d"), time);
+			MessageBox(NULL, buf, buf, MB_OK);
+		}*/
 		if (time == 15) // 5분 = 300
 		{
 			// TODO: 여기다가 스크린 세이버 올리면 됨
@@ -223,6 +227,7 @@ BOOL CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_INITDIALOG:
 		SetWindowPos(hDlg, HWND_TOPMOST, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), 0L);
 		screen_flag = 1;
+		time_init();
 		return TRUE;
 	case WM_COMMAND:
 		switch (LOWORD(wParam))
@@ -230,6 +235,9 @@ BOOL CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDC_BUTTON_OK:
 			screen_flag = 0;
 			EndDialog(hDlg, 0);
+			break;
+		case IDC_BUTTON_POWEROFF:
+			system("shutdown -p");
 			break;
 		}
 		break;

@@ -18,7 +18,7 @@
 #define IDC_STATIC_ID                   1002
 #define IDC_STATIC_PW                   1003
 #define IDC_BUTTON_OK                   1004
-#define IDC_BUTTON_CANCEL               1005
+#define IDC_BUTTON_POWEROFF             1005
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
