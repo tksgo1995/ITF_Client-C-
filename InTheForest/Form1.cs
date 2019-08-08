@@ -487,6 +487,12 @@ namespace InTheForest
                         m.Items.Add(Cut);
                         m.Items.Add(Copy);
                         m.Items.Add(Del);
+                        m.Items.Add(Rename);
+                        m.Items.Add(Prop);
+
+
+                        Rename.Text = "이름바꾸기";
+                        Prop.Text = "속성";
 
                         Del.Click += (senders, es) =>
                         {
@@ -494,13 +500,11 @@ namespace InTheForest
                             di.Delete(true);
                             SettingListView(label_Path.Text);
                         };
-
-                        Rename.Text = "이름바꾸기";
-                        Prop.Text = "속성";
-
-                        m.Items.Add(Rename);
-                        m.Items.Add(Prop);
-
+                        Rename.Click += (senders, es) =>
+                        {
+                            listView1.SelectedItems[0].BeginEdit();
+                        };
+                       
                         m.Show(listView1, new Point(e.X, e.Y));
                     }
                     else
@@ -527,17 +531,21 @@ namespace InTheForest
                         m.Items.Add(Cut);
                         m.Items.Add(Copy);
                         m.Items.Add(Del);
+                        m.Items.Add(Rename);
+                        m.Items.Add(Prop);
+
+
                         Del.Click += (senders, es) =>
                         {
                             File.Delete(file);
                             SettingListView(label_Path.Text);
                         };
 
-                        m.Items.Add(Rename);
-
-                        
-                        m.Items.Add(Prop);
-
+                        Rename.Click += (senders, es) =>
+                         {
+                             listView1.SelectedItems[0].BeginEdit();
+                         };     
+                    
                         m.Show(listView1, new Point(e.X, e.Y));
                     }
                 }
