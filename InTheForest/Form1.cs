@@ -828,8 +828,25 @@ namespace InTheForest
                 }  
             }
         }
-
-        /*private void Show_Property()
+        public long GetDirectorySize(string directoryPath)
+        {
+            DirectoryInfo directoryInfo = new DirectoryInfo(directoryPath);
+            FileSystemInfo[] fileSystemInfoArray = directoryInfo.GetFileSystemInfos();
+            long directorySize = 0L;
+            for (int i = 0; i < fileSystemInfoArray.Length; i++)
+            {
+                FileInfo fileInfo = fileSystemInfoArray[i] as FileInfo;
+                if (fileInfo != null)
+                {
+                    directorySize += fileInfo.Length;
+                }
+            }
+            if (directorySize > 1024)
+                return directorySize = directorySize / 1024;
+            else
+                return directorySize;
+        }
+        private void Show_Property()
         {
             //속성창 띄우기
             property_dialog pd = new property_dialog();
@@ -854,12 +871,11 @@ namespace InTheForest
             string type = dri.Attributes.ToString();
             string loca = select;
             pd.properties(name, exten, loca, size, crea, write, type);
-        }*/
+        }
 
         private void Prop_Click_1(object sender, EventArgs e)
         {
-            //Show_Property();
-            // 속성
+            Show_Property();
         }
         private void Folder_Click(object sender, EventArgs e)
         {

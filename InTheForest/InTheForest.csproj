@@ -74,11 +74,29 @@
       <DependentUpon>NewFolder.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="property_dialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="property_dialog.Designer.cs">
+      <DependentUpon>property_dialog.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NewFolder.resx">
       <DependentUpon>NewFolder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="property_dialog.resx">
+      <DependentUpon>property_dialog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
