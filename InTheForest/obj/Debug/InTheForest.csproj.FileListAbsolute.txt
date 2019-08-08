@@ -1,5 +1,10 @@
 C:\Users\kimyt\Desktop\ITF_Client-C-\InTheForest\bin\Debug\InTheForest.exe.config
-C:\Users\kimyt\Desktop\ITF_Client-C-\InTheForest\obj\Debug\InTheForest.csprojResolveAssemblyReference.cache
 C:\Users\kimyt\Desktop\ITF_Client-C-\InTheForest\obj\Debug\InTheForest.Form1.resources
 C:\Users\kimyt\Desktop\ITF_Client-C-\InTheForest\obj\Debug\InTheForest.NewFolder.resources
 C:\Users\kimyt\Desktop\ITF_Client-C-\InTheForest\obj\Debug\InTheForest.csproj.GenerateResource.Cache
+C:\Users\kimyt\Desktop\ITF_Client-C-\InTheForest\bin\Debug\InTheForest.exe
+C:\Users\kimyt\Desktop\ITF_Client-C-\InTheForest\bin\Debug\InTheForest.pdb
+C:\Users\kimyt\Desktop\ITF_Client-C-\InTheForest\obj\Debug\InTheForest.csprojAssemblyReference.cache
+C:\Users\kimyt\Desktop\ITF_Client-C-\InTheForest\obj\Debug\InTheForest.csproj.CoreCompileInputs.cache
+C:\Users\kimyt\Desktop\ITF_Client-C-\InTheForest\obj\Debug\InTheForest.exe
+C:\Users\kimyt\Desktop\ITF_Client-C-\InTheForest\obj\Debug\InTheForest.pdb

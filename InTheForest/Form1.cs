@@ -14,7 +14,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
 namespace InTheForest
 {
     public partial class Form1 : Form
@@ -535,6 +534,8 @@ namespace InTheForest
                         };
 
                         m.Items.Add(Rename);
+
+                        
                         m.Items.Add(Prop);
 
                         m.Show(listView1, new Point(e.X, e.Y));
@@ -552,7 +553,7 @@ namespace InTheForest
         }
         private void Rename_Click(object sender, EventArgs e)
         {
-
+            
         }
         private void Del_Click(object sender, EventArgs e)
         {
@@ -873,11 +874,6 @@ namespace InTheForest
                 SettingListView(label_Path.Text);
             }
         }
-        void RefreshTreeview()
-        {
-
-        }
-
         private void listView1_AfterLabelEdit(object sender, LabelEditEventArgs e)
         {
             try
@@ -908,6 +904,16 @@ namespace InTheForest
                 System.IO.File.Move(oldName, newName);
             }
         }
+
+        private void ListView1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.F2)
+            {
+                listView1.LabelEdit = true;
+                listView1.SelectedItems[0].BeginEdit();
+            }
+        }
+
         /// <summary>
         /// 내부 라이브러리로 압축하기
         /// </summary>
