@@ -13,6 +13,21 @@ file- LOG: 192.168.0.15 - kang123 [10/07/2019:18:21:32] delete: /samba/josh/hell
 user- LOG: [192.168.0.15] [01-00-5e-00-00-16] [kang123] [10/07/2019:18:21:32] login
 user- LOG: [192.168.0.15] [01-00-5e-00-00-16] [kang123] [10/07/2019:18:21:32] logout
 
+4. USB 탐지, 메신저
+detect - LOG: 
+
+ 3.1. 로그 DB
+  3.1.1. FILE DB
+   IP varchar(20)
+   UID varchar(20)
+   state int
+   path varchar(100)
+  3.1.2. USER DB
+   IP varchar(20)
+   MAC varchar(20)
+   UID varchar(20)
+   state int
+
 4. 리스트뷰 메뉴바(빈공간, 파일, 디렉토리) 기능 구현 - 강산해
 
 5. 트리뷰 마우스 우클릭 구현
@@ -20,3 +35,9 @@ user- LOG: [192.168.0.15] [01-00-5e-00-00-16] [kang123] [10/07/2019:18:21:32] lo
 6. PC 실행시 자동으로 실행되도록 설정하기 -> 완료 (shell:startup 바로가기 만들기)
 
 7. 스크린 세이버에 버튼 어떤기능 넣어야하는지
+
+8. 이메일 반출 막아야 함
+
+9. 로컬(C, D)에 반출 막아야함
+
+10. C++ -> C#
