@@ -68,7 +68,7 @@ namespace InTheForest
 
             // 네트워크 드라이브 잡기  \\13.125.149.179\smbuser  smbuser  kit2019
             netDrive = new csNetDrive();
-            int result = netDrive.setRemoteConnection(@"\\13.125.149.179\samba", "Sangmin", "kit2018", "Z:");
+            int result = netDrive.setRemoteConnection(@"\\13.125.149.179\samba", "smbuser", "kit2019", "Z:");
             /*if (result != 0)
             {
                 //MessageBox.Show("네트워크 드라이드 연결 실패");
@@ -124,6 +124,9 @@ namespace InTheForest
 
                 foreach (DirectoryInfo dirItem in dir.GetDirectories())
                 {
+                    // 숨김폴더인지 확인
+                    if ((dirItem.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden) continue;
+                    
                     ListViewItem lsvitem = new ListViewItem();
 
                     //아이콘 할당
@@ -265,15 +268,9 @@ namespace InTheForest
                 byte[] decbytes;
                 ListViewItem item = listView1.SelectedItems[0];
                 string file;
-                if (label_Path.Text == "Z:\\")
-                {
-                    file = label_Path.Text + item.Text;
-                }
-                else
-                {
-                    file = label_Path.Text + "\\" + item.Text;
-                }
-                
+
+                file = (label_Path.Text + "\\" + item.Text).Replace("\\\\", "\\");
+
                 FileAttributes attr = File.GetAttributes(file);
                 if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
                 {
@@ -293,13 +290,16 @@ namespace InTheForest
                         {
                             decbytes = k.AESDecrypto256(File.ReadAllBytes(file), key);
                             file = file.Replace(".enc", "");
+                            file = label_Path.Text.Substring(0, label_Path.Text.IndexOf("\\")) + "\\.aa\\" + file.Substring(file.LastIndexOf("\\") + 1);
+                            FileStream fs = File.Create(file);
+                            fs.Close();
                             File.WriteAllBytes(file, decbytes);
                             waitforsinglesignal.Set();
                         }
                     }
                     string filename = Path.GetFileName(file);
                     process_FileStart.StartInfo.FileName = filename;
-                    process_FileStart.StartInfo.WorkingDirectory = label_Path.Text;
+                    process_FileStart.StartInfo.WorkingDirectory = label_Path.Text.Substring(0, label_Path.Text.IndexOf("\\")) + "\\.aa\\";
                     process_FileStart.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
                     FileInfo fi = new FileInfo(process_FileStart.StartInfo.WorkingDirectory + "\\" + process_FileStart.StartInfo.FileName);
                     process_FileStart.Start();
@@ -679,7 +679,7 @@ namespace InTheForest
         }
         private void process_FileStart_Exited(object sender, EventArgs e)
         {
-            string filename = label_Path.Text.Replace("\\", "\\\\") + "\\\\" + process_FileStart.StartInfo.FileName;
+            string filename = label_Path.Text.Substring(0, label_Path.Text.IndexOf("\\")) + "\\.aa\\" + process_FileStart.StartInfo.FileName;
             try
             {
                 File.Delete(filename); // 프로세스 종료시 파일삭제
@@ -938,6 +938,11 @@ namespace InTheForest
                 listView1.LabelEdit = true;
                 listView1.SelectedItems[0].BeginEdit();
             }
+        }
+
+        private void ListView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
 
         /// <summary>
