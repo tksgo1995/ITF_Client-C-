@@ -17,12 +17,12 @@ user- LOG: [192.168.0.15] [01-00-5e-00-00-16] [kang123] [10/07/2019:18:21:32] lo
 detect - LOG: 
 
  3.1. 로그 DB
-  3.1.1. FILE DB
+  3.1.1. FILE DB (PORT: 9003, UID%PATH%STATE%IP)
    IP varchar(20)
    UID varchar(20)
    state int
    path varchar(100)
-  3.1.2. USER DB
+  3.1.2. USER DB (PORT: 9002, UID%MAC%STATE%IP)
    IP varchar(20)
    MAC varchar(20)
    UID varchar(20)
