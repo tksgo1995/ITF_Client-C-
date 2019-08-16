@@ -9,12 +9,9 @@ file- LOG: 192.168.0.15 - kang123 [10/07/2019:18:21:32] read: /samba/josh/hello.
 file- LOG: 192.168.0.15 - kang123 [10/07/2019:18:21:32] write: /samba/josh/hello.txt
 file- LOG: 192.168.0.15 - kang123 [10/07/2019:18:21:32] update: /samba/josh/hello.txt
 file- LOG: 192.168.0.15 - kang123 [10/07/2019:18:21:32] delete: /samba/josh/hello.txt
-	
+
 user- LOG: [192.168.0.15] [01-00-5e-00-00-16] [kang123] [10/07/2019:18:21:32] login
 user- LOG: [192.168.0.15] [01-00-5e-00-00-16] [kang123] [10/07/2019:18:21:32] logout
-
-4. USB 탐지, 메신저
-detect - LOG: 
 
  3.1. 로그 DB
   3.1.1. FILE DB (PORT: 9003, UID%PATH%STATE%IP) state 1.read 2.write 3.update 4.delete 5.rename
