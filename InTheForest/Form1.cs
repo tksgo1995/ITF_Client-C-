@@ -61,6 +61,22 @@ namespace InTheForest
             }
             return false;
         }
+        void setDrive()
+        {
+            // 네트워크 드라이브 잡기  \\13.125.149.179\smbuser  smbuser  kit2019
+            netDrive = new csNetDrive();
+            string Folder, ID, Password, DriveAlphabet;
+            int i = 0;
+            foreach (KeyValuePair<string, string> item in StatUser.Folder)
+            {
+                if(item.Key == "All") Folder = @"\\52.79.226.152\" + StatUser.id;
+                else Folder = @"\\52.79.226.152\" + item.Key;
+                ID = StatUser.id;
+                Password = StatUser.password;
+                DriveAlphabet = (char)('Z' - i++) + ":";
+                netDrive.setRemoteConnection(Folder, ID, Password, DriveAlphabet);
+            }
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
             // 9000포트 로컬에서 키값 받아오기
@@ -72,10 +88,7 @@ namespace InTheForest
             back_stack = new LinkedList<string>();
             SetButtonEnable();
 
-            // 네트워크 드라이브 잡기  \\13.125.149.179\smbuser  smbuser  kit2019
-            netDrive = new csNetDrive();
-            
-            int result = netDrive.setRemoteConnection(@"\\52.79.226.152\Samba", "Sangmin", "kit2019", "Z:");
+            setDrive();
             /*if (result != 0)
             {
                 //MessageBox.Show("네트워크 드라이드 연결 실패");

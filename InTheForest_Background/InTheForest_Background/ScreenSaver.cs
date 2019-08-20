@@ -28,6 +28,8 @@ namespace InTheForest_Background
     {
         static bool requestvalue = false;
         USER_STAT vipdata;
+        public static string id { get; set; }
+        public static string password { get; set; }
         public USER_STAT DATA
         {
             get { return vipdata; }
@@ -53,10 +55,10 @@ namespace InTheForest_Background
         //private
         public void ScreenSaver_Load(object sender, EventArgs e)
         {
-            //this.FormBorderStyle = FormBorderStyle.None;
-            //this.WindowState = FormWindowState.Maximized;
-            //this.StartPosition = FormStartPosition.Manual;
-            //this.TopMost = true;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
+            this.StartPosition = FormStartPosition.Manual;
+            this.TopMost = true;
 
             nScreenSaverFlag = 1;
             nScreenSaver = 0;
@@ -69,6 +71,8 @@ namespace InTheForest_Background
             {
                 vipdata = SslTcpClient.buf;
                 UpdatePolicy();
+                id = textBox1.Text;
+                password = textBox2.Text;
                 this.Close();
             }
         }

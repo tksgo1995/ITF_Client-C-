@@ -37,20 +37,20 @@ namespace InTheForest_Background
 
             while(true)
             {
-                
                 try
                 {
                     counter++;
                     clientSocket = server.AcceptTcpClient();
 
                     string strbuf = Form1.Ss.DATA.KUser + "%" +
-                        Form1.Ss.DATA.FolderPolicyCount + "%";
+                        Form1.Ss.DATA.FolderPolicyCount + "%" +
+                        ScreenSaver.id + "%" +
+                        ScreenSaver.password + "%";
                     foreach (KeyValuePair<string, string> item in Form1.Ss.DATA.Folder)
                     {
                         strbuf = strbuf.Replace(strbuf, strbuf + item.Key + "%" + item.Value + "%");
-                        //MessageBox.Show(strbuf);
                     }
-
+                    //MessageBox.Show(strbuf);
                     NetworkStream stream = clientSocket.GetStream();
                     byte[] buffer = Encoding.UTF8.GetBytes(strbuf);
                     stream.Write(buffer, 0, buffer.Length);
