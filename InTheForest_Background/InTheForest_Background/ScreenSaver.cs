@@ -20,36 +20,19 @@ using System.IO;
 //ssl
 
 using System.Threading;
-
-
+using Microsoft.Win32;
 
 namespace InTheForest_Background
 {
-    
-    public  class full3//전역변수를 위한 public 클래스
-    {
-     
-        public void copyfun(string ori)
-        {
-            keyval = ori;
-        }
-        public void outcopy(string outdata)
-        {
-            outdata = keyval;
-        }
-        public string Valout()
-        {
-            return keyval;
-        }
-        public  string keyval = "";
-    }
-
-
     public partial class ScreenSaver : Form
     {
-        full3 vipdata = new full3();
         static bool requestvalue = false;
-
+        USER_STAT vipdata;
+        public USER_STAT DATA
+        {
+            get { return vipdata; }
+            set { vipdata = value; }
+        }
         private int nScreenSaverFlag;
         public int NSFlag
         {
@@ -67,34 +50,28 @@ namespace InTheForest_Background
             InitializeComponent();
             nScreenSaver = 0;
         }
-
         //private
         public void ScreenSaver_Load(object sender, EventArgs e)
         {
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.WindowState = FormWindowState.Maximized;
-            this.StartPosition = FormStartPosition.Manual;
-            this.TopMost = true;
-
-        
+            //this.FormBorderStyle = FormBorderStyle.None;
+            //this.WindowState = FormWindowState.Maximized;
+            //this.StartPosition = FormStartPosition.Manual;
+            //this.TopMost = true;
 
             nScreenSaverFlag = 1;
             nScreenSaver = 0;
         }
-
-
         private void Button_Confirm_Click(object sender, EventArgs e)
         {
-            SslTcpClient.RunClient("127.0.0.1", "DESKTOP-NHIE464\\kkh", textBox1.Text, textBox2.Text, requestvalue, vipdata);
+            SslTcpClient.RunClient("52.79.226.152", "DESKTOP-NHIE464\\kkh", textBox1.Text, textBox2.Text, requestvalue);
             //접속 서버 IP, 인증서 유효성 검사를 위한 인증서의 발급자 정보, 서버로 전송할 ID값, PWS값, 서버에서 로그인 여부를 저장할 bool변수
             if (SslTcpClient.IsSuccess)
             {
+                vipdata = SslTcpClient.buf;
+                UpdatePolicy();
                 this.Close();
             }
         }
-
-
-
         private void Button_Shutdown_Click(object sender, EventArgs e)
         {
             Process.Start("shutdown", "/s /t 0");
@@ -111,6 +88,7 @@ namespace InTheForest_Background
         {
             private static Hashtable certificateErrors = new Hashtable();
             public static bool IsSuccess;
+            static public USER_STAT buf;
 
             // The following method is invoked by the RemoteCertificateValidationDelegate.
             public static bool ValidateServerCertificate(//서버로부터 전송받은 인증서를 검증하는 함수로 추정
@@ -125,12 +103,12 @@ namespace InTheForest_Background
                 return false;
             }
 
-            public static void RunClient(string machineName, string serverName, string inputID, string inputPWS, bool requestvalue1,full3 buf)
+            public static void RunClient(string machineName, string serverName, string inputID, string inputPWS, bool requestvalue1)
             {
                 // Create a TCP/IP client socket.
                 // machineName is the host running the server application.
                 TcpClient client = new TcpClient(machineName, 9000);//ip와 포트를 입력하여 클라이언트 동작
-                Console.WriteLine("Client connected.");
+                //Console.WriteLine("Client connected.");
                 // Create an SSL stream that will close the client's stream.
                 SslStream sslStream = new SslStream(//SSLStream 을 통해서 GetStream()함수 동작 
                     client.GetStream(),
@@ -145,21 +123,20 @@ namespace InTheForest_Background
                 }
                 catch (AuthenticationException e)
                 {
-                    MessageBox.Show("Exception: {0}", e.Message);
+                    //MessageBox.Show("Exception: {0}", e.Message);
                     if (e.InnerException != null)
                     {
-                        MessageBox.Show("Inner exception: {0}", e.InnerException.Message);
+                        //MessageBox.Show("Inner exception: {0}", e.InnerException.Message);
                     }
-                    MessageBox.Show("Authentication failed - closing the connection.");
                     client.Close();
                     return;
                 }
                 // Encode a test message into a byte array.
                 // Signal the end of the message using the "<EOF>".
                 //메세지 전송 파트******************************************************************
-                byte[] messsage = Encoding.UTF8.GetBytes(inputID + "%%" + inputPWS + "$$");
+                byte[] message = Encoding.UTF8.GetBytes(inputID + "%%" + inputPWS + "$$");
                 // Send hello message to the server. 
-                sslStream.Write(messsage);
+                sslStream.Write(message);
                 sslStream.Flush();
                 //데이터 전송을 위해 바이트 배열에 저장 여기서는 문자열 이므로 문자 인코딩방식과 보내려는 문자 + 구분자 %%는 문자와 문자의 구분자
                 //$$는 문자의 끝을 나타냄
@@ -173,29 +150,24 @@ namespace InTheForest_Background
                 if (serverMessage == "a$")//실험을 위해 잠시 b$로 해놈 원래 a가 성공기고 나머지 모든 문자가 실패
                 {
                     MessageBox.Show("로그인 성공");
-                    MessageBox.Show(serverMessage);
+                    //MessageBox.Show(serverMessage);
 
                     //키받는곧에서 뭔가 문제가 생기고있음 이부분을 규진이랑 확인해야할듯
-
-                    buf.copyfun(ReadMessage(sslStream));
-                    MessageBox.Show(buf.keyval);
-                    //MessageBox.Show("키값 받을꺼임");
-                    // MessageBox.Show(full3.keyval);
-                    //MessageBox.Show("키값 받음");
+                    string ReadBuffer;
+                    ReadBuffer = ReadMessage(sslStream);
                     IsSuccess = true;
+                    buf = new USER_STAT(ReadBuffer);
+                    
                 }
                 else
                 {
-                    MessageBox.Show(serverMessage);
+                    //MessageBox.Show(serverMessage);
                     MessageBox.Show("로그인 실패");
                     IsSuccess = false;
                 }
                 //메세지 수신 파트*************************************************************************
                 // Close the client connection.
                 client.Close();
-
-               // MessageBox.Show("Client closed.");
-
                 return;
             }
 
@@ -220,24 +192,72 @@ namespace InTheForest_Background
                     // Check for EOF.
                     if (messageData.ToString().IndexOf("$") != -1)//서버로부터 받을 데이터의 끝을 확인하기위한 구분자
                     {
-
                         break;
                     }
                 } while (bytes != 0);
 
-                MessageBox.Show("메세지 수신 완료");
+                //MessageBox.Show("메세지 수신 완료");
                 return messageData.ToString();
-
             }
-
         }
         /******************************************************************************************************
         //ssl 클래스 끝
         ******************************************************************************************************/
 
+        // 레지스트리 변경 관련 함수들
+        public bool GET_BIT(int x, int y) // 서버에서 시스템 정책 마스크값 가져오면 한비트씩 빼내기
+        {
+            if ((((x) >> (y)) & 0x01) == 1) return true;
+            return false;
+        }
+        public void UpdateRegistry(string root, int value, string name, RegistryKey regKey) // 정책에 맞게 레지스트리 업데이트
+        {
+            RegistryKey reg = regKey.OpenSubKey(root, true);
+            if (reg == null)
+            {
+                // 해당이름으로 서브키 생성
+                reg = Registry.CurrentUser.CreateSubKey(root);
+            }
+            reg.SetValue(name, value);
+            reg.Close();
+        }
+        public void UpdatePolicy() // 마스크값에 따라 시스템 정책변경
+        {
+            int value;
+            // 1. TaskMgr enable(0), disable(1)
+            if (GET_BIT(vipdata.mask, 0)) value = 1;
+            else value = 0;
+            UpdateRegistry("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", value, "DisableTaskMgr", Registry.CurrentUser);
 
+            // 2. regedit enable(0), disable(1)
+            if (GET_BIT(vipdata.mask, 1)) value = 1;
+            else value = 0;
+            UpdateRegistry("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", value, "DisableRegistryTools", Registry.CurrentUser);
 
-     
+            // 3. cmd enable(0), disable(2)
+            if (GET_BIT(vipdata.mask, 2)) value = 2;
+            else value = 0;
+            UpdateRegistry("Software\\Policies\\Microsoft\\Windows\\System", value, "DisableCMD", Registry.CurrentUser);
 
+            // 4. snipping tools disable(1), enable(0)
+            if (GET_BIT(vipdata.mask, 3)) value = 1;
+            else value = 0;
+            UpdateRegistry("SOFTWARE\\Policies\\Microsoft\\TabletPC", value, "DisableSnippingTool", Registry.LocalMachine);
+
+            // 5. usb쓰기 disable(1), enable(0)
+            if (GET_BIT(vipdata.mask, 4)) value = 1;
+            else value = 0;
+            UpdateRegistry("SYSTEM\\CurrentControlSet\\Control\\StorageDevicepolicies", value, "WriteProtect", Registry.LocalMachine);
+
+            // 6. usb차단 disable(4) enable(3)
+            if (GET_BIT(vipdata.mask, 5)) value = 4;
+            else value = 3;
+            UpdateRegistry("SYSTEM\\CurrentControlSet\\Services\\USBSTOR", value, "Start", Registry.LocalMachine);
+
+            // 7. 디스크차단(C드라이브) disable(4) enable(0)
+            if (GET_BIT(vipdata.mask, 6)) value = 4;
+            else value = 0;
+            UpdateRegistry("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer", value, "NoViewOnDrive", Registry.LocalMachine);
+        }
     }
 }

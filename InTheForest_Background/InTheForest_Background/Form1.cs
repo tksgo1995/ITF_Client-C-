@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,7 @@ namespace InTheForest_Background
 {
     public partial class Form1 : Form
     {
+        LocalSocket ls;
         public static ScreenSaver Ss { get; set; }
         public Form1()
         {
@@ -36,17 +38,21 @@ namespace InTheForest_Background
             timer_ScreenSaver.Start();
             Ss = new ScreenSaver();
             Ss.Show();
+            //MessageBox.Show("aa");
+            // 윈도우 탐색기에 키넘겨주는 TCP 소켓
+            ls = new LocalSocket();
         }
         // MainForm 종료시
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             UnHook();
         }
+        
         // 타이머 60000 = 1분, 1000 = 1초
         private void Timer_ScreenSaver_Tick(object sender, EventArgs e)
         {
-            if(Ss.NSSaver < 5 && Ss.NSFlag == 0) Ss.NSSaver++;
-            if (Ss.NSSaver == 5 && Ss.NSFlag == 0)
+            if(Ss.NSSaver < 15 && Ss.NSFlag == 0) Ss.NSSaver++;
+            if (Ss.NSSaver == 15 && Ss.NSFlag == 0)
             {
                 Ss = new ScreenSaver();
                 Ss.Show();
@@ -111,5 +117,7 @@ namespace InTheForest_Background
             }
             return CallNextHookEx(hkhook, code, (int)wParam, lParam);
         }
+
+        
     }
 }
