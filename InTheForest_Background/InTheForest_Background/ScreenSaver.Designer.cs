@@ -34,12 +34,13 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button_Confirm = new System.Windows.Forms.Button();
             this.button_Shutdown = new System.Windows.Forms.Button();
+            this.btModify = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(603, 364);
+            this.label1.Location = new System.Drawing.Point(562, 364);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(16, 12);
             this.label1.TabIndex = 0;
@@ -48,7 +49,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(596, 391);
+            this.label2.Location = new System.Drawing.Point(555, 391);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(23, 12);
             this.label2.TabIndex = 1;
@@ -56,14 +57,14 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(625, 361);
+            this.textBox1.Location = new System.Drawing.Point(584, 361);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(163, 21);
             this.textBox1.TabIndex = 2;
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(625, 388);
+            this.textBox2.Location = new System.Drawing.Point(584, 388);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(163, 21);
             this.textBox2.TabIndex = 3;
@@ -88,12 +89,22 @@
             this.button_Shutdown.UseVisualStyleBackColor = true;
             this.button_Shutdown.Click += new System.EventHandler(this.Button_Shutdown_Click);
             // 
+            // btModify
+            // 
+            this.btModify.Location = new System.Drawing.Point(544, 415);
+            this.btModify.Name = "btModify";
+            this.btModify.Size = new System.Drawing.Size(75, 23);
+            this.btModify.TabIndex = 6;
+            this.btModify.Text = "수정";
+            this.btModify.UseVisualStyleBackColor = true;
+            // 
             // ScreenSaver
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(797, 446);
             this.ControlBox = false;
+            this.Controls.Add(this.btModify);
             this.Controls.Add(this.button_Shutdown);
             this.Controls.Add(this.button_Confirm);
             this.Controls.Add(this.textBox2);
@@ -117,5 +128,6 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button button_Confirm;
         private System.Windows.Forms.Button button_Shutdown;
+        private System.Windows.Forms.Button btModify;
     }
 }

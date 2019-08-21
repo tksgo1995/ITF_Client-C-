@@ -42,11 +42,11 @@ namespace InTheForest_Background
                     counter++;
                     clientSocket = server.AcceptTcpClient();
 
-                    string strbuf = Form1.Ss.DATA.KUser + "%" +
-                        Form1.Ss.DATA.FolderPolicyCount + "%" +
+                    string strbuf = Background.Ss.DATA.KUser + "%" +
+                        Background.Ss.DATA.FolderPolicyCount + "%" +
                         ScreenSaver.id + "%" +
                         ScreenSaver.password + "%";
-                    foreach (KeyValuePair<string, string> item in Form1.Ss.DATA.Folder)
+                    foreach (KeyValuePair<string, string> item in Background.Ss.DATA.Folder)
                     {
                         strbuf = strbuf.Replace(strbuf, strbuf + item.Key + "%" + item.Value + "%");
                     }
