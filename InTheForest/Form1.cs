@@ -82,7 +82,7 @@ namespace InTheForest
             // 9000포트 로컬에서 키값 받아오기
             ls = new LocalSocket();
             StatUser = ls.us;
-
+            
             Back_init = 1; // 시작할 때 Back 버튼 비활성화를 위한 마스크값
             front_stack = new LinkedList<string>();
             back_stack = new LinkedList<string>();
@@ -256,22 +256,29 @@ namespace InTheForest
                         waitforsinglesignal.WaitOne();
                         void Run()
                         {
-                            decbytes = k.AESDecrypto256(File.ReadAllBytes(file), key);
-                            file = file.Replace(".enc", "");
-                            file = label_Path.Text.Substring(0, label_Path.Text.IndexOf("\\")) + "\\.aa\\" + file.Substring(file.LastIndexOf("\\") + 1);
-                            FileStream fs = File.Create(file);
-                            fs.Close();
-                            File.WriteAllBytes(file, decbytes);
-                            waitforsinglesignal.Set();
+                            try
+                            {
+                                key = GetDrivePassword(label_Path.Text.Substring(0, 1));
+                                decbytes = k.AESDecrypto256(File.ReadAllBytes(file), key);
+                                file = file.Replace(".enc", "");
+                                file = label_Path.Text.Substring(0, label_Path.Text.IndexOf("\\")) + "\\.a\\" + file.Substring(file.LastIndexOf("\\") + 1);
+                                FileStream fs = File.Create(file);
+                                fs.Close();
+                                File.WriteAllBytes(file, decbytes);
+                                waitforsinglesignal.Set();
+                                string filename = Path.GetFileName(file);
+                                process_FileStart.StartInfo.FileName = filename;
+                                process_FileStart.StartInfo.WorkingDirectory = label_Path.Text.Substring(0, label_Path.Text.IndexOf("\\")) + "\\.a\\";
+                                process_FileStart.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
+                                FileInfo fi = new FileInfo(process_FileStart.StartInfo.WorkingDirectory + "\\" + process_FileStart.StartInfo.FileName);
+                                process_FileStart.Start();
+                            }
+                            catch(Exception e1)
+                            {
+                                MessageBox.Show(e1.Message);
+                            }
                         }
-                    }
-                    string filename = Path.GetFileName(file);
-                    process_FileStart.StartInfo.FileName = filename;
-                    process_FileStart.StartInfo.WorkingDirectory = label_Path.Text.Substring(0, label_Path.Text.IndexOf("\\")) + "\\.aa\\";
-                    process_FileStart.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
-                    FileInfo fi = new FileInfo(process_FileStart.StartInfo.WorkingDirectory + "\\" + process_FileStart.StartInfo.FileName);
-                    process_FileStart.Start();
-                    
+                    }                
                     SettingListView(label_Path.Text);
                 }
             }
@@ -343,7 +350,7 @@ namespace InTheForest
             DirectoryInfo dir = new DirectoryInfo(copyfilepath);
             FileInfo[] files = dir.GetFiles();
             byte[] encbytes;
-
+            key = GetDrivePassword(label_Path.Text.Substring(0, 1));
             foreach (FileInfo fileinfo in files)
             {
                 //MessageBox.Show("name: " + fileinfo.Name);
@@ -361,11 +368,33 @@ namespace InTheForest
                     "\ncopyfilepath: " + dirItem.FullName);*/
             }
         }
+        string GetDrivePassword(string drive)
+        {
+            //MessageBox.Show(drive);
+            char DriveAlphabet;
+            int i = 0;
+            string result = "";
+
+            foreach (KeyValuePair<string, string> item in StatUser.Folder)
+            {
+                DriveAlphabet = (char)('Z' - i++);
+                
+                if(DriveAlphabet.ToString().Equals(drive))
+                {
+                    result = item.Value;    
+                }
+                //MessageBox.Show("진짜키: " + item.Value);
+            }
+            //MessageBox.Show("return: " + result);
+            
+            return result;
+        }
         private void ListView1_DragDrop(object sender, DragEventArgs e)
         {
             string filename;
             byte[] encbytes;
-            key = GetRandomPassword(32);
+            key = GetDrivePassword(label_Path.Text.Substring(0, 1));
+
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
             foreach (string file in files)
