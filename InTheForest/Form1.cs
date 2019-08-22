@@ -88,16 +88,38 @@ namespace InTheForest
             back_stack = new LinkedList<string>();
             SetButtonEnable();
 
-            setDrive();
+            // setDrive();
             /*if (result != 0)
             {
                 //MessageBox.Show("네트워크 드라이드 연결 실패");
                 //this.Close();
             }*/
+            string[] drives = Directory.GetLogicalDrives();
+            foreach (string drive in drives)
+            {
+                DriveInfo di = new DriveInfo(drive);
+                if (di.IsReady)
+                {
+                    if (di.Name == @"C:\")
+                    {
+                        TreeNode node = treeView1.Nodes.Add(drive);
+                        node.ImageIndex = 5;
+                        node.SelectedImageIndex = 5;
+                        node.Nodes.Add("\\");
+                    }
+                    else
+                    {
+                        TreeNode node = treeView1.Nodes.Add(drive);
+                        node.ImageIndex = 11;
+                        node.SelectedImageIndex = 11;
+                        node.Nodes.Add("\\");
+                    }
+                }
+            }
 
             //드라이브 잡아서 트리뷰에 올리기
-            string[] drives = Directory.GetLogicalDrives();
-
+            //string[] drives = Directory.GetLogicalDrives();
+            /*
             foreach(string drive in drives)
             {
                 DriveInfo di = new DriveInfo(drive);
@@ -109,7 +131,7 @@ namespace InTheForest
                      node.Nodes.Add("\\");
                 }
             }
-            
+            */
             listView1.BeginUpdate();
             //ListView 속성을 위한 헤더추가
             listView1.Columns.Add("이름", listView1.Width / 4, HorizontalAlignment.Left);
@@ -547,8 +569,9 @@ namespace InTheForest
         {
             throw new NotImplementedException();
         }
-        private void Com_Click_Directory(object sender, EventArgs e)
+        private void Com_Click_Directory(object sender, EventArgs e) //압축
         {
+            /*
             string sourcePath, zipPath;
             ListViewItem item = listView1.SelectedItems[0];
             sourcePath = label_Path.Text + "\\" + item.Text;
@@ -556,6 +579,9 @@ namespace InTheForest
             MessageBox.Show("sourcePath: " + sourcePath + "\nzipPath: " + zipPath);
             CompressZipByIO(sourcePath, zipPath);
             SettingListView(label_Path.Text);
+            */
+            Compress comp = new Compress();
+            comp.ShowDialog();
         }
         private void Open_Click(object sender, EventArgs e) // 열기 버튼 눌렀을 때 기능
         {
@@ -685,7 +711,7 @@ namespace InTheForest
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             // 네트워크 드라이브 해제
-            int getReturn = netDrive.CencelRemoteServer("Z:");
+          //  int getReturn = netDrive.CencelRemoteServer("Z:");
         }
         private void CboListViewMode_SelectedIndexChanged(object sender, EventArgs e)
         {

@@ -44,6 +44,9 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetZip, Version=1.13.3.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>packages\DotNetZip.1.13.3\lib\net40\DotNetZip.dll</HintPath>
+    </Reference>
     <Reference Include="MetroFramework, Version=1.2.0.3, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
       <HintPath>packages\MetroFramework.RunTime.1.2.0.3\lib\net40-Client\MetroFramework.dll</HintPath>
     </Reference>
@@ -70,6 +73,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AES.cs" />
+    <Compile Include="Compress.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Compress.Designer.cs">
+      <DependentUpon>Compress.cs</DependentUpon>
+    </Compile>
     <Compile Include="csNetDrive.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -97,6 +106,9 @@
       <DependentUpon>property_dialog.cs</DependentUpon>
     </Compile>
     <Compile Include="USER_STAT.cs" />
+    <EmbeddedResource Include="Compress.resx">
+      <DependentUpon>Compress.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
