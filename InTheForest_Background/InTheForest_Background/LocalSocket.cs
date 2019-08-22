@@ -42,13 +42,13 @@ namespace InTheForest_Background
                     counter++;
                     clientSocket = server.AcceptTcpClient();
 
-                    string strbuf = Background.Ss.DATA.KUser + "%" +
-                        Background.Ss.DATA.FolderPolicyCount + "%" +
-                        ScreenSaver.id + "%" +
-                        ScreenSaver.password + "%";
+                    string strbuf = Background.Ss.DATA.KUser + "α" +
+                        Background.Ss.DATA.FolderPolicyCount + "α" +
+                        ScreenSaver.id + "α" +
+                        ScreenSaver.password + "α";
                     foreach (KeyValuePair<string, string> item in Background.Ss.DATA.Folder)
                     {
-                        strbuf = strbuf.Replace(strbuf, strbuf + item.Key + "%" + item.Value + "%");
+                        strbuf = strbuf.Replace(strbuf, strbuf + item.Key + "α" + item.Value + "α");
                     }
                     //MessageBox.Show(strbuf);
                     NetworkStream stream = clientSocket.GetStream();

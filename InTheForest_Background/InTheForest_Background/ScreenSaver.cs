@@ -21,12 +21,14 @@ using System.IO;
 
 using System.Threading;
 using Microsoft.Win32;
+using System.Net.NetworkInformation;
 
 namespace InTheForest_Background
 {
     public partial class ScreenSaver : Form
     {
         static bool requestvalue = false;
+        static int i = 0;
         USER_STAT vipdata;
         public static string id { get; set; }
         public static string password { get; set; }
@@ -62,6 +64,17 @@ namespace InTheForest_Background
 
             nScreenSaverFlag = 1;
             nScreenSaver = 0;
+            if(i++ > 0)
+            {
+                string strLog;
+                strLog = id + "α" +
+                    NetworkInterface.GetAllNetworkInterfaces()[0].GetPhysicalAddress().ToString() +
+                    "α" + "2" +
+                    "α" + Get_MyIP();
+                SslTcpClient.logWrite(strLog);
+                
+                //SslTcpClient.logWrite();
+            }
         }
         private void Button_Confirm_Click(object sender, EventArgs e)
         {
@@ -73,9 +86,26 @@ namespace InTheForest_Background
                 UpdatePolicy();
                 id = textBox1.Text;
                 password = textBox2.Text;
+
+                string strLog;
+                strLog = id + "α" +
+                    NetworkInterface.GetAllNetworkInterfaces()[0].GetPhysicalAddress().ToString() +
+                    "α" + "1" +
+                    "α" + Get_MyIP();
+                SslTcpClient.logWrite(strLog);
+
                 this.Close();
             }
         }
+        string Get_MyIP()
+        {
+            IPHostEntry host = Dns.GetHostByName(Dns.GetHostName());
+            string myip = host.AddressList[0].ToString();
+            return myip;
+            //ip잘 잡음 문제 : 와이파이 로 접속시 ip확인 불가 랜선을 통한 물리 네트워크 접속시에만 확인
+        }
+        //USER 9002 UID%MAC%STATE%IP
+
         private void Button_Shutdown_Click(object sender, EventArgs e)
         {
             Process.Start("shutdown", "/s /t 0");
@@ -84,6 +114,7 @@ namespace InTheForest_Background
         private void ScreenSaver_FormClosing(object sender, FormClosingEventArgs e)
         {
             nScreenSaverFlag = 0;
+            SslTcpClient.CloseHandle();
         }
         /***********************************************************************************
         //SSL 통신 코드
@@ -93,7 +124,49 @@ namespace InTheForest_Background
             private static Hashtable certificateErrors = new Hashtable();
             public static bool IsSuccess;
             static public USER_STAT buf;
+            static SslStream sslStream, logStream;
+            static TcpClient client, logTcpClient;
 
+            public static void logClient(string IP)
+            {
+                logTcpClient = new TcpClient(IP, 9002);//ip와 포트를 입력하여 클라이언트 동작
+                logStream = new SslStream(//SSLStream 을 통해서 GetStream()함수 동작 
+                    logTcpClient.GetStream(),
+                    false,
+                    new RemoteCertificateValidationCallback(ValidateServerCertificate),
+                    null
+                    );
+                try
+                {
+                    logStream.AuthenticateAsClient("DESKTOP-NHIE464\\kkh");
+                }
+                catch (AuthenticationException e)
+                {
+                    //MessageBox.Show("Exception: {0}", e.Message);
+                    if (e.InnerException != null)
+                    {
+                        //MessageBox.Show("Inner exception: {0}", e.InnerException.Message);
+                    }
+                    return;
+                }
+            }
+            public static void logWrite(string log)
+            {
+                try
+                {
+                    logClient("52.79.226.152");
+
+                    byte[] message = Encoding.UTF8.GetBytes(log);
+                    logStream.Write(message);
+                    logStream.Flush();
+                    logStream.Close();
+                    logTcpClient.Close();
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show(e.InnerException.Message);
+                }
+            }
             // The following method is invoked by the RemoteCertificateValidationDelegate.
             public static bool ValidateServerCertificate(//서버로부터 전송받은 인증서를 검증하는 함수로 추정
                   object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
@@ -111,10 +184,10 @@ namespace InTheForest_Background
             {
                 // Create a TCP/IP client socket.
                 // machineName is the host running the server application.
-                TcpClient client = new TcpClient(machineName, 9000);//ip와 포트를 입력하여 클라이언트 동작
+                client = new TcpClient(machineName, 9000);//ip와 포트를 입력하여 클라이언트 동작
                 //Console.WriteLine("Client connected.");
                 // Create an SSL stream that will close the client's stream.
-                SslStream sslStream = new SslStream(//SSLStream 을 통해서 GetStream()함수 동작 
+                sslStream = new SslStream(//SSLStream 을 통해서 GetStream()함수 동작 
                     client.GetStream(),
                     false,
                     new RemoteCertificateValidationCallback(ValidateServerCertificate),
@@ -138,7 +211,7 @@ namespace InTheForest_Background
                 // Encode a test message into a byte array.
                 // Signal the end of the message using the "<EOF>".
                 //메세지 전송 파트******************************************************************
-                byte[] message = Encoding.UTF8.GetBytes(inputID + "%%" + inputPWS + "$$");
+                byte[] message = Encoding.UTF8.GetBytes(inputID + "αα" + inputPWS + "ΩΩ");
                 // Send hello message to the server. 
                 sslStream.Write(message);
                 sslStream.Flush();
@@ -151,11 +224,12 @@ namespace InTheForest_Background
                 string serverMessage = ReadMessage(sslStream);
                 //ReadMessage 를 통하여 서버에서 전송해준 메세지를 변수에 저장하고 아래에서 로그인 여부를 체크
                 //ReadMessage함수는 바이트 단위의 데이터를 받아 UTF8인코딩으로 저장한 후 Tostring으로 리턴하므로 최종적으로 string으로 저장 가능
-                if (serverMessage == "a$")//실험을 위해 잠시 b$로 해놈 원래 a가 성공기고 나머지 모든 문자가 실패
+                //MessageBox.Show(serverMessage);
+                if (serverMessage.Equals("aΩ"))//실험을 위해 잠시 b$로 해놈 원래 a가 성공기고 나머지 모든 문자가 실패
                 {
                     MessageBox.Show("로그인 성공");
                     //MessageBox.Show(serverMessage);
-
+                
                     //키받는곧에서 뭔가 문제가 생기고있음 이부분을 규진이랑 확인해야할듯
                     string ReadBuffer;
                     ReadBuffer = ReadMessage(sslStream);
@@ -175,6 +249,10 @@ namespace InTheForest_Background
                 return;
             }
 
+            public static void CloseHandle()
+            {
+                client.Close();
+            }
             static string ReadMessage(SslStream sslStream)
             {
                 // Read the  message sent by the server.
@@ -194,7 +272,7 @@ namespace InTheForest_Background
                     decoder.GetChars(buffer, 0, bytes, chars, 0);
                     messageData.Append(chars);
                     // Check for EOF.
-                    if (messageData.ToString().IndexOf("$") != -1)//서버로부터 받을 데이터의 끝을 확인하기위한 구분자
+                    if (messageData.ToString().IndexOf("Ω") != -1)//서버로부터 받을 데이터의 끝을 확인하기위한 구분자
                     {
                         break;
                     }
