@@ -69,7 +69,7 @@ namespace InTheForest
             int i = 0;
             foreach (KeyValuePair<string, string> item in StatUser.Folder)
             {
-                if (item.Key == "All") Folder = @"\\52.79.226.152\" + StatUser.id;
+                if(item.Key == "All") Folder = @"\\52.79.226.152\" + StatUser.id;
                 else Folder = @"\\52.79.226.152\" + item.Key;
                 ID = StatUser.id;
                 Password = StatUser.password;
@@ -82,7 +82,7 @@ namespace InTheForest
             // 9000포트 로컬에서 키값 받아오기
             ls = new LocalSocket();
             StatUser = ls.us;
-
+            
             Back_init = 1; // 시작할 때 Back 버튼 비활성화를 위한 마스크값
             front_stack = new LinkedList<string>();
             back_stack = new LinkedList<string>();
@@ -98,18 +98,18 @@ namespace InTheForest
             //드라이브 잡아서 트리뷰에 올리기
             string[] drives = Directory.GetLogicalDrives();
 
-            foreach (string drive in drives)
+            foreach(string drive in drives)
             {
                 DriveInfo di = new DriveInfo(drive);
                 if (di.IsReady && di.DriveType == DriveType.Network)
                 {
-                    TreeNode node = treeView1.Nodes.Add(drive);
-                    node.ImageIndex = 5;
-                    node.SelectedImageIndex = 5;
-                    node.Nodes.Add("\\");
+                     TreeNode node = treeView1.Nodes.Add(drive);
+                     node.ImageIndex = 5;
+                     node.SelectedImageIndex = 5;
+                     node.Nodes.Add("\\");
                 }
             }
-
+            
             listView1.BeginUpdate();
             //ListView 속성을 위한 헤더추가
             listView1.Columns.Add("이름", listView1.Width / 4, HorizontalAlignment.Left);
@@ -125,7 +125,7 @@ namespace InTheForest
             waitforsinglesignal = new EventWaitHandle(false, EventResetMode.AutoReset);
 
             //관리자 권한으로 실행되었을 경우 제목 - 관리자 로 바꾸기
-            if (IsAdministrator())
+            if(IsAdministrator())
             {
                 MessageBox.Show("관리자 권한으로 실행 시키면 안됩니다.");
                 Close();
@@ -188,11 +188,19 @@ namespace InTheForest
                     else
                         lsvitem.ImageIndex = 8;
                     lsvitem.Text = fileinfo.Name;
-
                     listView1.Items.Add(lsvitem);
-                    listView1.Items[Count].SubItems.Add(fileinfo.LastWriteTime.ToString());
+
+                    if (fileinfo.LastWriteTime != null)
+                    {
+                        listView1.Items[Count].SubItems.Add(fileinfo.LastWriteTime.ToString());
+                    }
+                    else
+                    {
+                        listView1.Items[Count].SubItems.Add(fileinfo.CreationTime.ToString());
+                    }
+                    long size = fileinfo.Length / 1024;
                     listView1.Items[Count].SubItems.Add(fileinfo.Attributes.ToString());
-                    listView1.Items[Count].SubItems.Add(fileinfo.Length + " Bytes");
+                    listView1.Items[Count].SubItems.Add(size.ToString() + " KB");
                     Count++;
                     
                 }
@@ -205,60 +213,8 @@ namespace InTheForest
         /*--------------------------------------
            키값 생성 및 레지스트리 등록
            -------------------------------------*/
-        public bool GET_BIT(int x, int y) // 서버에서 시스템 정책 마스크값 가져오면 한비트씩 빼내기
-        {
-            if ((((x) >> (y)) & 0x01) == 1) return true;
-            return false;
-        }
-        public void UpdateRegistry(string root, int value, string name, RegistryKey regKey) // 정책에 맞게 레지스트리 업데이트
-        {
-            RegistryKey reg = regKey.OpenSubKey(root, true);
-            if (reg == null)
-            {
-                // 해당이름으로 서브키 생성
-                reg = Registry.CurrentUser.CreateSubKey(root);
-            }
-            reg.SetValue(name, value);
-            reg.Close();
-        }
-        public void UpdatePolicy() // 마스크값에 따라 시스템 정책변경
-        {
-            int value;
-            // 1. TaskMgr enable(0), disable(11)
-            if (GET_BIT(mask, 0)) value = 1;
-            else value = 0;
-            UpdateRegistry("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", value, "DisableTaskMgr", Registry.CurrentUser);
-
-            // 2. regedit enable(0), disable(1)
-            if (GET_BIT(mask, 1)) value = 1;
-            else value = 0;
-            UpdateRegistry("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", value, "DisableRegistryTools", Registry.CurrentUser);
-
-            // 3. cmd enable(0), disable(2)
-            if (GET_BIT(mask, 2)) value = 2;
-            else value = 0;
-            UpdateRegistry("Software\\Policies\\Microsoft\\Windows\\System", value, "DisableCMD", Registry.CurrentUser);
-
-            // 4. snipping tools disable(1), enable(0)
-            if (GET_BIT(mask, 3)) value = 1;
-            else value = 0;
-            UpdateRegistry("SOFTWARE\\Policies\\Microsoft\\TabletPC", value, "DisableSnippingTool", Registry.LocalMachine);
-
-            // 5. usb쓰기 disable(1), enable(0)
-            if (GET_BIT(mask, 4)) value = 1;
-            else value = 0;
-            UpdateRegistry("SYSTEM\\CurrentControlSet\\Control\\StorageDevicepolicies", value, "WriteProtect", Registry.LocalMachine);
-
-            // 6. usb차단 disable(4) enable(3)
-            if (GET_BIT(mask, 5)) value = 4;
-            else value = 3;
-            UpdateRegistry("SYSTEM\\CurrentControlSet\\Services\\USBSTOR", value, "Start", Registry.LocalMachine);
-
-            // 7. 디스크차단(C드라이브) disable(4) enable(0)
-            if (GET_BIT(mask, 6)) value = 4;
-            else value = 0;
-            UpdateRegistry("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer", value, "NoViewOnDrive", Registry.LocalMachine);
-        }
+        
+        
         // 키값 생성 함수(그냥 랜덤)
         public string GetRandomPassword(int _totLen)
         {
@@ -300,28 +256,40 @@ namespace InTheForest
                         waitforsinglesignal.WaitOne();
                         void Run()
                         {
-                            decbytes = k.AESDecrypto256(File.ReadAllBytes(file), key);
-                            file = file.Replace(".enc", "");
-                            file = label_Path.Text.Substring(0, label_Path.Text.IndexOf("\\")) + "\\.aa\\" + file.Substring(file.LastIndexOf("\\") + 1);
-                            FileStream fs = File.Create(file);
-                            fs.Close();
-                            File.WriteAllBytes(file, decbytes);
-                            waitforsinglesignal.Set();
+                            try
+                            {
+                                string logPath;
+                                logPath = label_Path.Text + file.Substring(file.IndexOf("\\") + 1);
+                                MessageBox.Show(logPath);
+
+                                key = GetDrivePassword(label_Path.Text.Substring(0, 1));
+                                decbytes = k.AESDecrypto256(File.ReadAllBytes(file), key);
+                                file = file.Replace(".enc", "");
+                                file = label_Path.Text.Substring(0, label_Path.Text.IndexOf("\\")) + "\\.a\\" + file.Substring(file.LastIndexOf("\\") + 1);
+                                FileStream fs = File.Create(file);
+                                fs.Close();
+                                File.WriteAllBytes(file, decbytes);
+                                waitforsinglesignal.Set();
+                                string filename = Path.GetFileName(file);
+                                process_FileStart.StartInfo.FileName = filename;
+                                process_FileStart.StartInfo.WorkingDirectory = label_Path.Text.Substring(0, label_Path.Text.IndexOf("\\")) + "\\.a\\";
+                                process_FileStart.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
+                                FileInfo fi = new FileInfo(process_FileStart.StartInfo.WorkingDirectory + "\\" + process_FileStart.StartInfo.FileName);
+                                process_FileStart.Start();
+                                SslTcpClient.LogRunClient(StatUser.id, logPath, StatUser.state[0], StatUser.outip());
+                            }
+                            catch(Exception e1)
+                            {
+                                MessageBox.Show(e1.Message);
+                            }
                         }
-                    }
-                    string filename = Path.GetFileName(file);
-                    process_FileStart.StartInfo.FileName = filename;
-                    process_FileStart.StartInfo.WorkingDirectory = label_Path.Text.Substring(0, label_Path.Text.IndexOf("\\")) + "\\.aa\\";
-                    process_FileStart.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
-                    FileInfo fi = new FileInfo(process_FileStart.StartInfo.WorkingDirectory + "\\" + process_FileStart.StartInfo.FileName);
-                    process_FileStart.Start();
-                    
+                    }                
                     SettingListView(label_Path.Text);
                 }
             }
             catch (Exception e1)
             {
-               // MessageBox.Show("에러 : " + e1.Message);
+                //MessageBox.Show("에러 : " + e1.Message);
             }
         }
         private void TreeView1_BeforeExpand(object sender, TreeViewCancelEventArgs e)
@@ -389,18 +357,23 @@ namespace InTheForest
             DirectoryInfo dir = new DirectoryInfo(copyfilepath);
             FileInfo[] files = dir.GetFiles();
             byte[] encbytes;
-
+            key = GetDrivePassword(label_Path.Text.Substring(0, 1));
             foreach (FileInfo fileinfo in files)
             {
+                string logPath;
+                logPath = label_Path.Text + "\\" + fileinfo.Name;
                 //MessageBox.Show("name: " + fileinfo.Name);
                 encbytes = k.AESEncrypto256(File.ReadAllBytes(fileinfo.FullName), key);
                 File.WriteAllBytes(directory + "\\" + fileinfo.Name + ".enc", encbytes);
+                SslTcpClient.LogRunClient(StatUser.id, logPath, "1", StatUser.outip());
             }
-
             // 3. 디렉토리를 모두 찾아서 재귀함수돌림
             foreach (DirectoryInfo dirItem in dir.GetDirectories())
             {
                 Encrypt_Directory(dirItem.Name, directory, dirItem.FullName);
+                string logPath;
+                logPath = label_Path.Text + "\\" + dirItem.Name + "\\";
+                SslTcpClient.LogRunClient(StatUser.id, logPath, "1", StatUser.outip());
                 /*MessageBox.Show(
                     "filename: " + dirItem.Name + 
                     "\npath: " + directory + 
@@ -417,15 +390,15 @@ namespace InTheForest
             foreach (KeyValuePair<string, string> item in StatUser.Folder)
             {
                 DriveAlphabet = (char)('Z' - i++);
-
-                if (DriveAlphabet.ToString().Equals(drive))
+                
+                if(DriveAlphabet.ToString().Equals(drive))
                 {
-                    result = item.Value;
+                    result = item.Value;    
                 }
                 //MessageBox.Show("진짜키: " + item.Value);
             }
             //MessageBox.Show("return: " + result);
-
+            
             return result;
         }
         private void ListView1_DragDrop(object sender, DragEventArgs e)
@@ -433,7 +406,7 @@ namespace InTheForest
             string filename;
             byte[] encbytes;
             key = GetDrivePassword(label_Path.Text.Substring(0, 1));
-            
+
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
             foreach (string file in files)
@@ -441,14 +414,21 @@ namespace InTheForest
                 FileAttributes attr = File.GetAttributes(file);
                 if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
                 {
+                    string logPath;
+                    logPath = label_Path.Text + "\\" + file + "\\";
                     filename = file.Substring(file.LastIndexOf('\\') + 1);
                     Encrypt_Directory(filename, label_Path.Text, file);
+                    
                 }
                 else
                 {
+                    string logPath;
+                    //MessageBox.Show(file);
+                    logPath = label_Path.Text + file.Replace("\\\\", "\\").Substring(file.LastIndexOf("\\") + 1);
                     filename = Path.GetFileName(file);
                     encbytes = k.AESEncrypto256(File.ReadAllBytes(file), key);
                     File.WriteAllBytes(label_Path.Text + "\\" + filename + ".enc", encbytes);
+                    SslTcpClient.LogRunClient(StatUser.id, logPath, StatUser.state[1], StatUser.outip());
                 }
             }
             SettingListView(label_Path.Text);
@@ -469,14 +449,19 @@ namespace InTheForest
                 {
                     ListViewItem item = listView1.SelectedItems[0];
                     string file = label_Path.Text + "\\" + item.Text;
+                    string logPath;
                     FileAttributes attr = File.GetAttributes(file);
                     // 디렉토리는 하위폴더까지 다지워줘야함
                     if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
                     {
+                        logPath = file + "\\";
                         DirectoryInfo di = new DirectoryInfo(file);
                         di.Delete(true);
+                        SslTcpClient.LogRunClient(StatUser.id, logPath, "4", StatUser.outip());
                     }
                     File.Delete(file);
+                    logPath = file;
+                    SslTcpClient.LogRunClient(StatUser.id, logPath, "4", StatUser.outip());
                     SettingListView(label_Path.Text);
                 }
                 else if (e.KeyCode.Equals(Keys.F5))
@@ -506,39 +491,83 @@ namespace InTheForest
                     FileAttributes attr = File.GetAttributes(file);
                     if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
                     {
-                        cmsmenu_list1.Show(MousePosition.X, MousePosition.Y);
-                        // fol = treeView1.GetNodeAt(e.X, e.Y);
+                        // TODO: 디렉토리 마우스 오른쪽 버튼
+                        string selected = listView1.GetItemAt(e.X, e.Y).Text;
+                        ContextMenuStrip m = new ContextMenuStrip();
+                        ToolStripMenuItem Open = new ToolStripMenuItem("열기", null, new EventHandler(Open_Click));
+                        ToolStripMenuItem Com = new ToolStripMenuItem("압축하기", null, new EventHandler(Com_Click_Directory));
+                        ToolStripMenuItem Link = new ToolStripMenuItem("바로가기", null, new EventHandler(Link_Click));
+                        ToolStripMenuItem Cut = new ToolStripMenuItem("잘라내기", null, new EventHandler(Cut_Click));
+                        ToolStripMenuItem Copy = new ToolStripMenuItem("복사", null, new EventHandler(Copy_Click));
+                        ToolStripMenuItem Del = new ToolStripMenuItem("삭제", null, new EventHandler(Del_Click));
+                        ToolStripMenuItem Rename = new ToolStripMenuItem("이름바꾸기", null, new EventHandler(Rename_Click));
+                        ToolStripMenuItem Prop = new ToolStripMenuItem("속성", null, new EventHandler(Prop_Click));
 
-                        lRename.Click += (senders, es) =>
-                        {
-                            listView1.SelectedItems[0].BeginEdit();
-                        };
+                        m.Items.Add(Open);
+                        m.Items.Add(Com);
+                        m.Items.Add(Link);
+                        m.Items.Add(Cut);
+                        m.Items.Add(Copy);
+                        m.Items.Add(Del);
+                        m.Items.Add(Rename);
+                        m.Items.Add(Prop);
 
-                        lDelete.Click += (senders, es) =>
+
+                        Rename.Text = "이름바꾸기";
+                        Prop.Text = "속성";
+
+                        Del.Click += (senders, es) =>
                         {
                             DirectoryInfo di = new DirectoryInfo(file);
                             di.Delete(true);
                             SettingListView(label_Path.Text);
                         };
+                        Rename.Click += (senders, es) =>
+                        {
+                            listView1.SelectedItems[0].BeginEdit();
+                        };
+                       
+                        m.Show(listView1, new Point(e.X, e.Y));
                     }
                     else
                     {
                         // TODO: 파일 마우스 오른쪽 버튼
                         string selected = listView1.GetItemAt(e.X, e.Y).Text;
+                        ContextMenuStrip m = new ContextMenuStrip();
+                        ToolStripMenuItem Open = new ToolStripMenuItem("열기", null, new EventHandler(Open_Click));
+                        ToolStripMenuItem Edit = new ToolStripMenuItem("편집", null);
+                        ToolStripMenuItem Com = new ToolStripMenuItem("압축하기", null, new EventHandler(Com_Click_Directory));
+                        ToolStripMenuItem Link = new ToolStripMenuItem("연결 프로그램", null);
+                        ToolStripMenuItem Conn = new ToolStripMenuItem("바로가기", null);
+                        ToolStripMenuItem Cut = new ToolStripMenuItem("잘라내기", null);
+                        ToolStripMenuItem Copy = new ToolStripMenuItem("복사", null);
+                        ToolStripMenuItem Del = new ToolStripMenuItem("삭제", null);
+                        ToolStripMenuItem Rename = new ToolStripMenuItem("이름바꾸기", null);
+                        ToolStripMenuItem Prop = new ToolStripMenuItem("속성", null);
 
-                        cmsmenu_list2.Show(MousePosition.X, MousePosition.Y);
+                        m.Items.Add(Open);
+                        m.Items.Add(Edit);
+                        m.Items.Add(Com);
+                        m.Items.Add(Conn);
+                        m.Items.Add(Link);
+                        m.Items.Add(Cut);
+                        m.Items.Add(Copy);
+                        m.Items.Add(Del);
+                        m.Items.Add(Rename);
+                        m.Items.Add(Prop);
 
-                        lfDelete.Click += (senders, es) =>
+                        Del.Click += (senders, es) =>
                         {
                             File.Delete(file);
                             SettingListView(label_Path.Text);
                         };
 
-                        lfRename.Click += (senders, es) =>
+                        Rename.Click += (senders, es) =>
                         {
                             listView1.SelectedItems[0].BeginEdit();
                         };     
                     
+                        m.Show(listView1, new Point(e.X, e.Y));
                     }
                 }
             }
@@ -547,8 +576,31 @@ namespace InTheForest
 
             }
         }
+        private void Prop_Click(object sender, EventArgs e)
+        {
 
-        private void LZip_Click(object sender, EventArgs e)
+        }
+        private void Rename_Click(object sender, EventArgs e)
+        {
+            // 이름바꾸기 로그 삽입
+        }
+        private void Del_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+        private void Copy_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+        private void Cut_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+        private void Link_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+        private void Com_Click_Directory(object sender, EventArgs e)
         {
             string sourcePath, zipPath;
             ListViewItem item = listView1.SelectedItems[0];
@@ -558,10 +610,8 @@ namespace InTheForest
             CompressZipByIO(sourcePath, zipPath);
             SettingListView(label_Path.Text);
         }
-
-        private void LOpen_Click(object sender, EventArgs e)
+        private void Open_Click(object sender, EventArgs e) // 열기 버튼 눌렀을 때 기능
         {
-            //열기
             try
             {
                 //back = label1.Text;
@@ -586,20 +636,21 @@ namespace InTheForest
                         waitforsinglesignal.WaitOne();
                         void Run()
                         {
+                            string logPath;
+                            logPath = label_Path.Text + "\\" + file;
                             decbytes = k.AESDecrypto256(File.ReadAllBytes(file), key);
                             file = file.Replace(".enc", "");
                             File.WriteAllBytes(file, decbytes);
                             waitforsinglesignal.Set();
+                            string filename = Path.GetFileName(file);
+                            process_FileStart.StartInfo.FileName = filename;
+                            process_FileStart.StartInfo.WorkingDirectory = label_Path.Text;
+                            process_FileStart.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
+                            process_FileStart.Start();
+                            SslTcpClient.LogRunClient(StatUser.id, logPath, StatUser.state[0], StatUser.outip());
                         }
-
                         //Thread.Sleep(1000);
                     }
-                    string filename = Path.GetFileName(file);
-                    process_FileStart.StartInfo.FileName = filename;
-                    process_FileStart.StartInfo.WorkingDirectory = label_Path.Text;
-                    process_FileStart.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
-                    process_FileStart.Start();
-
                     SettingListView(label_Path.Text);
                 }
             }
@@ -607,28 +658,6 @@ namespace InTheForest
             {
                 //MessageBox.Show("에러 : " + e1.Message);
             }
-        }
-
-        private void LCut_Click(object sender, EventArgs e)
-        {
-            //잘라내기
-            throw new NotImplementedException();
-        }
-
-        private void LCopy_Click(object sender, EventArgs e)
-        {
-            //복사
-            throw new NotImplementedException();
-        }
-        private void LProp_Click(object sender, EventArgs e)
-        {
-            //속성
-            Show_Property1();
-        }
-
-        private void LfProp_Click(object sender, EventArgs e)
-        {
-            Show_Property1();
         }
         private void ListView1_MouseUp(object sender, MouseEventArgs e)
         {
@@ -784,14 +813,6 @@ namespace InTheForest
                 select = e.Node.FullPath;
                 cmsTrayMenu.Show(MousePosition.X, MousePosition.Y);
                 fol = treeView1.GetNodeAt(e.X, e.Y);
-
-                Delete.Click += (senders, es) =>
-                {
-                    treeView1.BeginUpdate();
-                    DirectoryInfo di = new DirectoryInfo(select);
-                    di.Delete(true);
-                    treeView1.EndUpdate();
-                };
             }
         }
 
@@ -807,7 +828,29 @@ namespace InTheForest
 
         private void Rename_Click_1(object sender, EventArgs e)
         {
-            // 이름바꾸기
+            // 이름바꾸기 로그 삽입
+        }
+
+        private void New_Click(object sender, EventArgs e)
+        {
+            // 새로만들기
+        }
+
+        private void Delete_Click(object sender, EventArgs e)
+        {
+            select = select.Replace("\\\\", "\\");
+            DirectoryInfo di = new DirectoryInfo(select);
+            MessageBox.Show(select);
+            if (di.Exists == true)
+            {
+                if (select.Contains(":")) MessageBox.Show("삭제가 불가능한 디렉토리 입니다.");
+                else
+                {
+                    string logPath = di.FullName + "\\";
+                    di.Delete();
+                    SslTcpClient.LogRunClient(StatUser.id, logPath, "4", StatUser.outip());
+                }  
+            }
         }
         public long GetDirectorySize(string directoryPath)
         {
@@ -827,7 +870,6 @@ namespace InTheForest
             else
                 return directorySize;
         }
-        //트리뷰속성창
         private void Show_Property()
         {
             //속성창 띄우기
@@ -853,49 +895,6 @@ namespace InTheForest
             string type = dri.Attributes.ToString();
             string loca = select;
             pd.properties(name, exten, loca, size, crea, write, type);
-        }
-        //리스트뷰 속성창
-        private void Show_Property1()
-        {
-            //속성창 띄우기
-            property_dialog pd = new property_dialog();
-            int indexnum = listView1.FocusedItem.Index;
-            string name = listView1.Items[indexnum].SubItems[0].Text;
-            string exten;
-            long size;
-            string crea;
-            string write;
-            string type;
-            string loca;
-            string item = "";
-            if (label_Path.Text.Equals(@"Z:\"))
-                item = @"Z:\" + name;
-            else
-                item = label_Path.Text + @"\" + name;
-
-            FileInfo file = new FileInfo(item);
-            DirectoryInfo dri = new DirectoryInfo(item);
-
-            if (name.Contains("."))
-            {
-                exten = file.Extension;
-                size = file.Length;
-                crea = file.CreationTime.ToString();
-                write = file.LastWriteTime.ToString();
-                type = file.Attributes.ToString();
-                loca = item;
-                pd.properties(name, exten, loca, size, crea, write, type);
-            }
-            else
-            {
-                exten = "파일 폴더";
-                size = GetDirectorySize(item);
-                crea = dri.CreationTime.ToString();
-                write = dri.LastWriteTime.ToString();
-                type = dri.Attributes.ToString();
-                loca = item;
-                pd.properties(name, exten, loca, size, crea, write, type);
-            }
         }
 
         private void Prop_Click_1(object sender, EventArgs e)
@@ -965,23 +964,9 @@ namespace InTheForest
             }
         }
 
-        private void TreeView1_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
+        private void ListView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                if (e.Label == null)
-                    return;
-                else
-                {/*
-                    ListViewItem item = listView1.SelectedItems[0];
-                    string Name = label_Path.Text + "\\" + item.Text;
-                    string newName = label_Path.Text + "\\" + e.Label;
-                    Rename_(Name, newName);*/
-                }
-            }
-            catch (Exception exc)
-            {
-            }
+
         }
 
         /// <summary>

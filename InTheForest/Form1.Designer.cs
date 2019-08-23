@@ -49,28 +49,11 @@
             this.Folder = new System.Windows.Forms.ToolStripMenuItem();
             this.Delete = new System.Windows.Forms.ToolStripMenuItem();
             this.Prop = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmsmenu_list1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.lOpen = new System.Windows.Forms.ToolStripMenuItem();
-            this.lZip = new System.Windows.Forms.ToolStripMenuItem();
-            this.lCut = new System.Windows.Forms.ToolStripMenuItem();
-            this.lCopy = new System.Windows.Forms.ToolStripMenuItem();
-            this.lDelete = new System.Windows.Forms.ToolStripMenuItem();
-            this.lRename = new System.Windows.Forms.ToolStripMenuItem();
-            this.lProp = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmsmenu_list2 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.lfOpen = new System.Windows.Forms.ToolStripMenuItem();
-            this.lfCut = new System.Windows.Forms.ToolStripMenuItem();
-            this.lfCopy = new System.Windows.Forms.ToolStripMenuItem();
-            this.lfDelete = new System.Windows.Forms.ToolStripMenuItem();
-            this.lfRename = new System.Windows.Forms.ToolStripMenuItem();
-            this.lfProp = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.cmsTrayMenu.SuspendLayout();
-            this.cmsmenu_list1.SuspendLayout();
-            this.cmsmenu_list2.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -154,7 +137,6 @@
             this.treeView1.SelectedImageIndex = 0;
             this.treeView1.Size = new System.Drawing.Size(249, 402);
             this.treeView1.TabIndex = 0;
-            this.treeView1.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.TreeView1_AfterLabelEdit);
             this.treeView1.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.TreeView1_BeforeExpand);
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeView1_AfterSelect);
             this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TreeView1_NodeMouseClick);
@@ -191,6 +173,7 @@
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.listView1_AfterLabelEdit);
+            this.listView1.SelectedIndexChanged += new System.EventHandler(this.ListView1_SelectedIndexChanged);
             this.listView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.ListView1_DragDrop);
             this.listView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.ListView1_DragEnter);
             this.listView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListView1_KeyDown);
@@ -289,6 +272,7 @@
             this.New.Name = "New";
             this.New.Size = new System.Drawing.Size(134, 22);
             this.New.Text = "새로만들기";
+            this.New.Click += new System.EventHandler(this.New_Click);
             // 
             // Folder
             // 
@@ -302,6 +286,7 @@
             this.Delete.Name = "Delete";
             this.Delete.Size = new System.Drawing.Size(134, 22);
             this.Delete.Text = "삭제";
+            this.Delete.Click += new System.EventHandler(this.Delete_Click);
             // 
             // Prop
             // 
@@ -309,115 +294,6 @@
             this.Prop.Size = new System.Drawing.Size(134, 22);
             this.Prop.Text = "속성";
             this.Prop.Click += new System.EventHandler(this.Prop_Click_1);
-            // 
-            // cmsmenu_list1
-            // 
-            this.cmsmenu_list1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lOpen,
-            this.lZip,
-            this.lCut,
-            this.lCopy,
-            this.lDelete,
-            this.lRename,
-            this.lProp});
-            this.cmsmenu_list1.Name = "cmsmenu_list1";
-            this.cmsmenu_list1.Size = new System.Drawing.Size(135, 158);
-            // 
-            // lOpen
-            // 
-            this.lOpen.Name = "lOpen";
-            this.lOpen.Size = new System.Drawing.Size(134, 22);
-            this.lOpen.Text = "열기";
-            this.lOpen.Click += new System.EventHandler(this.LOpen_Click);
-            // 
-            // lZip
-            // 
-            this.lZip.Name = "lZip";
-            this.lZip.Size = new System.Drawing.Size(134, 22);
-            this.lZip.Text = "압축하기";
-            this.lZip.Click += new System.EventHandler(this.LZip_Click);
-            // 
-            // lCut
-            // 
-            this.lCut.Name = "lCut";
-            this.lCut.Size = new System.Drawing.Size(134, 22);
-            this.lCut.Text = "잘라내기";
-            this.lCut.Click += new System.EventHandler(this.LCut_Click);
-            // 
-            // lCopy
-            // 
-            this.lCopy.Name = "lCopy";
-            this.lCopy.Size = new System.Drawing.Size(134, 22);
-            this.lCopy.Text = "복사";
-            this.lCopy.Click += new System.EventHandler(this.LCopy_Click);
-            // 
-            // lDelete
-            // 
-            this.lDelete.Name = "lDelete";
-            this.lDelete.Size = new System.Drawing.Size(134, 22);
-            this.lDelete.Text = "삭제";
-            // 
-            // lRename
-            // 
-            this.lRename.Name = "lRename";
-            this.lRename.Size = new System.Drawing.Size(134, 22);
-            this.lRename.Text = "이름바꾸기";
-            // 
-            // lProp
-            // 
-            this.lProp.Name = "lProp";
-            this.lProp.Size = new System.Drawing.Size(134, 22);
-            this.lProp.Text = "속성";
-            this.lProp.Click += new System.EventHandler(this.LProp_Click);
-            // 
-            // cmsmenu_list2
-            // 
-            this.cmsmenu_list2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lfOpen,
-            this.lfCut,
-            this.lfCopy,
-            this.lfDelete,
-            this.lfRename,
-            this.lfProp});
-            this.cmsmenu_list2.Name = "cmsmenu_list2";
-            this.cmsmenu_list2.Size = new System.Drawing.Size(181, 158);
-            // 
-            // lfOpen
-            // 
-            this.lfOpen.Name = "lfOpen";
-            this.lfOpen.Size = new System.Drawing.Size(180, 22);
-            this.lfOpen.Text = "열기";
-            // 
-            // lfCut
-            // 
-            this.lfCut.Name = "lfCut";
-            this.lfCut.Size = new System.Drawing.Size(180, 22);
-            this.lfCut.Text = "잘라내기";
-            // 
-            // lfCopy
-            // 
-            this.lfCopy.Name = "lfCopy";
-            this.lfCopy.Size = new System.Drawing.Size(180, 22);
-            this.lfCopy.Text = "복사";
-            // 
-            // lfDelete
-            // 
-            this.lfDelete.Name = "lfDelete";
-            this.lfDelete.Size = new System.Drawing.Size(180, 22);
-            this.lfDelete.Text = "삭제";
-            // 
-            // lfRename
-            // 
-            this.lfRename.Name = "lfRename";
-            this.lfRename.Size = new System.Drawing.Size(180, 22);
-            this.lfRename.Text = "이름바꾸기";
-            // 
-            // lfProp
-            // 
-            this.lfProp.Name = "lfProp";
-            this.lfProp.Size = new System.Drawing.Size(180, 22);
-            this.lfProp.Text = "속성";
-            this.lfProp.Click += new System.EventHandler(this.LfProp_Click);
             // 
             // Form1
             // 
@@ -436,8 +312,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.cmsTrayMenu.ResumeLayout(false);
-            this.cmsmenu_list1.ResumeLayout(false);
-            this.cmsmenu_list2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -463,21 +337,6 @@
         private System.Windows.Forms.ToolStripMenuItem Folder;
         private System.Windows.Forms.ToolStripMenuItem Delete;
         private System.Windows.Forms.ToolStripMenuItem Prop;
-        private System.Windows.Forms.ContextMenuStrip cmsmenu_list1;
-        private System.Windows.Forms.ToolStripMenuItem lOpen;
-        private System.Windows.Forms.ToolStripMenuItem lZip;
-        private System.Windows.Forms.ToolStripMenuItem lCut;
-        private System.Windows.Forms.ToolStripMenuItem lCopy;
-        private System.Windows.Forms.ToolStripMenuItem lDelete;
-        private System.Windows.Forms.ToolStripMenuItem lRename;
-        private System.Windows.Forms.ToolStripMenuItem lProp;
-        private System.Windows.Forms.ContextMenuStrip cmsmenu_list2;
-        private System.Windows.Forms.ToolStripMenuItem lfOpen;
-        private System.Windows.Forms.ToolStripMenuItem lfCut;
-        private System.Windows.Forms.ToolStripMenuItem lfCopy;
-        private System.Windows.Forms.ToolStripMenuItem lfDelete;
-        private System.Windows.Forms.ToolStripMenuItem lfRename;
-        private System.Windows.Forms.ToolStripMenuItem lfProp;
     }
 }
 

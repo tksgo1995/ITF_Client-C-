@@ -20,11 +20,6 @@ namespace InTheForest
 
         }
 
-        private void Lbl_prop_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void Btn_cancel_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -55,13 +50,8 @@ namespace InTheForest
             this.Text = name + " 속성";
             txt_name.Text = name;
             lbl_prop.Text = exten;
-            if (exten.Equals(".txt"))
-                //this.pictureBox1.Image = Properties.Resources.Image1;
             lbl_loc.Text = loca;
-            if (name.Contains("."))
-                lbl_size.Text = size.ToString() + " Bytes";
-            else
-                lbl_size.Text = size.ToString() + " KB";
+            lbl_size.Text = size.ToString() + " KB";
             lbl_crea.Text = create;
             lbl_write.Text = write;
             lbl_type.Text = type;
