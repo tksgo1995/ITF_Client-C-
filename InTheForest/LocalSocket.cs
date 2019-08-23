@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace InTheForest
 {
-    class LocalSocket
+    public class LocalSocket
     {
         TcpClient clientSocket;
         NetworkStream stream;
@@ -26,7 +26,7 @@ namespace InTheForest
                 stream.Read(buffer, 0, 2048);
                 us = new USER_STAT(Encoding.UTF8.GetString(buffer));
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 MessageBox.Show("socketerror: " + e.Message);
             }

@@ -341,11 +341,5 @@ namespace InTheForest_Background
             else value = 0;
             UpdateRegistry("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer", value, "NoViewOnDrive", Registry.LocalMachine);
         }
-
-        private void TextBox2_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-                Button_Confirm_Click(sender, e);
-        }
     }
 }
