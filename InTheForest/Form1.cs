@@ -28,7 +28,7 @@ namespace InTheForest
         private static EventWaitHandle waitforsinglesignal;
         private int mask;
         csNetDrive netDrive;
-        public string select;
+        public string select, fullPath;
         TreeNode fol;
 
         public Form1()
@@ -69,12 +69,12 @@ namespace InTheForest
             int i = 0;
             foreach (KeyValuePair<string, string> item in StatUser.Folder)
             {
-                if (item.Key == "All") Folder = @"\\52.79.226.152\" + StatUser.id;
-                else Folder = @"\\52.79.226.152\" + item.Key;
-                ID = StatUser.id;
-                Password = StatUser.password;
-                DriveAlphabet = (char)('Z' - i++) + ":";
-                netDrive.setRemoteConnection(Folder, ID, Password, DriveAlphabet);
+                 if (item.Key == "All") Folder = @"\\52.79.226.152\" + StatUser.id;
+                 else Folder = @"\\52.79.226.152\" + item.Key;
+                 ID = StatUser.id;
+                 Password = StatUser.password;
+                 DriveAlphabet = (char)('Z' - i++) + ":";
+                 netDrive.setRemoteConnection(Folder, ID, Password, DriveAlphabet);
             }
         }
         private void Form1_Load(object sender, EventArgs e)
@@ -617,8 +617,26 @@ namespace InTheForest
 
         private void LCopy_Click(object sender, EventArgs e)
         {
-            //복사
-            throw new NotImplementedException();
+            int indexnum = listView1.FocusedItem.Index;
+            string name = listView1.Items[indexnum].SubItems[0].Text;
+            if (name == @"Z:\")
+                name = @"Z:\";
+            else
+                name = label_Path + "\\" + name;
+            DirectoryCopy(name);
+        }
+        void DirectoryCopy(string source)
+        {
+            DirectoryInfo dir = new DirectoryInfo(source);
+            if (!dir.Exists)
+            {
+                {
+                    throw new DirectoryNotFoundException(
+                        "폴더를 찾을 수 없거나 없는 폴더입니다."
+                        + source);
+                }
+            }
+
         }
         private void LProp_Click(object sender, EventArgs e)
         {
@@ -779,18 +797,21 @@ namespace InTheForest
 
         private void TreeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+
+            if (e.Button.Equals(MouseButtons.Right))
             {
                 select = e.Node.FullPath;
+                fullPath = select.Replace("Z:\\\\", "Z:\\");
                 cmsTrayMenu.Show(MousePosition.X, MousePosition.Y);
                 fol = treeView1.GetNodeAt(e.X, e.Y);
 
-                Delete.Click += (senders, es) =>
+                Rename.Click += (senders, es) =>
                 {
-                    treeView1.BeginUpdate();
-                    DirectoryInfo di = new DirectoryInfo(select);
-                    di.Delete(true);
-                    treeView1.EndUpdate();
+                    treeView1.LabelEdit = true;
+                    if (!e.Node.IsEditing)
+                    {
+                        e.Node.BeginEdit();
+                    }
                 };
             }
         }
@@ -833,25 +854,13 @@ namespace InTheForest
             //속성창 띄우기
             property_dialog pd = new property_dialog();
             DirectoryInfo dri = new DirectoryInfo(label_Path.Text);
-            string name = "";
-            string[] nm = select.Split('\\');
-            for (int i = 0; i < nm.Length; i++)
-            {
-                if (select.Equals(@"C:\"))
-                    name = @"C:\";
-                else if (select.Equals(@"D:\"))
-                    name = @"D:\";
-                else if (select.Equals(@"Z:\"))
-                    name = @"Z:\";
-                else
-                    name = nm[i];
-            }
+            string name = fol.Text;
             string exten = "파일 폴더";
             long size = GetDirectorySize(select);
             string crea = dri.CreationTime.ToString();
             string write = dri.LastWriteTime.ToString();
             string type = dri.Attributes.ToString();
-            string loca = select;
+            string loca = fullPath;
             pd.properties(name, exten, loca, size, crea, write, type);
         }
         //리스트뷰 속성창
@@ -969,14 +978,19 @@ namespace InTheForest
         {
             try
             {
-                if (e.Label == null)
+                if (e.Label == null) 
                     return;
                 else
-                {/*
-                    ListViewItem item = listView1.SelectedItems[0];
-                    string Name = label_Path.Text + "\\" + item.Text;
-                    string newName = label_Path.Text + "\\" + e.Label;
-                    Rename_(Name, newName);*/
+                {
+                    string Name = fullPath;
+                    string newName = "";
+                    string[] nm = fullPath.Split('\\');
+                    for(int i = 0; i<nm.Length-1; i++)
+                    {
+                        newName += nm[i];
+                    }
+                    newName += e.Label;
+                    Rename_(Name, newName);
                 }
             }
             catch (Exception exc)

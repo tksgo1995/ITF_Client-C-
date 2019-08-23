@@ -47,7 +47,6 @@
             this.Rename = new System.Windows.Forms.ToolStripMenuItem();
             this.New = new System.Windows.Forms.ToolStripMenuItem();
             this.Folder = new System.Windows.Forms.ToolStripMenuItem();
-            this.Delete = new System.Windows.Forms.ToolStripMenuItem();
             this.Prop = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsmenu_list1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.lOpen = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,6 +63,7 @@
             this.lfDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.lfRename = new System.Windows.Forms.ToolStripMenuItem();
             this.lfProp = new System.Windows.Forms.ToolStripMenuItem();
+            this.lPaste = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -255,10 +255,9 @@
             this.Open,
             this.Rename,
             this.New,
-            this.Delete,
             this.Prop});
             this.cmsTrayMenu.Name = "cmsTrayMenu";
-            this.cmsTrayMenu.Size = new System.Drawing.Size(135, 136);
+            this.cmsTrayMenu.Size = new System.Drawing.Size(135, 114);
             // 
             // Expand
             // 
@@ -297,12 +296,6 @@
             this.Folder.Text = "폴더";
             this.Folder.Click += new System.EventHandler(this.Folder_Click);
             // 
-            // Delete
-            // 
-            this.Delete.Name = "Delete";
-            this.Delete.Size = new System.Drawing.Size(134, 22);
-            this.Delete.Text = "삭제";
-            // 
             // Prop
             // 
             this.Prop.Name = "Prop";
@@ -317,56 +310,57 @@
             this.lZip,
             this.lCut,
             this.lCopy,
+            this.lPaste,
             this.lDelete,
             this.lRename,
             this.lProp});
             this.cmsmenu_list1.Name = "cmsmenu_list1";
-            this.cmsmenu_list1.Size = new System.Drawing.Size(135, 158);
+            this.cmsmenu_list1.Size = new System.Drawing.Size(181, 202);
             // 
             // lOpen
             // 
             this.lOpen.Name = "lOpen";
-            this.lOpen.Size = new System.Drawing.Size(134, 22);
+            this.lOpen.Size = new System.Drawing.Size(180, 22);
             this.lOpen.Text = "열기";
             this.lOpen.Click += new System.EventHandler(this.LOpen_Click);
             // 
             // lZip
             // 
             this.lZip.Name = "lZip";
-            this.lZip.Size = new System.Drawing.Size(134, 22);
+            this.lZip.Size = new System.Drawing.Size(180, 22);
             this.lZip.Text = "압축하기";
             this.lZip.Click += new System.EventHandler(this.LZip_Click);
             // 
             // lCut
             // 
             this.lCut.Name = "lCut";
-            this.lCut.Size = new System.Drawing.Size(134, 22);
+            this.lCut.Size = new System.Drawing.Size(180, 22);
             this.lCut.Text = "잘라내기";
             this.lCut.Click += new System.EventHandler(this.LCut_Click);
             // 
             // lCopy
             // 
             this.lCopy.Name = "lCopy";
-            this.lCopy.Size = new System.Drawing.Size(134, 22);
+            this.lCopy.Size = new System.Drawing.Size(180, 22);
             this.lCopy.Text = "복사";
             this.lCopy.Click += new System.EventHandler(this.LCopy_Click);
             // 
             // lDelete
             // 
             this.lDelete.Name = "lDelete";
-            this.lDelete.Size = new System.Drawing.Size(134, 22);
+            this.lDelete.Size = new System.Drawing.Size(180, 22);
             this.lDelete.Text = "삭제";
             // 
             // lRename
             // 
             this.lRename.Name = "lRename";
-            this.lRename.Size = new System.Drawing.Size(134, 22);
+            this.lRename.Size = new System.Drawing.Size(180, 22);
             this.lRename.Text = "이름바꾸기";
             // 
             // lProp
             // 
             this.lProp.Name = "lProp";
-            this.lProp.Size = new System.Drawing.Size(134, 22);
+            this.lProp.Size = new System.Drawing.Size(180, 22);
             this.lProp.Text = "속성";
             this.lProp.Click += new System.EventHandler(this.LProp_Click);
             // 
@@ -380,44 +374,50 @@
             this.lfRename,
             this.lfProp});
             this.cmsmenu_list2.Name = "cmsmenu_list2";
-            this.cmsmenu_list2.Size = new System.Drawing.Size(181, 158);
+            this.cmsmenu_list2.Size = new System.Drawing.Size(135, 136);
             // 
             // lfOpen
             // 
             this.lfOpen.Name = "lfOpen";
-            this.lfOpen.Size = new System.Drawing.Size(180, 22);
+            this.lfOpen.Size = new System.Drawing.Size(134, 22);
             this.lfOpen.Text = "열기";
             // 
             // lfCut
             // 
             this.lfCut.Name = "lfCut";
-            this.lfCut.Size = new System.Drawing.Size(180, 22);
+            this.lfCut.Size = new System.Drawing.Size(134, 22);
             this.lfCut.Text = "잘라내기";
             // 
             // lfCopy
             // 
             this.lfCopy.Name = "lfCopy";
-            this.lfCopy.Size = new System.Drawing.Size(180, 22);
+            this.lfCopy.Size = new System.Drawing.Size(134, 22);
             this.lfCopy.Text = "복사";
             // 
             // lfDelete
             // 
             this.lfDelete.Name = "lfDelete";
-            this.lfDelete.Size = new System.Drawing.Size(180, 22);
+            this.lfDelete.Size = new System.Drawing.Size(134, 22);
             this.lfDelete.Text = "삭제";
             // 
             // lfRename
             // 
             this.lfRename.Name = "lfRename";
-            this.lfRename.Size = new System.Drawing.Size(180, 22);
+            this.lfRename.Size = new System.Drawing.Size(134, 22);
             this.lfRename.Text = "이름바꾸기";
             // 
             // lfProp
             // 
             this.lfProp.Name = "lfProp";
-            this.lfProp.Size = new System.Drawing.Size(180, 22);
+            this.lfProp.Size = new System.Drawing.Size(134, 22);
             this.lfProp.Text = "속성";
             this.lfProp.Click += new System.EventHandler(this.LfProp_Click);
+            // 
+            // lPaste
+            // 
+            this.lPaste.Name = "lPaste";
+            this.lPaste.Size = new System.Drawing.Size(180, 22);
+            this.lPaste.Text = "붙여넣기";
             // 
             // Form1
             // 
@@ -461,7 +461,6 @@
         private System.Windows.Forms.ToolStripMenuItem Rename;
         private System.Windows.Forms.ToolStripMenuItem New;
         private System.Windows.Forms.ToolStripMenuItem Folder;
-        private System.Windows.Forms.ToolStripMenuItem Delete;
         private System.Windows.Forms.ToolStripMenuItem Prop;
         private System.Windows.Forms.ContextMenuStrip cmsmenu_list1;
         private System.Windows.Forms.ToolStripMenuItem lOpen;
@@ -478,6 +477,7 @@
         private System.Windows.Forms.ToolStripMenuItem lfDelete;
         private System.Windows.Forms.ToolStripMenuItem lfRename;
         private System.Windows.Forms.ToolStripMenuItem lfProp;
+        private System.Windows.Forms.ToolStripMenuItem lPaste;
     }
 }
 
