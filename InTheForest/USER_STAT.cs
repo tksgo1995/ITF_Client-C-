@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace InTheForest
 {
-    public class USER_STAT
+    class USER_STAT
     {
         public string KUser { get; set; }
         public int FolderPolicyCount { get; set; }
@@ -23,7 +22,7 @@ namespace InTheForest
             FolderPolicyCount = int.Parse(afterbuf[1]);
             id = afterbuf[2];
             password = afterbuf[3];
-            for(int i = 4; i < FolderPolicyCount + 6; i = i + 2)
+            for (int i = 4; i < FolderPolicyCount + 6; i = i + 2)
             {
                 Folder.Add(afterbuf[i], afterbuf[i + 1]);
             }

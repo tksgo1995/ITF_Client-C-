@@ -129,7 +129,7 @@
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(31, 15);
             this.label11.TabIndex = 12;
-            this.label11.Text = "유형";
+            this.label11.Text = "특성";
             // 
             // lbl_write
             // 
@@ -229,6 +229,7 @@
             this.lbl_prop.Size = new System.Drawing.Size(39, 15);
             this.lbl_prop.TabIndex = 3;
             this.lbl_prop.Text = "label2";
+            this.lbl_prop.Click += new System.EventHandler(this.Lbl_prop_Click);
             // 
             // pictureBox1
             // 

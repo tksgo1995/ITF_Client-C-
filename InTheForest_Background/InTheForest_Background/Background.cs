@@ -52,8 +52,8 @@ namespace InTheForest_Background
         // 타이머 60000 = 1분, 1000 = 1초
         private void Timer_ScreenSaver_Tick(object sender, EventArgs e)
         {
-            if(Ss.NSSaver < 10 && Ss.NSFlag == 0) Ss.NSSaver++;
-            if (Ss.NSSaver == 10 && Ss.NSFlag == 0)
+            if(Ss.NSSaver < 600000 && Ss.NSFlag == 0) Ss.NSSaver++;
+            if (Ss.NSSaver == 600000 && Ss.NSFlag == 0)
             {
                 Ss = new ScreenSaver();
                 Ss.Show();
