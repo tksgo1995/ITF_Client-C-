@@ -54,7 +54,7 @@ namespace InTheForest
         private bool IsAdministrator()
         {
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
-            if(identity != null)
+            if (identity != null)
             {
                 WindowsPrincipal principal = new WindowsPrincipal(identity);
                 return principal.IsInRole(WindowsBuiltInRole.Administrator);
@@ -69,12 +69,12 @@ namespace InTheForest
             int i = 0;
             foreach (KeyValuePair<string, string> item in StatUser.Folder)
             {
-                 if (item.Key == "All") Folder = @"\\52.79.226.152\" + StatUser.id;
-                 else Folder = @"\\52.79.226.152\" + item.Key;
-                 ID = StatUser.id;
-                 Password = StatUser.password;
-                 DriveAlphabet = (char)('Z' - i++) + ":";
-                 netDrive.setRemoteConnection(Folder, ID, Password, DriveAlphabet);
+                if (item.Key == "All") Folder = @"\\52.79.226.152\" + StatUser.id;
+                else Folder = @"\\52.79.226.152\" + item.Key;
+                ID = StatUser.id;
+                Password = StatUser.password;
+                DriveAlphabet = (char)('Z' - i++) + ":";
+                netDrive.setRemoteConnection(Folder, ID, Password, DriveAlphabet);
             }
         }
         private void Form1_Load(object sender, EventArgs e)
@@ -190,7 +190,15 @@ namespace InTheForest
                     lsvitem.Text = fileinfo.Name;
 
                     listView1.Items.Add(lsvitem);
-                    listView1.Items[Count].SubItems.Add(fileinfo.LastWriteTime.ToString());
+
+                    if (fileinfo.LastWriteTime != null)
+                    {
+                        listView1.Items[Count].SubItems.Add(fileinfo.LastWriteTime.ToString());
+                    }
+                    else
+                    {
+                        listView1.Items[Count].SubItems.Add(fileinfo.CreationTime.ToString());
+                    }
                     listView1.Items[Count].SubItems.Add(fileinfo.Attributes.ToString());
                     listView1.Items[Count].SubItems.Add(fileinfo.Length + " Bytes");
                     Count++;
@@ -300,28 +308,40 @@ namespace InTheForest
                         waitforsinglesignal.WaitOne();
                         void Run()
                         {
-                            decbytes = k.AESDecrypto256(File.ReadAllBytes(file), key);
-                            file = file.Replace(".enc", "");
-                            file = label_Path.Text.Substring(0, label_Path.Text.IndexOf("\\")) + "\\.aa\\" + file.Substring(file.LastIndexOf("\\") + 1);
-                            FileStream fs = File.Create(file);
-                            fs.Close();
-                            File.WriteAllBytes(file, decbytes);
-                            waitforsinglesignal.Set();
+                            try
+                            {
+                                string logPath;
+                                logPath = label_Path.Text + file.Substring(file.IndexOf("\\") + 1);
+                                MessageBox.Show(logPath);
+
+                                key = GetDrivePassword(label_Path.Text.Substring(0, 1));
+                                decbytes = k.AESDecrypto256(File.ReadAllBytes(file), key);
+                                file = file.Replace(".enc", "");
+                                file = label_Path.Text.Substring(0, label_Path.Text.IndexOf("\\")) + "\\.a\\" + file.Substring(file.LastIndexOf("\\") + 1);
+                                FileStream fs = File.Create(file);
+                                fs.Close();
+                                File.WriteAllBytes(file, decbytes);
+                                waitforsinglesignal.Set();
+                                string filename = Path.GetFileName(file);
+                                process_FileStart.StartInfo.FileName = filename;
+                                process_FileStart.StartInfo.WorkingDirectory = label_Path.Text.Substring(0, label_Path.Text.IndexOf("\\")) + "\\.a\\";
+                                process_FileStart.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
+                                FileInfo fi = new FileInfo(process_FileStart.StartInfo.WorkingDirectory + "\\" + process_FileStart.StartInfo.FileName);
+                                process_FileStart.Start();
+                                SslTcpClient.LogRunClient(StatUser.id, logPath, StatUser.state[0], StatUser.outip());
+                            }
+                            catch (Exception e1)
+                            {
+                                MessageBox.Show(e1.Message);
+                            }
                         }
                     }
-                    string filename = Path.GetFileName(file);
-                    process_FileStart.StartInfo.FileName = filename;
-                    process_FileStart.StartInfo.WorkingDirectory = label_Path.Text.Substring(0, label_Path.Text.IndexOf("\\")) + "\\.aa\\";
-                    process_FileStart.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
-                    FileInfo fi = new FileInfo(process_FileStart.StartInfo.WorkingDirectory + "\\" + process_FileStart.StartInfo.FileName);
-                    process_FileStart.Start();
-                    
                     SettingListView(label_Path.Text);
                 }
             }
             catch (Exception e1)
             {
-               // MessageBox.Show("에러 : " + e1.Message);
+                //MessageBox.Show("에러 : " + e1.Message);
             }
         }
         private void TreeView1_BeforeExpand(object sender, TreeViewCancelEventArgs e)
@@ -389,18 +409,23 @@ namespace InTheForest
             DirectoryInfo dir = new DirectoryInfo(copyfilepath);
             FileInfo[] files = dir.GetFiles();
             byte[] encbytes;
-
+            key = GetDrivePassword(label_Path.Text.Substring(0, 1));
             foreach (FileInfo fileinfo in files)
             {
+                string logPath;
+                logPath = label_Path.Text + "\\" + fileinfo.Name;
                 //MessageBox.Show("name: " + fileinfo.Name);
                 encbytes = k.AESEncrypto256(File.ReadAllBytes(fileinfo.FullName), key);
                 File.WriteAllBytes(directory + "\\" + fileinfo.Name + ".enc", encbytes);
+                SslTcpClient.LogRunClient(StatUser.id, logPath, "1", StatUser.outip());
             }
-
             // 3. 디렉토리를 모두 찾아서 재귀함수돌림
             foreach (DirectoryInfo dirItem in dir.GetDirectories())
             {
                 Encrypt_Directory(dirItem.Name, directory, dirItem.FullName);
+                string logPath;
+                logPath = label_Path.Text + "\\" + dirItem.Name + "\\";
+                SslTcpClient.LogRunClient(StatUser.id, logPath, "1", StatUser.outip());
                 /*MessageBox.Show(
                     "filename: " + dirItem.Name + 
                     "\npath: " + directory + 
@@ -441,14 +466,20 @@ namespace InTheForest
                 FileAttributes attr = File.GetAttributes(file);
                 if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
                 {
+                    string logPath;
+                    logPath = label_Path.Text + "\\" + file + "\\";
                     filename = file.Substring(file.LastIndexOf('\\') + 1);
                     Encrypt_Directory(filename, label_Path.Text, file);
                 }
                 else
                 {
+                    string logPath;
+                    //MessageBox.Show(file);
+                    logPath = label_Path.Text + file.Replace("\\\\", "\\").Substring(file.LastIndexOf("\\") + 1);
                     filename = Path.GetFileName(file);
                     encbytes = k.AESEncrypto256(File.ReadAllBytes(file), key);
                     File.WriteAllBytes(label_Path.Text + "\\" + filename + ".enc", encbytes);
+                    SslTcpClient.LogRunClient(StatUser.id, logPath, StatUser.state[1], StatUser.outip());
                 }
             }
             SettingListView(label_Path.Text);
@@ -469,21 +500,26 @@ namespace InTheForest
                 {
                     ListViewItem item = listView1.SelectedItems[0];
                     string file = label_Path.Text + "\\" + item.Text;
+                    string logPath;
                     FileAttributes attr = File.GetAttributes(file);
                     // 디렉토리는 하위폴더까지 다지워줘야함
                     if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
                     {
+                        logPath = file + "\\";
                         DirectoryInfo di = new DirectoryInfo(file);
                         di.Delete(true);
+                        SslTcpClient.LogRunClient(StatUser.id, logPath, "4", StatUser.outip());
                     }
                     File.Delete(file);
+                    logPath = file;
+                    SslTcpClient.LogRunClient(StatUser.id, logPath, "4", StatUser.outip());
                     SettingListView(label_Path.Text);
                 }
                 else if (e.KeyCode.Equals(Keys.F5))
                 {
                     SettingListView(label_Path.Text);
                 }
-                else if(e.KeyData == Keys.F2)
+                else if (e.KeyData == Keys.F2)
                 {
                     listView1.SelectedItems[0].BeginEdit();
                 }
