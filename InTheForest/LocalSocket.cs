@@ -28,7 +28,7 @@ namespace InTheForest
             }
             catch (Exception e)
             {
-                MessageBox.Show("socketerror: " + e.InnerException.Message);
+                //MessageBox.Show("socketerror: " + e.InnerException.Message);
             }
         }
     }

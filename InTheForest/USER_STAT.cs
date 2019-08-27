@@ -92,7 +92,7 @@ namespace InTheForest
         {
             // Create a TCP/IP client socket.
             // machineName is the host running the server application.
-            TcpClient client = new TcpClient("52.79.226.152", 9003);//ip와 포트를 입력하여 클라이언트 동작
+            TcpClient client = new TcpClient("15.164.170.79", 9003);//ip와 포트를 입력하여 클라이언트 동작
             Console.WriteLine("Client connected.");
             // Create an SSL stream that will close the client's stream.
             SslStream sslStream = new SslStream(//SSLStream 을 통해서 GetStream()함수 동작 

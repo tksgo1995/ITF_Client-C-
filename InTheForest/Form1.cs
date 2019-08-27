@@ -214,72 +214,6 @@ namespace InTheForest
                 //MessageBox.Show("에러 발생 : " + ex.Message);
             }
         }
-        /*--------------------------------------
-           키값 생성 및 레지스트리 등록
-           -------------------------------------*/
-        public bool GET_BIT(int x, int y) // 서버에서 시스템 정책 마스크값 가져오면 한비트씩 빼내기
-        {
-            if ((((x) >> (y)) & 0x01) == 1) return true;
-            return false;
-        }
-        public void UpdateRegistry(string root, int value, string name, RegistryKey regKey) // 정책에 맞게 레지스트리 업데이트
-        {
-            RegistryKey reg = regKey.OpenSubKey(root, true);
-            if (reg == null)
-            {
-                // 해당이름으로 서브키 생성
-                reg = Registry.CurrentUser.CreateSubKey(root);
-            }
-            reg.SetValue(name, value);
-            reg.Close();
-        }
-        public void UpdatePolicy() // 마스크값에 따라 시스템 정책변경
-        {
-            int value;
-            // 1. TaskMgr enable(0), disable(11)
-            if (GET_BIT(mask, 0)) value = 1;
-            else value = 0;
-            UpdateRegistry("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", value, "DisableTaskMgr", Registry.CurrentUser);
-
-            // 2. regedit enable(0), disable(1)
-            if (GET_BIT(mask, 1)) value = 1;
-            else value = 0;
-            UpdateRegistry("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", value, "DisableRegistryTools", Registry.CurrentUser);
-
-            // 3. cmd enable(0), disable(2)
-            if (GET_BIT(mask, 2)) value = 2;
-            else value = 0;
-            UpdateRegistry("Software\\Policies\\Microsoft\\Windows\\System", value, "DisableCMD", Registry.CurrentUser);
-
-            // 4. snipping tools disable(1), enable(0)
-            if (GET_BIT(mask, 3)) value = 1;
-            else value = 0;
-            UpdateRegistry("SOFTWARE\\Policies\\Microsoft\\TabletPC", value, "DisableSnippingTool", Registry.LocalMachine);
-
-            // 5. usb쓰기 disable(1), enable(0)
-            if (GET_BIT(mask, 4)) value = 1;
-            else value = 0;
-            UpdateRegistry("SYSTEM\\CurrentControlSet\\Control\\StorageDevicepolicies", value, "WriteProtect", Registry.LocalMachine);
-
-            // 6. usb차단 disable(4) enable(3)
-            if (GET_BIT(mask, 5)) value = 4;
-            else value = 3;
-            UpdateRegistry("SYSTEM\\CurrentControlSet\\Services\\USBSTOR", value, "Start", Registry.LocalMachine);
-
-            // 7. 디스크차단(C드라이브) disable(4) enable(0)
-            if (GET_BIT(mask, 6)) value = 4;
-            else value = 0;
-            UpdateRegistry("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer", value, "NoViewOnDrive", Registry.LocalMachine);
-        }
-        // 키값 생성 함수(그냥 랜덤)
-        public string GetRandomPassword(int _totLen)
-        {
-            Random rand = new Random();
-            string input = "abcdefghijklmnopqrstuvwxyz0123456789";
-            var chars = Enumerable.Range(0, _totLen)
-                .Select(x => input[rand.Next(0, input.Length)]);
-            return new string(chars.ToArray());
-        }
         private void TreeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             //SettingListView(e.Node.FullPath);
@@ -315,23 +249,24 @@ namespace InTheForest
                             try
                             {
                                 string logPath;
-                                logPath = label_Path.Text + file.Substring(file.IndexOf("\\") + 1);
-                                MessageBox.Show(logPath);
+                                logPath = label_Path.Text + "\\" + file.Substring(file.LastIndexOf("\\") + 1);
+                                //MessageBox.Show(logPath);
 
                                 key = GetDrivePassword(label_Path.Text.Substring(0, 1));
                                 decbytes = k.AESDecrypto256(File.ReadAllBytes(file), key);
                                 file = file.Replace(".enc", "");
-                                file = label_Path.Text.Substring(0, label_Path.Text.IndexOf("\\")) + "\\.a\\" + file.Substring(file.LastIndexOf("\\") + 1);
+                                file = label_Path.Text.Substring(0, label_Path.Text.IndexOf("\\")) + "\\.start\\" + file.Substring(file.LastIndexOf("\\") + 1);
                                 FileStream fs = File.Create(file);
                                 fs.Close();
                                 File.WriteAllBytes(file, decbytes);
                                 waitforsinglesignal.Set();
                                 string filename = Path.GetFileName(file);
                                 process_FileStart.StartInfo.FileName = filename;
-                                process_FileStart.StartInfo.WorkingDirectory = label_Path.Text.Substring(0, label_Path.Text.IndexOf("\\")) + "\\.a\\";
+                                process_FileStart.StartInfo.WorkingDirectory = label_Path.Text.Substring(0, label_Path.Text.IndexOf("\\")) + "\\.start\\";
                                 process_FileStart.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
                                 FileInfo fi = new FileInfo(process_FileStart.StartInfo.WorkingDirectory + "\\" + process_FileStart.StartInfo.FileName);
                                 process_FileStart.Start();
+                                //MessageBox.Show(logPath);
                                 SslTcpClient.LogRunClient(StatUser.id, logPath, StatUser.state[0], StatUser.outip());
                             }
                             catch (Exception e1)
@@ -479,12 +414,13 @@ namespace InTheForest
                 {
                     string logPath;
                     //MessageBox.Show(file);
-                    logPath = label_Path.Text + file.Replace("\\\\", "\\").Substring(file.LastIndexOf("\\") + 1);
+                    logPath = label_Path.Text + "\\" + file.Replace("\\\\", "\\").Substring(file.LastIndexOf("\\") + 1);
                     filename = Path.GetFileName(file);
                     encbytes = k.AESEncrypto256(File.ReadAllBytes(file), key);
                     File.WriteAllBytes(label_Path.Text + "\\" + filename + ".enc", encbytes);
                     SslTcpClient.LogRunClient(StatUser.id, logPath, StatUser.state[1], StatUser.outip());
                 }
+
             }
             SettingListView(label_Path.Text);
         }
@@ -515,7 +451,7 @@ namespace InTheForest
                         SslTcpClient.LogRunClient(StatUser.id, logPath, "4", StatUser.outip());
                     }
                     File.Delete(file);
-                    logPath = file;
+                    logPath = label_Path.Text + "\\" + item.Text;
                     SslTcpClient.LogRunClient(StatUser.id, logPath, "4", StatUser.outip());
                     SettingListView(label_Path.Text);
                 }
@@ -587,7 +523,6 @@ namespace InTheForest
 
             }
         }
-
         private void LZip_Click(object sender, EventArgs e)
         {
             string sourcePath, zipPath;
