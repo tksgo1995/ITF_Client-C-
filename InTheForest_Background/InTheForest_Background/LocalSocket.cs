@@ -50,7 +50,7 @@ namespace InTheForest_Background
                     {
                         strbuf = strbuf.Replace(strbuf, strbuf + item.Key + "α" + item.Value + "α");
                     }
-                    //MessageBox.Show(strbuf);
+                    
                     NetworkStream stream = clientSocket.GetStream();
                     byte[] buffer = Encoding.UTF8.GetBytes(strbuf);
                     stream.Write(buffer, 0, buffer.Length);

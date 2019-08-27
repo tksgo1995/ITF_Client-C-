@@ -67,10 +67,11 @@ namespace InTheForest
             netDrive = new csNetDrive();
             string Folder, ID, Password, DriveAlphabet;
             int i = 0;
+            StatUser.Folder.Add(StatUser.id, StatUser.KUser);
             foreach (KeyValuePair<string, string> item in StatUser.Folder)
             {
-                if (item.Key == "All") Folder = @"\\52.79.226.152\" + StatUser.id;
-                else Folder = @"\\52.79.226.152\" + item.Key;
+                if (item.Key == "All") Folder = @"\\15.164.170.79\" + StatUser.id;
+                else Folder = @"\\15.164.170.79\" + item.Key;
                 ID = StatUser.id;
                 Password = StatUser.password;
                 DriveAlphabet = (char)('Z' - i++) + ":";
@@ -133,6 +134,8 @@ namespace InTheForest
 
             this.AllowDrop = true;
             listView1.AllowDrop = true;
+
+            
         }
         private void SettingListView(string sFullPath)
         {
@@ -170,6 +173,7 @@ namespace InTheForest
                 int Count = 0;
                 foreach (FileInfo fileinfo in files)
                 {
+                    if ((fileinfo.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden) continue;
                     ListViewItem lsvitem = new ListViewItem();
                     if (fileinfo.Extension.Equals(".txt"))
                         lsvitem.ImageIndex = 0;
@@ -761,10 +765,21 @@ namespace InTheForest
         {
 
         }
+        void CloseNetDrive()
+        {
+            string DriveAlphabet;
+            int i = 0;
+            foreach (KeyValuePair<string, string> item in StatUser.Folder)
+            {
+                DriveAlphabet = (char)('Z' - i++) + ":";
+                netDrive.CencelRemoteServer(DriveAlphabet);
+            }
+            
+        }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             // 네트워크 드라이브 해제
-            int getReturn = netDrive.CencelRemoteServer("Z:");
+            CloseNetDrive();
         }
         private void CboListViewMode_SelectedIndexChanged(object sender, EventArgs e)
         {

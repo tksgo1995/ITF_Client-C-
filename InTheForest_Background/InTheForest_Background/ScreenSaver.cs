@@ -78,7 +78,7 @@ namespace InTheForest_Background
         }
         private void Button_Confirm_Click(object sender, EventArgs e)
         {
-            SslTcpClient.RunClient("52.79.226.152", "DESKTOP-NHIE464\\kkh", textBox1.Text, textBox2.Text, requestvalue);
+            SslTcpClient.RunClient("15.164.170.79", "DESKTOP-NHIE464\\kkh", textBox1.Text, textBox2.Text, requestvalue);
             //접속 서버 IP, 인증서 유효성 검사를 위한 인증서의 발급자 정보, 서버로 전송할 ID값, PWS값, 서버에서 로그인 여부를 저장할 bool변수
             if (SslTcpClient.IsSuccess)
             {
@@ -154,7 +154,7 @@ namespace InTheForest_Background
             {
                 try
                 {
-                    logClient("52.79.226.152");
+                    logClient("15.164.170.79");
 
                     byte[] message = Encoding.UTF8.GetBytes(log);
                     logStream.Write(message);
@@ -225,6 +225,7 @@ namespace InTheForest_Background
                 //ReadMessage 를 통하여 서버에서 전송해준 메세지를 변수에 저장하고 아래에서 로그인 여부를 체크
                 //ReadMessage함수는 바이트 단위의 데이터를 받아 UTF8인코딩으로 저장한 후 Tostring으로 리턴하므로 최종적으로 string으로 저장 가능
                 //MessageBox.Show(serverMessage);
+                
                 if (serverMessage.Equals("aΩ"))//실험을 위해 잠시 b$로 해놈 원래 a가 성공기고 나머지 모든 문자가 실패
                 {
                     MessageBox.Show("로그인 성공");
@@ -234,6 +235,7 @@ namespace InTheForest_Background
                     string ReadBuffer;
                     ReadBuffer = ReadMessage(sslStream);
                     IsSuccess = true;
+                    //MessageBox.Show(ReadBuffer);
                     buf = new USER_STAT(ReadBuffer);
                     
                 }
