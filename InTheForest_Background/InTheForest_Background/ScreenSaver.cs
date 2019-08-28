@@ -22,10 +22,11 @@ using System.IO;
 using System.Threading;
 using Microsoft.Win32;
 using System.Net.NetworkInformation;
+using MetroFramework.Forms;
 
 namespace InTheForest_Background
 {
-    public partial class ScreenSaver : Form
+    public partial class ScreenSaver : MetroForm
     {
         static bool requestvalue = false;
         static int i = 0;
@@ -61,6 +62,11 @@ namespace InTheForest_Background
             this.WindowState = FormWindowState.Maximized;
             this.StartPosition = FormStartPosition.Manual;
             this.TopMost = true;
+            //UpdateRegistry("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", 0, "DisableTaskMgr", Registry.CurrentUser);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.Left = (this.ClientSize.Width - pictureBox1.Width) / 2 ;
+            pictureBox1.Top = (this.ClientSize.Height - pictureBox1.Height) / 2 - 100;
+            groupBox1.Left = (this.ClientSize.Width - groupBox1.Width) / 2;
 
             nScreenSaverFlag = 1;
             nScreenSaver = 0;
@@ -72,13 +78,14 @@ namespace InTheForest_Background
                     "α" + "2" +
                     "α" + Get_MyIP();
                 SslTcpClient.logWrite(strLog);
-                
+
                 //SslTcpClient.logWrite();
             }
         }
         private void Button_Confirm_Click(object sender, EventArgs e)
         {
             SslTcpClient.RunClient("15.164.170.79", "DESKTOP-NHIE464\\kkh", textBox1.Text, textBox2.Text, requestvalue);
+
             //접속 서버 IP, 인증서 유효성 검사를 위한 인증서의 발급자 정보, 서버로 전송할 ID값, PWS값, 서버에서 로그인 여부를 저장할 bool변수
             if (SslTcpClient.IsSuccess)
             {
@@ -309,7 +316,7 @@ namespace InTheForest_Background
         {
             int value;
             // 1. TaskMgr enable(0), disable(1)
-            if (GET_BIT(vipdata.mask, 0)) value = 1;
+            if (GET_BIT(vipdata.mask, 0)) value = 0; //이부분 1로 바꿔야됨
             else value = 0;
             UpdateRegistry("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", value, "DisableTaskMgr", Registry.CurrentUser);
 
