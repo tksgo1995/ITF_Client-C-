@@ -189,6 +189,18 @@ namespace InTheForest
                         lsvitem.ImageIndex = 4;
                     else if (fileinfo.Extension.Equals(".zip"))
                         lsvitem.ImageIndex = 9;
+                    else if (fileinfo.Name.Contains(".docx.enc"))
+                        lsvitem.ImageIndex = 12;
+                    else if (fileinfo.Name.Contains(".pptx.enc"))
+                        lsvitem.ImageIndex = 13;
+                    else if (fileinfo.Name.Contains(".xlsx.enc"))
+                        lsvitem.ImageIndex = 14;
+                    else if (fileinfo.Name.Contains(".hwp.enc"))
+                        lsvitem.ImageIndex = 15;
+                    else if (fileinfo.Name.Contains(".txt.enc"))
+                        lsvitem.ImageIndex = 16;
+                    else if (fileinfo.Extension.Equals(".enc"))
+                        lsvitem.ImageIndex = 11;
                     else
                         lsvitem.ImageIndex = 8;
                     lsvitem.Text = fileinfo.Name;
@@ -958,6 +970,16 @@ namespace InTheForest
                 listView1.LabelEdit = true;
                 listView1.SelectedItems[0].BeginEdit();
             }
+        }
+
+        private void LfOpen_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void LDelete_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void TreeView1_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)

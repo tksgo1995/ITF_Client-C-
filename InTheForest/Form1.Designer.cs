@@ -53,6 +53,7 @@
             this.lZip = new System.Windows.Forms.ToolStripMenuItem();
             this.lCut = new System.Windows.Forms.ToolStripMenuItem();
             this.lCopy = new System.Windows.Forms.ToolStripMenuItem();
+            this.lPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.lDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.lRename = new System.Windows.Forms.ToolStripMenuItem();
             this.lProp = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,7 +64,6 @@
             this.lfDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.lfRename = new System.Windows.Forms.ToolStripMenuItem();
             this.lfProp = new System.Windows.Forms.ToolStripMenuItem();
-            this.lPaste = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -76,7 +76,7 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(20, 60);
+            this.splitContainer1.Location = new System.Drawing.Point(23, 75);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.splitContainer1.Name = "splitContainer1";
             // 
@@ -93,8 +93,9 @@
             this.splitContainer1.Panel2.Controls.Add(this.label_Path);
             this.splitContainer1.Panel2.Controls.Add(this.cboListViewMode);
             this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.SplitContainer1_Panel2_Paint);
-            this.splitContainer1.Size = new System.Drawing.Size(813, 490);
-            this.splitContainer1.SplitterDistance = 270;
+            this.splitContainer1.Size = new System.Drawing.Size(929, 612);
+            this.splitContainer1.SplitterDistance = 308;
+            this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 0;
             this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.SplitContainer1_SplitterMoved);
             // 
@@ -103,10 +104,10 @@
             this.button_Parent.BackColor = System.Drawing.SystemColors.Menu;
             this.button_Parent.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.button_Parent.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button_Parent.Location = new System.Drawing.Point(114, 37);
+            this.button_Parent.Location = new System.Drawing.Point(130, 46);
             this.button_Parent.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button_Parent.Name = "button_Parent";
-            this.button_Parent.Size = new System.Drawing.Size(42, 28);
+            this.button_Parent.Size = new System.Drawing.Size(48, 35);
             this.button_Parent.TabIndex = 3;
             this.button_Parent.Text = "▲";
             this.button_Parent.UseVisualStyleBackColor = false;
@@ -117,10 +118,10 @@
             this.button_Front.BackColor = System.Drawing.SystemColors.Menu;
             this.button_Front.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.button_Front.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button_Front.Location = new System.Drawing.Point(66, 37);
+            this.button_Front.Location = new System.Drawing.Point(75, 46);
             this.button_Front.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button_Front.Name = "button_Front";
-            this.button_Front.Size = new System.Drawing.Size(42, 28);
+            this.button_Front.Size = new System.Drawing.Size(48, 35);
             this.button_Front.TabIndex = 2;
             this.button_Front.Text = "▶▶";
             this.button_Front.UseVisualStyleBackColor = false;
@@ -134,10 +135,10 @@
             this.button_Back.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Menu;
             this.button_Back.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.Menu;
             this.button_Back.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button_Back.Location = new System.Drawing.Point(18, 37);
+            this.button_Back.Location = new System.Drawing.Point(21, 46);
             this.button_Back.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button_Back.Name = "button_Back";
-            this.button_Back.Size = new System.Drawing.Size(42, 28);
+            this.button_Back.Size = new System.Drawing.Size(48, 35);
             this.button_Back.TabIndex = 1;
             this.button_Back.Text = "◀◀";
             this.button_Back.UseVisualStyleBackColor = false;
@@ -148,11 +149,11 @@
             this.treeView1.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.treeView1.ImageIndex = 0;
             this.treeView1.ImageList = this.imageList1;
-            this.treeView1.Location = new System.Drawing.Point(10, 79);
+            this.treeView1.Location = new System.Drawing.Point(11, 99);
             this.treeView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.treeView1.Name = "treeView1";
             this.treeView1.SelectedImageIndex = 0;
-            this.treeView1.Size = new System.Drawing.Size(249, 402);
+            this.treeView1.Size = new System.Drawing.Size(284, 502);
             this.treeView1.TabIndex = 0;
             this.treeView1.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.TreeView1_AfterLabelEdit);
             this.treeView1.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.TreeView1_BeforeExpand);
@@ -175,17 +176,24 @@
             this.imageList1.Images.SetKeyName(8, "2.ico");
             this.imageList1.Images.SetKeyName(9, "1532.ico");
             this.imageList1.Images.SetKeyName(10, "1431.ico");
+            this.imageList1.Images.SetKeyName(11, "itf.png");
+            this.imageList1.Images.SetKeyName(12, "doc.png");
+            this.imageList1.Images.SetKeyName(13, "ppt.png");
+            this.imageList1.Images.SetKeyName(14, "xl.png");
+            this.imageList1.Images.SetKeyName(15, "hwp.png");
+            this.imageList1.Images.SetKeyName(16, "txt.png");
             // 
             // listView1
             // 
             this.listView1.AllowDrop = true;
             this.listView1.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.listView1.HideSelection = false;
             this.listView1.LabelEdit = true;
             this.listView1.LargeImageList = this.imageList2;
-            this.listView1.Location = new System.Drawing.Point(13, 79);
+            this.listView1.Location = new System.Drawing.Point(15, 99);
             this.listView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(514, 402);
+            this.listView1.Size = new System.Drawing.Size(587, 502);
             this.listView1.SmallImageList = this.imageList1;
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
@@ -214,24 +222,30 @@
             this.imageList2.Images.SetKeyName(8, "2.ico");
             this.imageList2.Images.SetKeyName(9, "1532.ico");
             this.imageList2.Images.SetKeyName(10, "1431.ico");
+            this.imageList2.Images.SetKeyName(11, "itf.png");
+            this.imageList2.Images.SetKeyName(12, "doc.png");
+            this.imageList2.Images.SetKeyName(13, "ppt.png");
+            this.imageList2.Images.SetKeyName(14, "xl.png");
+            this.imageList2.Images.SetKeyName(15, "hwp.png");
+            this.imageList2.Images.SetKeyName(16, "txt.png");
             // 
             // label_Path
             // 
             this.label_Path.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label_Path.Location = new System.Drawing.Point(13, 42);
+            this.label_Path.Location = new System.Drawing.Point(15, 52);
             this.label_Path.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.label_Path.Name = "label_Path";
-            this.label_Path.Size = new System.Drawing.Size(354, 23);
+            this.label_Path.Size = new System.Drawing.Size(404, 27);
             this.label_Path.TabIndex = 3;
             // 
             // cboListViewMode
             // 
             this.cboListViewMode.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cboListViewMode.FormattingEnabled = true;
-            this.cboListViewMode.Location = new System.Drawing.Point(372, 42);
+            this.cboListViewMode.Location = new System.Drawing.Point(425, 52);
             this.cboListViewMode.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cboListViewMode.Name = "cboListViewMode";
-            this.cboListViewMode.Size = new System.Drawing.Size(155, 23);
+            this.cboListViewMode.Size = new System.Drawing.Size(177, 28);
             this.cboListViewMode.TabIndex = 2;
             this.cboListViewMode.SelectedIndexChanged += new System.EventHandler(this.CboListViewMode_SelectedIndexChanged);
             // 
@@ -257,27 +271,27 @@
             this.New,
             this.Prop});
             this.cmsTrayMenu.Name = "cmsTrayMenu";
-            this.cmsTrayMenu.Size = new System.Drawing.Size(135, 114);
+            this.cmsTrayMenu.Size = new System.Drawing.Size(154, 124);
             // 
             // Expand
             // 
             this.Expand.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Expand.Name = "Expand";
-            this.Expand.Size = new System.Drawing.Size(134, 22);
+            this.Expand.Size = new System.Drawing.Size(153, 24);
             this.Expand.Text = "확장";
             this.Expand.Click += new System.EventHandler(this.Expand_Click);
             // 
             // Open
             // 
             this.Open.Name = "Open";
-            this.Open.Size = new System.Drawing.Size(134, 22);
+            this.Open.Size = new System.Drawing.Size(153, 24);
             this.Open.Text = "열기";
             this.Open.Click += new System.EventHandler(this.Open_Click_1);
             // 
             // Rename
             // 
             this.Rename.Name = "Rename";
-            this.Rename.Size = new System.Drawing.Size(134, 22);
+            this.Rename.Size = new System.Drawing.Size(153, 24);
             this.Rename.Text = "이름바꾸기";
             this.Rename.Click += new System.EventHandler(this.Rename_Click_1);
             // 
@@ -286,25 +300,26 @@
             this.New.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.Folder});
             this.New.Name = "New";
-            this.New.Size = new System.Drawing.Size(134, 22);
+            this.New.Size = new System.Drawing.Size(153, 24);
             this.New.Text = "새로만들기";
             // 
             // Folder
             // 
             this.Folder.Name = "Folder";
-            this.Folder.Size = new System.Drawing.Size(98, 22);
+            this.Folder.Size = new System.Drawing.Size(122, 26);
             this.Folder.Text = "폴더";
             this.Folder.Click += new System.EventHandler(this.Folder_Click);
             // 
             // Prop
             // 
             this.Prop.Name = "Prop";
-            this.Prop.Size = new System.Drawing.Size(134, 22);
+            this.Prop.Size = new System.Drawing.Size(153, 24);
             this.Prop.Text = "속성";
             this.Prop.Click += new System.EventHandler(this.Prop_Click_1);
             // 
             // cmsmenu_list1
             // 
+            this.cmsmenu_list1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.cmsmenu_list1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lOpen,
             this.lZip,
@@ -315,57 +330,65 @@
             this.lRename,
             this.lProp});
             this.cmsmenu_list1.Name = "cmsmenu_list1";
-            this.cmsmenu_list1.Size = new System.Drawing.Size(181, 202);
+            this.cmsmenu_list1.Size = new System.Drawing.Size(154, 196);
             // 
             // lOpen
             // 
             this.lOpen.Name = "lOpen";
-            this.lOpen.Size = new System.Drawing.Size(180, 22);
+            this.lOpen.Size = new System.Drawing.Size(153, 24);
             this.lOpen.Text = "열기";
             this.lOpen.Click += new System.EventHandler(this.LOpen_Click);
             // 
             // lZip
             // 
             this.lZip.Name = "lZip";
-            this.lZip.Size = new System.Drawing.Size(180, 22);
+            this.lZip.Size = new System.Drawing.Size(153, 24);
             this.lZip.Text = "압축하기";
             this.lZip.Click += new System.EventHandler(this.LZip_Click);
             // 
             // lCut
             // 
             this.lCut.Name = "lCut";
-            this.lCut.Size = new System.Drawing.Size(180, 22);
+            this.lCut.Size = new System.Drawing.Size(153, 24);
             this.lCut.Text = "잘라내기";
             this.lCut.Click += new System.EventHandler(this.LCut_Click);
             // 
             // lCopy
             // 
             this.lCopy.Name = "lCopy";
-            this.lCopy.Size = new System.Drawing.Size(180, 22);
+            this.lCopy.Size = new System.Drawing.Size(153, 24);
             this.lCopy.Text = "복사";
             this.lCopy.Click += new System.EventHandler(this.LCopy_Click);
+            // 
+            // lPaste
+            // 
+            this.lPaste.Name = "lPaste";
+            this.lPaste.Size = new System.Drawing.Size(153, 24);
+            this.lPaste.Text = "붙여넣기";
             // 
             // lDelete
             // 
             this.lDelete.Name = "lDelete";
-            this.lDelete.Size = new System.Drawing.Size(180, 22);
+            this.lDelete.Size = new System.Drawing.Size(153, 24);
             this.lDelete.Text = "삭제";
+            this.lDelete.Click += new System.EventHandler(this.LDelete_Click);
             // 
             // lRename
             // 
             this.lRename.Name = "lRename";
-            this.lRename.Size = new System.Drawing.Size(180, 22);
+            this.lRename.Size = new System.Drawing.Size(153, 24);
             this.lRename.Text = "이름바꾸기";
             // 
             // lProp
             // 
             this.lProp.Name = "lProp";
-            this.lProp.Size = new System.Drawing.Size(180, 22);
+            this.lProp.Size = new System.Drawing.Size(153, 24);
             this.lProp.Text = "속성";
             this.lProp.Click += new System.EventHandler(this.LProp_Click);
             // 
             // cmsmenu_list2
             // 
+            this.cmsmenu_list2.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.cmsmenu_list2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lfOpen,
             this.lfCut,
@@ -374,59 +397,56 @@
             this.lfRename,
             this.lfProp});
             this.cmsmenu_list2.Name = "cmsmenu_list2";
-            this.cmsmenu_list2.Size = new System.Drawing.Size(135, 136);
+            this.cmsmenu_list2.Size = new System.Drawing.Size(154, 148);
             // 
             // lfOpen
             // 
             this.lfOpen.Name = "lfOpen";
-            this.lfOpen.Size = new System.Drawing.Size(134, 22);
+            this.lfOpen.Size = new System.Drawing.Size(153, 24);
             this.lfOpen.Text = "열기";
+            this.lfOpen.Click += new System.EventHandler(this.LfOpen_Click);
             // 
             // lfCut
             // 
             this.lfCut.Name = "lfCut";
-            this.lfCut.Size = new System.Drawing.Size(134, 22);
+            this.lfCut.Size = new System.Drawing.Size(153, 24);
             this.lfCut.Text = "잘라내기";
             // 
             // lfCopy
             // 
             this.lfCopy.Name = "lfCopy";
-            this.lfCopy.Size = new System.Drawing.Size(134, 22);
+            this.lfCopy.Size = new System.Drawing.Size(153, 24);
             this.lfCopy.Text = "복사";
             // 
             // lfDelete
             // 
             this.lfDelete.Name = "lfDelete";
-            this.lfDelete.Size = new System.Drawing.Size(134, 22);
+            this.lfDelete.Size = new System.Drawing.Size(153, 24);
             this.lfDelete.Text = "삭제";
             // 
             // lfRename
             // 
             this.lfRename.Name = "lfRename";
-            this.lfRename.Size = new System.Drawing.Size(134, 22);
+            this.lfRename.Size = new System.Drawing.Size(153, 24);
             this.lfRename.Text = "이름바꾸기";
             // 
             // lfProp
             // 
             this.lfProp.Name = "lfProp";
-            this.lfProp.Size = new System.Drawing.Size(134, 22);
+            this.lfProp.Size = new System.Drawing.Size(153, 24);
             this.lfProp.Text = "속성";
             this.lfProp.Click += new System.EventHandler(this.LfProp_Click);
             // 
-            // lPaste
-            // 
-            this.lPaste.Name = "lPaste";
-            this.lPaste.Size = new System.Drawing.Size(180, 22);
-            this.lPaste.Text = "붙여넣기";
-            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(853, 570);
+            this.ClientSize = new System.Drawing.Size(975, 712);
             this.Controls.Add(this.splitContainer1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
+            this.Padding = new System.Windows.Forms.Padding(23, 75, 23, 25);
             this.Text = "InTheForest";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
